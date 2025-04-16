@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gotlandstider</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            
+            /*font-family: 'Helvetica Neue', Arial, sans-serif;*/
+
+            font-family: "Quicksand", sans-serif;
+            font-optical-sizing: auto;
+        }
+        
+        body {
+            background-color: #f7f3e9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            background-image: url('IMG_68586F00D290-1.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.55);
+            z-index: -1;
+        }
+        
+        footer a:link {
+            text-decoration: underline;
+            color: #1a5276;
+        }
+
+        footer a:visited {
+            text-decoration: underline;
+            color: #1a5276;
+        }
+
+        footer :hover {
+            text-decoration: underline;
+            color: #333;
+        }
+
+        footer a:active {
+            text-decoration: underline;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 
+                        0 1px 3px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .paper-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /*background-image: url('https://placehold.co/600x800');*/
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1a5276;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #1a5276, transparent);
+        }
+        
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            color: #444;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+        }
+
+        .description a:link {
+            text-decoration: underline;
+            color: #1a5276;
+        }
+
+        .description a:visited {
+            text-decoration: underline;
+            color: #1a5276;
+        }
+
+        .description :hover {
+            text-decoration: underline;
+            color: #333;
+        }
+
+        .description a:active {
+            text-decoration: underline;
+            color: #333;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 2.5rem;
+        }
+        
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+        
+        .social-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+            z-index: 1;
+        }
+        
+        .social-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+        
+        .social-button:active {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+        
+        .tiktok {
+            background-color: #000;
+            color: white;
+        }
+        
+        .instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+        
+        .icon {
+            margin-right: 10px;
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .button-text {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .gotland-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2),
+                        0 1px 3px rgba(0, 0, 0, 0.1),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            border: 3px solid white;
+            transition: transform 0.3s ease;
+        }
+        
+        .gotland-image:hover {
+            transform: scale(1.03);
+        }
+        
+        .polaroid {
+            background: white;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: rotate(-2deg);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .polaroid::before {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+        
+        footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #777;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+        }
+        
+        .stitching {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px dashed rgba(26, 82, 118, 0.2);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="paper-texture"></div>
+        <div class="stitching"></div>
+        
+        <h1 class="logo">Gotlandstider</h1>
+        
+        <p class="description">Upptäck den fantastiska ön Gotland!<br/>Följ för tips, loppisar, mat, vloggar & mycket mer.<br/><br/>Vi bygger även ett arkitektritat sommarhus i <a href="https://g.co/kgs/CuxV1fe" target="_blank">Ljugarn.</a></p>
+        
+        <div class="social-links">
+            <a href="https://www.tiktok.com/@gotlandstider" class="social-button tiktok">
+                <i class="fab fa-tiktok icon"></i>
+                <span class="button-text">TikTok</span>
+            </a>
+            <a href="https://www.instagram.com/gotlandstider" class="social-button instagram">
+                <i class="fab fa-instagram icon"></i>
+                <span class="button-text">Instagram</span>
+            </a>
+        </div>
+
+        <div class="polaroid">
+            <img class="gotland-image" src="IMG_B1845298A186-1.jpeg" alt="Gotland">
+        </div>
+        
+
+        
+        <footer>
+            &copy; 2025 <a href="mailto:kontakt@gotlandstider.se">Gotlandstider</a>
+        </footer>
+    </div>
+</body>
+</html>
