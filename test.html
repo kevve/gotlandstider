@@ -182,7 +182,16 @@
                     <div class="relative rounded-lg overflow-hidden shadow-2xl aspect-[9/16] md:aspect-video lg:aspect-[4/5] bg-black">
                         <!-- Kom ihåg att ladda upp din videofil till GitHub och döp den till 'video.mp4' -->
                         <video class="w-full h-full object-cover" controls poster="https://images.unsplash.com/photo-1559160581-44bd4b3252d0?q=80&w=2070&auto=format&fit=crop">
-                            <source src="bce3453ec41048668f381b7f6a8d5d9c.MOV" type="video/mp4">
+                            
+                            <!-- Priority 1: High Quality, Tiny File Size -->
+                            <source src="5PlatserGotland2026.webm" type="video/webm">
+                            
+                            <!-- Priority 2: Universal Backup (for older iPhones/IE) -->
+                             <source src="bce3453ec41048668f381b7f6a8d5d9c.MOV" type="video/mp4">
+                            
+                            <!-- Final Backup: Image if video is completely disabled -->
+                            <img src="fallback-image.jpg" alt="Video fallback">
+                            
                             Din webbläsare stödjer inte videouppspelning.
                         </video>
                         <div class="absolute top-4 right-4 bg-gotland-deep/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
