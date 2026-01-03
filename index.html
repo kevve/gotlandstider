@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Gotlandstider | Din guide till Gotland</title>
+    
+    <!-- META BESKRIVNING: Skriven för att svara på en fråga -->
+    <meta name="description" content="För dig som letar inspiration till nya platser, restauranger, loppisar och upplevelser på ön. Alla årstider är Gotlandstider.">
+    
+    <!-- KEYWORDS -->
+    <meta name="keywords" content="Gotland, Visby, Ljugarn, Resguide Gotland, Restips Gotland, Tips, Loppis, Loppisar Visby, Husbygge Ljugarn, Sommarhus Gotland, Sommarställe">
+    
+    <link rel="canonical" href="https://gotlandstider.se/">
+
+    <!-- OPEN GRAPH (För snygg delning på Sociala Medier) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Gotlandstider | Din guide till det gotländska ö-livet">
+    <meta property="og:description" content="Upptäck öns dolda pärlor och följ vår resa mot ett arkitektritat sommarhus i Ljugarn.">
+    <meta property="og:image" content="https://gotlandstider.se/hero-coastline.webp">
+    <meta property="og:url" content="https://gotlandstider.se/">
+    <meta property="og:site_name" content="Gotlandstider">
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Konfiguration för färgpaletten -->
+    <script type="text/javascript" src="tailwindconfig.js"></script>
+
+    <style>
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .video-overlay {
+            background: linear-gradient(to bottom, rgba(31,41,51,0.2), rgba(242,235,229,1));
+        }
+
+        #mobile-menu {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+    </style>
+
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+        "@type": "Organization",
+        "name": "Gotlandstider",
+        "url": "https://gotlandstider.se",
+        "logo": "https://gotlandstider.se/favicon.svg",
+        "description": "Upptäck öns dolda pärlor och följ vår resa mot ett arkitektritat sommarhus i Ljugarn.",
+        "founders": [
+            {
+            "@type": "Person",
+            "name": "Kevin"
+            },
+            {
+            "@type": "Person",
+            "name": "Henrik"
+            }
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Ljugarn",
+            "addressRegion": "Gotland",
+            "addressCountry": "SE"
+        },
+        "sameAs": [
+            "https://www.instagram.com/gotlandstider/",
+            "https://www.tiktok.com/@gotlandstider"
+        ]
+        },
+        {
+        "@type": "VideoObject",
+        "name": "5 platser att besöka på Gotland 2026",
+        "description": "En guide till våra favoritplatser på Gotland inför säsongen 2026, inklusive Biograf Savannen och Stora Karlsö.",
+        "thumbnailUrl": "https://gotlandstider.se/story-5platser-gotland.webp",
+        "uploadDate": "2026-01-03",
+        "contentUrl": "https://gotlandstider.se/story-5platser-gotland.webm",
+        "embedUrl": "https://gotlandstider.se/"
+        }
+    ]
+    }
+    </script>
+
+</head>
+<body class="bg-gotland-stone text-gotland-deep font-sans antialiased selection:bg-gotland-rust selection:text-white overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-gotland-stone/95 backdrop-blur-md border-b border-gotland-stoneDark transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" class="font-serif text-2xl tracking-tight font-semibold italic text-gotland-deep hover:text-gotland-pine transition-colors">
+                    Gotlandstider.
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-8 text-sm tracking-wide uppercase font-medium text-gotland-deep/80">
+                    <a href="#stories" class="hover:text-gotland-rust transition-colors">Upplevelser</a>
+                    <a href="#house" class="hover:text-gotland-rust transition-colors">Sommarhuset</a>
+                    <a href="#about" class="hover:text-gotland-rust transition-colors">Om oss</a>
+                    <a href="#contact" class="px-6 py-2 bg-gotland-deep text-gotland-stone rounded-full hover:bg-gotland-pine transition-all shadow-md hover:shadow-lg">Kontakt</a>
+                </div>
+
+                <button id="menu-btn" class="md:hidden text-gotland-deep focus:outline-none p-2">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="bg-gotland-stone border-b border-gotland-stoneDark md:hidden">
+            <div class="flex flex-col space-y-4 px-6 py-6 text-center text-sm uppercase tracking-widest font-medium">
+                <a href="#stories" class="hover:text-gotland-rust py-2" onclick="toggleMenu()">Upplevelser</a>
+                <a href="#house" class="hover:text-gotland-rust py-2" onclick="toggleMenu()">Sommarhuset</a>
+                <a href="#about" class="hover:text-gotland-rust py-2" onclick="toggleMenu()">Om oss</a>
+                <a href="#contact" class="text-gotland-rust font-bold py-2" onclick="toggleMenu()">Kontakt</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <img src="hero-coastline.webp" alt="Solnedgång över raukar vid Gotlands norra kust på Fårö" class="w-full h-full object-cover opacity-90 lg:opacity-80">
+        </div>
+        <div class="absolute inset-0 z-10 video-overlay"></div>
+
+        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto mt-10 fade-in-up">
+            
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 leading-[1.1] text-gotland-deep">
+                Upplev det <br><span class="italic text-gotland-pine">gotländska ö-livet.</span>
+            </h1>
+            
+            <p class="text-base md:text-xl font-light max-w-xl mx-auto mb-10 leading-relaxed text-gotland-deep/90">
+                Din guide till Gotlands bästa upplevelser. Unika platser, entreprenörskap, och inspiration inom hem och inredning.
+                <br>Från Fårö i norr till Hoburgen i söder. Året runt.
+            </p>
+            
+            <!-- ACTION AREA -->
+            <div class="flex flex-col items-center gap-6">
+                
+                <!-- Primär Knapp -->
+                <a href="#stories" class="bg-gotland-deep text-gotland-stone px-10 py-4 rounded-full hover:bg-gotland-pine hover:scale-105 transition-all duration-300 shadow-xl text-sm font-bold tracking-widest uppercase">
+                    Upplevelser från ön
+                </a>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-4 opacity-60">
+                    <div class="h-px w-12 bg-gotland-deep"></div>
+                    <span class="text-xs font-serif italic text-gotland-deep">Följ äventyret</span>
+                    <div class="h-px w-12 bg-gotland-deep"></div>
+                </div>
+
+                <!-- SOCIALA KNAPPAR -->
+                <div class="flex flex-row gap-4 w-full justify-center">
+                    
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/gotlandstider/" target="_blank" class="group relative flex items-center justify-center gap-3 px-6 py-3 rounded-xl border border-white/40 bg-white/20 backdrop-blur-md hover:bg-white/40 hover:border-white/60 transition-all duration-300 w-40">
+                        <!-- Instagram Icon -->
+                        <svg class="w-5 h-5 text-gotland-deep group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                        <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gotland-deep group-hover:text-gotland-rust transition-colors">Instagram</span>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="https://www.tiktok.com/@gotlandstider" target="_blank" class="group relative flex items-center justify-center gap-3 px-6 py-3 rounded-xl border border-white/40 bg-white/20 backdrop-blur-md hover:bg-white/40 hover:border-white/60 transition-all duration-300 w-40">
+                        <!-- TikTok Icon -->
+                        <svg class="w-5 h-5 text-gotland-deep group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                        </svg>
+                        <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gotland-deep group-hover:text-gotland-rust transition-colors">TikTok</span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Berättelser (Stories) -->
+    <section id="stories" class="py-24 bg-gotland-stoneDark/30 border-y border-gotland-stoneDark/50">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-12 fade-in-up">
+                <span class="text-xs font-bold text-gotland-rust uppercase tracking-[0.2em] block mb-3">Redaktionellt</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-gotland-deep">Upplevelser från ön</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+                
+                <!-- VÄNSTER KOLUMN (VIDEO) -->
+                <div class="fade-in-up order-2 lg:order-1 lg:col-span-5">
+                    <!-- VIDEO CONTAINER -->
+                    <div class="relative w-full max-w-[250px] mx-auto lg:max-w-xs shadow-2xl rounded-xl overflow-hidden border-4 border-gotland-stoneDark bg-transparent">
+                        
+                        <!-- Aspect Ratio Container: Tvingar alltid 9:16 format -->
+                        <div class="aspect-[9/16] relative">
+                            
+                            <video 
+                                id="vertical-player"
+                                class="w-full h-full object-cover outline-none focus:outline-none focus:ring-0" 
+                                controls 
+                                playsinline
+                                preload="metadata"
+                                poster="story-5platser-gotland.webp"
+                            >
+                                <source src="story-5platser-gotland.webm" type="video/webm">
+                                <!--<source src="story-5platser-gotland.mp4" type="video/mp4">-->
+                                <p class="text-white p-4">Din webbläsare stödjer tyvärr inte denna video.</p>
+                            </video>
+
+                            <!-- "Nytt avsnitt" Badge -->
+                            
+                            <div class="absolute top-3 left-3 z-20 bg-gotland-rust/90 text-white backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                Tips
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Social Media Links -->
+                    <div class="flex items-center justify-center gap-4 mt-6 max-w-[320px] mx-auto lg:max-w-sm">
+                        
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/reel/DS9-b-_iLC2/" target="_blank" class="group relative flex items-center justify-center gap-3 px-6 py-3 rounded-xl border border-white/40 bg-white/20 backdrop-blur-md hover:bg-white/40 hover:border-white/60 transition-all duration-300 w-40">
+                            <!-- Instagram Icon -->
+                            <svg class="w-5 h-5 text-gotland-deep group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                            <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gotland-deep group-hover:text-gotland-rust transition-colors">Instagram</span>
+                        </a>
+
+                        <!-- TikTok -->
+                        <a href="https://vm.tiktok.com/ZNRM6La7s/" target="_blank" class="group relative flex items-center justify-center gap-3 px-6 py-3 rounded-xl border border-white/40 bg-white/20 backdrop-blur-md hover:bg-white/40 hover:border-white/60 transition-all duration-300 w-40">
+                            <!-- TikTok Icon -->
+                            <svg class="w-5 h-5 text-gotland-deep group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                            </svg>
+                            <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gotland-deep group-hover:text-gotland-rust transition-colors">TikTok</span>
+                        </a>
+
+                    </div>
+                    
+                    <!-- Helper text -->
+                    <p class="text-center text-[10px] uppercase text-gotland-deep/40 mt-3 tracking-widest">Se hela klippet i appen</p>
+
+
+                </div>
+                
+                <!-- Höger: Textinnehåll -->
+                <div class="fade-in-up delay-100 order-1 lg:order-2 lg:col-span-7">
+                    <h3 class="font-serif text-3xl md:text-4xl mb-6 leading-tight">5 platser att besöka <span class="italic text-gotland-pine">under 2026</span></h3>
+                    <p class="text-gray-700 mb-8 leading-relaxed">
+                        Det har varit ett händelserikt år på Gotland. Vi har samlat våra fem absoluta guldkorn som du inte får missa i sommar. Från norra öns stillhet till södra öns entreprenörsanda.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="group border-l-2 border-gotland-stoneDark pl-4 hover:border-gotland-rust transition-colors">
+                            <span class="text-xs font-bold text-gotland-pine uppercase tracking-wider block mb-1">Stränder</span>
+                            <h4 class="font-serif text-xl group-hover:text-gotland-rust transition-colors">Norsta Aurar</h4>
+                            <p class="text-sm text-gray-600 mt-1">Upplev häftig natur och kristallklart vatten på norra Fårö.</p>
+                        </div>
+
+                        <div class="group border-l-2 border-gotland-stoneDark pl-4 hover:border-gotland-rust transition-colors">
+                            <span class="text-xs font-bold text-gotland-pine uppercase tracking-wider block mb-1">Mat & Dryck</span>
+                            <h4 class="font-serif text-xl group-hover:text-gotland-rust transition-colors">Lille Fernandes</h4>
+                            <p class="text-sm text-gray-600 mt-1">Sol hela dagen, härlig personal och god mat mitt i Visby hamn.</p>
+                        </div>
+
+                        <div class="group border-l-2 border-gotland-stoneDark pl-4 hover:border-gotland-rust transition-colors">
+                            <span class="text-xs font-bold text-gotland-pine uppercase tracking-wider block mb-1">Naturupplevelse</span>
+                            <h4 class="font-serif text-xl group-hover:text-gotland-rust transition-colors">Stora Karlsö</h4>
+                            <p class="text-sm text-gray-600 mt-1">Unik natur som bara finns här. En plats du kommer vilja återvända till.</p>
+                        </div>
+
+                        <div class="group border-l-2 border-gotland-stoneDark pl-4 hover:border-gotland-rust transition-colors">
+                            <span class="text-xs font-bold text-gotland-pine uppercase tracking-wider block mb-1">Kultur</span>
+                            <h4 class="font-serif text-xl group-hover:text-gotland-rust transition-colors">Biograf Savannen</h4>
+                            <p class="text-sm text-gray-600 mt-1">Film under bar himmel med otroligt ljud. En av årets bästa upplevelser.</p>
+                        </div>
+
+                         <div class="group border-l-2 border-gotland-stoneDark pl-4 hover:border-gotland-rust transition-colors">
+                            <span class="text-xs font-bold text-gotland-pine uppercase tracking-wider block mb-1">Hantverk</span>
+                            <h4 class="font-serif text-xl group-hover:text-gotland-rust transition-colors">Åkes Snickeri</h4>
+                            <p class="text-sm text-gray-600 mt-1">Representerar det gotländska drivet med sin hantverksbod på Sudret.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLER BERÄTTELSER (Arkiv) -->
+    <section class="py-12 border-b border-gotland-stoneDark/50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            
+            <!-- Rubrik & Navigering -->
+            <div class="flex justify-between items-end mb-8 fade-in-up">
+                <div>
+                    <span class="text-xs font-bold text-gotland-rust uppercase tracking-[0.2em] block mb-2">Arkiv</span>
+                    <h3 class="font-serif text-3xl md:text-4xl text-gotland-deep">Fler upplevelser</h3>
+                </div>
+                <!-- "Visa alla" länk för framtiden -->
+                <!--
+                <a href="#" class="hidden md:inline-block text-sm font-medium border-b border-gotland-deep/30 hover:text-gotland-rust hover:border-gotland-rust transition-colors pb-1">Visa hela arkivet →</a>
+                -->
+            </div>
+
+            <!-- SCROLL CONTAINER -->
+            <!-- Mobil: Horisontell scroll (Snap) | Desktop: Grid (3 kolumner) -->
+            <div class="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-8 md:pb-0 scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+
+                <!-- Story Card 1 -->
+                <article onclick="openStory(1)" class="min-w-[85vw] md:min-w-0 snap-center group cursor-pointer fade-in-up delay-100">
+                    <div class="relative aspect-video overflow-hidden rounded-sm mb-4">
+                        <div class="absolute inset-0 bg-gotland-deep/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <!-- Badge för typ av innehåll -->
+                        <div class="absolute top-3 left-3 z-20 bg-gotland-rust/90 text-white backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                            Loppis
+                        </div>
+                        <img src="story-loppisar-gotland.jpg" alt="De bästa loppisarna på Gotland, och årets finaste fynd" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-xs text-gotland-moss font-medium uppercase tracking-wide">Gotland • Inredning</span>
+                        <h4 class="font-serif text-xl leading-snug group-hover:text-gotland-rust transition-colors">Årets loppis-favoriter</h4>
+                        <p class="text-sm text-gray-600 line-clamp-2">Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visas även Henrik upp årets fynd.</p>
+                    </div>
+                </article>
+
+                <!-- Story Card 2 -->
+                <article onclick="openStory(2)" class="min-w-[85vw] md:min-w-0 snap-center group cursor-pointer fade-in-up delay-200">
+                    <div class="relative aspect-video overflow-hidden rounded-sm mb-4">
+                        <div class="absolute inset-0 bg-gotland-deep/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <!-- Badge för typ av innehåll -->
+                        <div class="absolute top-3 left-3 z-20 bg-gotland-stone/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gotland-deep rounded-full">
+                            Tips
+                        </div>
+                        <img src="story-brunan-ljugarn.webp" alt="På restaurang Bruna Dörren i Ljugarn får du god mat, musikquiz och riktig gotländsk atmosfär" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-xs text-gotland-moss font-medium uppercase tracking-wide">Ljugarn • Mat & Dryck</span>
+                        <h4 class="font-serif text-xl leading-snug group-hover:text-gotland-rust transition-colors">Musikquiz och god mat vid stranden</h4>
+                        <p class="text-sm text-gray-600 line-clamp-2">Du åker hit om du vill umgås med nära och kära i en riktig gotländsk atmosfär.</p>
+                    </div>
+                </article>
+
+                <!-- Story Card 3 -->
+                <article onclick="openStory(3)" class="min-w-[85vw] md:min-w-0 snap-center group cursor-pointer fade-in-up delay-300">
+                    <div class="relative aspect-video overflow-hidden rounded-sm mb-4">
+                        <div class="absolute inset-0 bg-gotland-deep/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <!-- Badge för typ av innehåll -->
+                        <div class="absolute top-3 left-3 z-20 bg-gotland-rust/90 text-white backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                            Guide
+                        </div>
+                        <img src="story-strand-snack.webp" alt="Vacker strand full av aktiviteter i närheten av Visby" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-xs text-gotland-moss font-medium uppercase tracking-wide">Visby • Stränder</span>
+                        <h4 class="font-serif text-xl leading-snug group-hover:text-gotland-rust transition-colors">En strand för stora & små</h4>
+                        <p class="text-sm text-gray-600 line-clamp-2">Ett stenkast från Visby hittar du den här pärlan med oändliga möjligheter.</p>
+                    </div>
+                </article>
+
+            </div>
+            
+            <!-- Mobil-länk (syns bara på små skärmar) -->
+            <!--
+            <div class="mt-6 md:hidden text-center">
+                <a href="#" class="text-sm font-medium border-b border-gotland-deep/30 hover:text-gotland-rust hover:border-gotland-rust transition-colors pb-1">Visa hela arkivet →</a>
+            </div>
+            -->
+
+        </div>
+    </section>
+
+    <!-- Projekt Ljugarn -->
+    <section id="house" class="py-24 bg-gotland-stoneDark relative">
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <div class="text-center mb-16 fade-in-up">
+                <p class="text-xs tracking-[0.2em] uppercase text-gotland-pine font-bold mb-3">Projekt Ljugarn</p>
+                <h2 class="font-serif text-4xl md:text-6xl text-gotland-deep">Drömmen om ett sommarhus</h2>
+                <p class="mt-4 max-w-lg mx-auto text-gray-600">Gotland är en plats att besöka året om. Förutom att guida dig till öns bästa platser, har vi hittat hem på östra Gotland i sommarbyn Ljugarn. Följ med på resan mot ett tidlöst, arkitektritat, sommarhus på östkusten.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <article class="group cursor-default fade-in-up">
+                    <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="house-letatomt.jpg" alt="Letar efter tomt i Ljugarn" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="pr-4">
+                        <span class="text-xs font-bold text-gotland-rust uppercase tracking-wider block mb-2">Tomten</span>
+                        <h3 class="font-serif text-2xl leading-tight group-hover:text-gotland-pine transition-colors">Att hitta det perfekta läget</h3>
+                    </div>
+                </article>
+
+                <article class="group cursor-default fade-in-up delay-100">
+                    <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="house-ritahus.jpg" alt="Bygger ett arkitektritat hus" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="pr-4">
+                        <span class="text-xs font-bold text-gotland-rust uppercase tracking-wider block mb-2">Arkitektur</span>
+                        <h3 class="font-serif text-2xl leading-tight group-hover:text-gotland-pine transition-colors">Idéer börjar ta form</h3>
+                    </div>
+                </article>
+
+                <article class="group cursor-default fade-in-up delay-200">
+                    <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="house-rensatomt.webp" alt="Rensar träd och förbereder tomten" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="pr-4">
+                        <span class="text-xs font-bold text-gotland-rust uppercase tracking-wider block mb-2">Förberedelser</span>
+                        <h3 class="font-serif text-2xl leading-tight group-hover:text-gotland-pine transition-colors">Beskär träd på naturtomten</h3>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- OM OSS SEKTION -->
+    <section id="about" class="py-24 px-6 md:px-12 max-w-7xl mx-auto border-t border-gotland-stoneDark/50">
+        <div class="grid md:grid-cols-12 gap-12 items-center">
+            
+            <!-- Bilden -->
+            <div class="md:col-span-5 md:col-start-2 fade-in-up">
+                <div class="relative">
+                    <!-- Dekorativ ram/bakgrund -->
+                    <div class="absolute inset-0 bg-gotland-stoneDark transform translate-x-4 translate-y-4 rounded-sm -z-10"></div>
+                    
+                    <!-- Bilden -->
+                    <img src="about-kevinhenrik.webp" alt="Kevin och Henrik i grönskande natur" class="w-full h-auto rounded-sm shadow-lg object-cover aspect-[4/5]">
+                    
+                    <!-- Citat -->
+                    <div class="absolute -bottom-6 -right-6 bg-gotland-stone px-6 py-4 shadow-xl max-w-[200px] hidden md:block">
+                        <p class="font-serif text-2xl text-gotland-rust italic leading-none">”</p>
+                        <p class="text-xs text-gotland-deep font-medium uppercase tracking-wider mt-1">Alla årstider är Gotlandstider.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Texten -->
+            <div class="md:col-span-5 md:col-start-8 fade-in-up delay-100">
+                <span class="text-xs font-bold text-gotland-moss uppercase tracking-[0.2em] block mb-3">Grundarna</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-gotland-deep mb-6">Hej, det är vi som är <br><span class="italic text-gotland-rust">Kevin & Henrik.</span></h2>
+                
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>
+                        Vår resa började med en enkel kärlek till ön. Vi ville skapa något mer än bara ännu ett konto på sociala medier; nämligen en plattform som fångar Gotlands själ - från det karga kalkstenslandskapet, till värmen och drivkraften hos de lokala entreprenörerna.
+                    </p>
+                    <p>
+                        Just nu förverkligar vi drömmen att bygga ett sommarhus i Ljugarn, samtidigt som vi hjälper företag att nå ut med sina unika upplevelser.
+                    </p>
+                </div>
+
+                <!-- Signatur -->
+                <div class="mt-8 pt-8 border-t border-gotland-deep/10">
+                    <p class="font-serif text-xl italic text-gotland-deep">Gotlandstider</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gotland-deep text-gotland-stone py-20 px-6 border-t-4 border-gotland-pine">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
+            <div class="fade-in-up">
+                <h2 class="font-serif text-4xl lg:text-5xl mb-6 leading-tight">Låt oss skapa något <br><span class="italic text-gotland-stone/60">vackert tillsammans.</span></h2>
+                <p class="max-w-md text-gotland-stone/70 mb-8 text-lg font-light">
+                    Intresserad att samarbeta? Vi söker alltid eldsjälar och varumärken som delar vår kärlek till kvalitet, hållbarhet och den gotländska livsstilen.
+                </p>
+                <div class="flex flex-col gap-2">
+                    <a href="mailto:info@gotlandstider.se" class="text-2xl md:text-3xl font-serif hover:text-gotland-rust transition-colors inline-block w-max border-b border-gotland-stone/20 pb-1">info@gotlandstider.se</a>
+                </div>
+            </div>
+            
+            <div class="flex flex-col justify-between items-start md:items-end fade-in-up delay-100">
+                <div class="flex flex-col md:flex-row gap-6 md:gap-10 mb-10 text-sm font-medium">
+                    <a href="https://www.instagram.com/gotlandstider/" class="hover:text-gotland-rust transition-colors uppercase tracking-widest flex items-center gap-2">
+                        Instagram <span class="text-gotland-rust">↗</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@gotlandstider" class="hover:text-gotland-rust transition-colors uppercase tracking-widest flex items-center gap-2">
+                        TikTok <span class="text-gotland-rust">↗</span>
+                    </a>
+                </div>
+                
+                <div class="text-left md:text-right space-y-2">
+                    <p class="text-xs text-gotland-stone/40 uppercase tracking-widest">© 2026 Gotlandstider</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- STORY MODAL OVERLAY -->
+    <div id="story-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
+        
+        <!-- Backdrop (Blurrad bakgrund) -->
+        <div class="absolute inset-0 bg-gotland-deep/60 backdrop-blur-md transition-opacity" onclick="closeStory()"></div>
+
+        <!-- Modal Container -->
+        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 pointer-events-none">
+            
+            <!-- Kortet -->
+            <div class="bg-gotland-stone w-full max-w-5xl max-h-[90vh] overflow-y-auto md:overflow-hidden rounded-xl shadow-2xl relative pointer-events-auto flex flex-col md:flex-row">
+                
+                <!-- Stäng-knapp -->
+                <button onclick="closeStory()" class="absolute top-4 right-4 z-50 p-2 bg-white/50 hover:bg-white rounded-full transition-colors text-gotland-deep backdrop-blur-sm">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+                <!-- DYNAMISKT INNEHÅLL INJECTAS HÄR AV JAVASCRIPT -->
+                <div id="modal-content" class="w-full h-full flex flex-col md:flex-row">
+                    <!-- Innehåll laddas här... -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Navigation Scripts -->
+    <script type="text/javascript" src="navscripts.js"></script>
+
+    <!-- Script för Modal-logik -->
+    <script type="text/javascript" src="storyscripts.js"></script>
+
+</body>
+</html>
