@@ -18,6 +18,7 @@ document.querySelectorAll('.fade-in-up').forEach((el) => {
     observer.observe(el);
 });
 
+
 // FULLSCREEN LOGIK FÖR VERTIKAL VIDEO
 const videoElement = document.getElementById('vertical-player');
 
@@ -27,6 +28,19 @@ if (videoElement) {
     videoElement.addEventListener('webkitfullscreenchange', handleFullscreen); // Safari support
     videoElement.addEventListener('mozfullscreenchange', handleFullscreen);    // Firefox support
     videoElement.addEventListener('msfullscreenchange', handleFullscreen);     // IE/Edge support
+
+    // AUTO-PAUSE LOGIC (Intersection Observer) - pauses the video if the user scrolls away from it
+    const mainVideoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // If video is NOT in view (isIntersecting is false) AND it is currently playing
+            if (!entry.isIntersecting && !videoElement.paused) {
+                videoElement.pause();
+                //console.log("Main video paused because it left the viewport");
+            }
+        });
+    }, { threshold: 0.5 }); // Trigger when 50% of the video is out of view
+    
+    mainVideoObserver.observe(videoElement);
 }
 
 function handleFullscreen() {

@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="#1F2933"/>
-  <text x="50" y="70" font-family="'Times New Roman', serif" font-weight="bold" font-size="75" fill="#BC8A6F" text-anchor="middle">G</text>
+  <!-- Limestone Background -->
+  <rect width="100" height="100" rx="25" fill="#F2EBE5"/>
+  <!-- Deep Dark Serif G -->
+  <text x="50" y="72" font-family="'Times New Roman', serif" font-weight="bold" font-size="75" fill="#1F2933" text-anchor="middle">G</text>
 </svg>
