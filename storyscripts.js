@@ -10,7 +10,7 @@ const storiesDB = [
         mediaSrc: "story-loppisar-gotland.webm", 
         poster: "story-loppisar-gotland.jpg",
         instagramLink: "https://www.instagram.com/reel/DSuzAP-iPaz/",
-        tiktokLink: "https://vm.tiktok.com/ZNRMUJLMq/"
+        tiktokLink: "https://www.tiktok.com/@gotlandstider/video/7588184079967866134"
     },
     {
         id: 2,
@@ -21,7 +21,7 @@ const storiesDB = [
         mediaSrc: "story-brunan-ljugarn.webm",
         poster: "story-brunan-ljugarn.webp",
         instagramLink: "https://www.instagram.com/reel/DJUQIC3opEw/",
-        tiktokLink: "https://vm.tiktok.com/ZNRMUctkA/"
+        tiktokLink: "https://www.tiktok.com/@gotlandstider/video/7501347863666887958"
     },
     {
         id: 3,
@@ -32,7 +32,7 @@ const storiesDB = [
         mediaSrc: "story-strand-snack.webm",
         poster: "story-strand-snack.webp",
         instagramLink: "https://www.instagram.com/reel/DMQItODIMPC/",
-        tiktokLink: "https://vm.tiktok.com/ZNRMUYotA/"
+        tiktokLink: "https://www.tiktok.com/@gotlandstider/video/7528426362655231254"
     }
 ];
 
