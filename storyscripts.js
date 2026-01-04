@@ -48,7 +48,7 @@ function getSocialButtons(igUrl, ttUrl, isDarkMode = false) {
     const iconColor = isDarkMode ? 'text-white' : 'text-gotland-deep';
 
     return `
-    <div class="flex flex-row gap-4 w-full justify-center mb-3 flex-wrap">
+    <div class="flex flex-row gap-3 w-full justify-center mt-2 mb-5">
         <!-- Instagram -->
         <a href="${igUrl}" target="_blank" class="flex-1 group relative flex items-center justify-center gap-2 md:gap-3 px-2 md:px-6 py-3 rounded-xl border border-white/40 bg-white/20 backdrop-blur-md hover:bg-white/40 hover:border-white/60 transition-all duration-300 min-w-0">
             <svg class="w-5 h-5 ${iconColor} group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
@@ -72,23 +72,27 @@ function getSocialButtons(igUrl, ttUrl, isDarkMode = false) {
 function openStory(id) {
     
     // Pausar huvudvideon
-    if (videoElement && !videoElement.paused) {
+    if (typeof videoElement !== 'undefined' && videoElement && !videoElement.paused) {
         videoElement.pause();
     }
     
     const story = storiesDB.find(s => s.id === id);
     if (!story) return;
 
-    // UPPDATERA URL UTAN ATT LADDA OM SIDAN
-    // Detta gör att URL blir t.ex. gotlandstider.se/#story-1
     history.pushState(null, null, `#story-${id}`);
 
     let html = '';
 
-    // Helper to determine mime type based on file extension
-    // Safari is picky: if you say it's mp4 but give it webm, it might fail.
-    const fileExt = story.mediaSrc.split('.').pop();
-    const mimeType = fileExt === 'webm' ? 'video/webm' : 'video/mp4';
+    // FIX: Generate fallback logic for iPhone. 
+    // We strip the extension and explicitly add both WebM and MP4 source tags.
+    // This ensures Safari finds the mp4 file it needs.
+    const baseSrc = story.mediaSrc.substring(0, story.mediaSrc.lastIndexOf('.'));
+    
+    // The <source> tags block:
+    const sourcesHTML = `
+        <source src="${baseSrc}.webm" type="video/webm">
+        <source src="${baseSrc}.mp4" type="video/mp4">
+    `;
 
     // --- CASE 1: BARA VIDEO ---
     if (story.type === 'video_only') {
@@ -96,10 +100,9 @@ function openStory(id) {
             <div class="w-full h-[80vh] md:h-[90vh] bg-black flex justify-center items-center">
                 <div class="relative aspect-[9/16] h-full w-full max-w-sm md:max-w-none">
                     <video id="modal-video-player" class="w-full h-full object-contain md:object-cover" controls playsinline poster="${story.poster}">
-                        <source src="${story.mediaSrc}" type="${mimeType}">
+                        ${sourcesHTML}
                     </video>
                     <div class="absolute top-0 left-0 right-0 z-20 px-4">
-                        <!-- Här skickar vi med länkarna och 'true' för dark mode -->
                         ${getSocialButtons(story.instagramLink, story.tiktokLink, true)} 
                     </div>
                 </div>
@@ -113,7 +116,7 @@ function openStory(id) {
             <div class="w-full md:w-1/2 bg-black flex justify-center items-center h-[50vh] md:h-auto">
                 <div class="relative aspect-[9/16] h-full max-h-[90vh] w-full max-w-sm md:max-w-none">
                     <video id="modal-video-player" class="w-full h-full object-contain md:object-cover" controls playsinline poster="${story.poster}">
-                        <source src="${story.mediaSrc}" type="${mimeType}">
+                        ${sourcesHTML}
                     </video>
                 </div>
             </div>
@@ -146,12 +149,10 @@ function openStory(id) {
     document.body.style.overflow = 'hidden'; 
 
     // === SAFARI FIX ===
-    // Manually find the video and trigger play()
-    // Works because 'openStory' was triggered by a user click event.
     const modalVideo = document.getElementById('modal-video-player');
     if (modalVideo) {
         
-        // Logic to force 9:16 ratio (black bars) when entering fullscreen
+        // Fullscreen logic
         const handleModalFullscreen = () => {
             const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
             if (isFullscreen) {
@@ -164,7 +165,7 @@ function openStory(id) {
         };
 
         modalVideo.addEventListener('fullscreenchange', handleModalFullscreen);
-        modalVideo.addEventListener('webkitfullscreenchange', handleModalFullscreen); // For Safari/iOS
+        modalVideo.addEventListener('webkitfullscreenchange', handleModalFullscreen);
 
         modalVideo.load(); 
         const playPromise = modalVideo.play();
