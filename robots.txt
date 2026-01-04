@@ -1,0 +1,34 @@
+# Standardregler för alla vanliga sökmotorer (Google, Bing, etc)
+User-agent: *
+Allow: /
+
+# OpenAI (ChatGPT & SearchGPT)
+# Vi tillåter detta för att synas i ChatGPT-svar.
+User-agent: GPTBot
+Allow: /
+
+# Google AI (Gemini & Bard)
+# Vi tillåter detta för att synas i Googles AI-översikter.
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity AI
+# En "Svarsmotor" som alltid anger källor. Mycket viktig för dig.
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+# Common Crawl
+# Används av många mindre AI-modeller för träning.
+User-agent: CCBot
+Allow: /
+
+# Facebook/Meta AI
+User-agent: FacebookBot
+Allow: /
+
+# Hänvisning till din sitemap (hjälper dem hitta alla sidor)
+Sitemap: https://www.gotlandstider.se/sitemap.xml
