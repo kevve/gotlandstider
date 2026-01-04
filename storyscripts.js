@@ -95,7 +95,7 @@ function openStory(id) {
         html = `
             <div class="w-full h-[80vh] md:h-[90vh] bg-black flex justify-center items-center">
                 <div class="relative aspect-[9/16] h-full w-full max-w-sm md:max-w-none">
-                    <video id="modal-video-player" class="w-full h-full object-cover" controls autoplay playsinline poster="${story.poster}">
+                    <video id="modal-video-player" class="w-full h-full object-contain md:object-cover" controls playsinline poster="${story.poster}">
                         <source src="${story.mediaSrc}" type="${mimeType}">
                     </video>
                     <div class="absolute top-0 left-0 right-0 z-20 px-4">
@@ -112,7 +112,7 @@ function openStory(id) {
         html = `
             <div class="w-full md:w-1/2 bg-black flex justify-center items-center h-[50vh] md:h-auto">
                 <div class="relative aspect-[9/16] h-full max-h-[90vh] w-full max-w-sm md:max-w-none">
-                    <video id="modal-video-player" class="w-full h-full object-cover" controls autoplay playsinline poster="${story.poster}">
+                    <video id="modal-video-player" class="w-full h-full object-contain md:object-cover" controls playsinline poster="${story.poster}">
                         <source src="${story.mediaSrc}" type="${mimeType}">
                     </video>
                 </div>
