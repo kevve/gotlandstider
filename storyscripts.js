@@ -220,40 +220,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const dotsContainer = document.getElementById('archive-dots');
 
     if (scrollContainer && dotsContainer) {
-        // 1. Calculate number of items based on articles inside
         const items = scrollContainer.querySelectorAll('article');
         const itemCount = items.length;
 
-        // 2. Generate Dots
+        // Rensa eventuella gamla dots först
+        dotsContainer.innerHTML = '';
+
         for (let i = 0; i < itemCount; i++) {
             const dot = document.createElement('div');
-            // Basic styling for dots (inactive state)
-            dot.className = `w-2 h-2 rounded-full transition-colors duration-300 ${i === 0 ? 'bg-gotland-deep' : 'bg-gotland-stoneDark'}`;
+            // ÄNDRING: w-2.5 h-2.5 för lite större bollar.
+            // ÄNDRING: Använder opacity för inaktivt läge (snyggare kontrast)
+            const activeClass = 'bg-gotland-deep scale-110'; 
+            const inactiveClass = 'bg-gotland-deep/20 scale-100';
+            
+            dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 0 ? activeClass : inactiveClass}`;
             dotsContainer.appendChild(dot);
         }
 
         const dots = dotsContainer.children;
 
-        // 3. Update Dots on Scroll
         scrollContainer.addEventListener('scroll', () => {
-            // Calculate which item index is currently mostly visible
-            // We use the container's scroll position divided by the width of one card (approximate)
-            // Or better: logical calculation based on scroll width vs client width
-            
-            const cardWidth = items[0].offsetWidth + 24; // Width + Gap (gap-6 is 24px)
+            const cardWidth = items[0].offsetWidth + 24; 
             const scrollLeft = scrollContainer.scrollLeft;
-            
-            // Round to nearest index
             const activeIndex = Math.round(scrollLeft / cardWidth);
 
-            // Update classes
             for (let i = 0; i < dots.length; i++) {
                 if (i === activeIndex) {
-                    dots[i].classList.remove('bg-gotland-stoneDark');
-                    dots[i].classList.add('bg-gotland-deep'); // Active color
+                    // Aktiv
+                    dots[i].className = `w-2.5 h-2.5 rounded-full transition-all duration-300 bg-gotland-deep scale-110`;
                 } else {
-                    dots[i].classList.remove('bg-gotland-deep');
-                    dots[i].classList.add('bg-gotland-stoneDark'); // Inactive color
+                    // Inaktiv
+                    dots[i].className = `w-2.5 h-2.5 rounded-full transition-all duration-300 bg-gotland-deep/20 scale-100`;
                 }
             }
         });

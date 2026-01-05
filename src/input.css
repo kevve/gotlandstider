@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    /* Animationer */
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Video Overlay */
+    .video-overlay {
+        background: linear-gradient(to bottom, rgba(31,41,51,0.2), rgba(242,235,229,1));
+    }
+
+    /* Scrollbar Hide */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+        width: 0px;
+        background: transparent;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+/* Mobilmeny (ID-selektorer lägger vi oftast utanför @layer eller i components) */
+#mobile-menu {
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+#mobile-menu.open {
+    max-height: 500px;
+    opacity: 1;
+}
