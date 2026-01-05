@@ -1,0 +1,12 @@
+{
+  "name": "gotlandstider",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./output.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

@@ -146,6 +146,10 @@ function openStory(id) {
 
     modalContent.innerHTML = html;
     modal.classList.remove('hidden');
+
+     // Berätta för webbläsaren att modalen nu är synlig
+    modal.setAttribute('aria-hidden', 'false'); 
+
     document.body.style.overflow = 'hidden'; 
 
     // === SAFARI FIX ===
@@ -179,6 +183,10 @@ function openStory(id) {
 // --- STÄNG MODAL ---
 function closeStory() {
     modal.classList.add('hidden');
+
+    // Berätta för webbläsaren att modalen är dold igen
+    modal.setAttribute('aria-hidden', 'true');
+
     modalContent.innerHTML = ''; 
     document.body.style.overflow = '';
     
