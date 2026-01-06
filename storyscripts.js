@@ -1,12 +1,11 @@
-// --- 1. DATABAS --- video_only, video_text, image_text
-// Här lägger du in specifika länkar till varje klipp
+// --- Stories --- video_only, video_text, image_text
 const storiesDB = [
     {
         id: 1,
         type: 'video_text',
         title: "Årets loppis-favoriter",
         subtitle: "Gotland • Inredning",
-        text: "Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visas även Henrik upp årets fynd.",
+        text: "Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visar även Henrik upp årets fynd.",
         mediaSrc: "content/story-loppisar-gotland.webm", 
         poster: "content/story-loppisar-gotland.webp",
         instagramLink: "https://www.instagram.com/reel/DSuzAP-iPaz/",
@@ -90,8 +89,8 @@ function openStory(id) {
     
     // The <source> tags block:
     const sourcesHTML = `
-        <source src="content/${baseSrc}.webm" type="video/webm">
-        <source src="content/${baseSrc}.mp4" type="video/mp4">
+        <source src="${baseSrc}.webm" type="video/webm">
+        <source src="${baseSrc}.mp4" type="video/mp4">
     `;
 
     // --- CASE 1: BARA VIDEO ---
