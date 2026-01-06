@@ -90,8 +90,8 @@ function openStory(id) {
     
     // The <source> tags block:
     const sourcesHTML = `
-        <source src="${baseSrc}.webm" type="video/webm">
-        <source src="${baseSrc}.mp4" type="video/mp4">
+        <source src="content/${baseSrc}.webm" type="video/webm">
+        <source src="content/${baseSrc}.mp4" type="video/mp4">
     `;
 
     // --- CASE 1: BARA VIDEO ---
