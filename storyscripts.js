@@ -181,6 +181,12 @@ function openStory(id) {
 
 // --- STÄNG MODAL ---
 function closeStory() {
+    
+    // Ta bort fokus från X-knappen innan vi gömmer modalen (aria-hidden problem)
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
+
     modal.classList.add('hidden');
 
     // Berätta för webbläsaren att modalen är dold igen
