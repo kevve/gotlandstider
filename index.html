@@ -28,9 +28,6 @@
 
     <!-- TailwindCSS & Fonts -->
     <link href="./output.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <script type="application/ld+json">
     {
@@ -76,7 +73,7 @@
         "@type": "VideoObject",
         "name": "Årets loppis-favoriter",
         "description": "Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visas även Henrik upp årets fynd.",
-        "thumbnailUrl": "https://www.gotlandstider.se/story-loppisar-gotland.jpg",
+        "thumbnailUrl": "https://www.gotlandstider.se/story-loppisar-gotland.webp",
         "uploadDate": "2026-01-03T00:00:00+01:00",
         "contentUrl": "https://www.gotlandstider.se/story-loppisar-gotland.webm",
         "embedUrl": "https://www.gotlandstider.se/"
@@ -140,7 +137,16 @@
     <!-- Hero Section -->
     <header class="relative min-h-screen flex items-center justify-center overflow-hidden pt-10">
         <div class="absolute inset-0 z-0">
-            <img src="hero-coastline.webp" alt="Solnedgång över raukar vid Gotlands norra kust på Fårö" class="w-full h-full object-cover opacity-90 lg:opacity-80">
+           
+            <img 
+            src="content/hero-coastline.webp" 
+            srcset="content/hero-coastline-mobile.webp 600w, content/hero-coastline.webp 1920w"
+            sizes="(max-width: 768px) 100vw, 100vw"
+            alt="Solnedgång över raukar vid Gotlands norra kust på Fårö" 
+            class="w-full h-full object-cover opacity-90 lg:opacity-80"
+            fetchpriority="high"
+            >
+           
         </div>
         <div class="absolute inset-0 z-10 video-overlay"></div>
 
@@ -230,11 +236,11 @@
                                 class="w-full h-full object-cover outline-none focus:outline-none focus:ring-0" 
                                 controls 
                                 playsinline
-                                poster="story-5platser-gotland.webp"
+                                poster="content/story-5platser-gotland.webp"
                             >
-                                <source src="story-5platser-gotland.webm" type="video/webm">
+                                <source src="content/story-5platser-gotland.webm" type="video/webm">
                                 <!-- Fallback iPhone/Safari -->
-                                <source src="story-5platser-gotland.mp4" type="video/mp4">
+                                <source src="content/story-5platser-gotland.mp4" type="video/mp4">
                                 <p class="text-white p-4">Din webbläsare stödjer tyvärr inte denna video.</p>
                             </video>
                         </div>
@@ -322,7 +328,7 @@
                         <div class="absolute top-3 left-3 z-20 bg-gotland-rust/90 text-white backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full">
                             Loppis
                         </div>
-                        <img src="story-loppisar-gotland.jpg" alt="De bästa loppisarna på Gotland, och årets finaste fynd" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <img src="content/story-loppisar-gotland.webp" alt="De bästa loppisarna på Gotland, och årets finaste fynd" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                     </div>
                     <div class="space-y-2">
                         <span class="text-xs text-gotland-moss font-medium uppercase tracking-wide">Gotland • Inredning</span>
@@ -339,7 +345,7 @@
                         <div class="absolute top-3 left-3 z-20 bg-gotland-stone/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gotland-deep rounded-full">
                             Tips
                         </div>
-                        <img src="story-brunan-ljugarn.webp" alt="På restaurang Bruna Dörren i Ljugarn får du god mat, musikquiz och riktig gotländsk atmosfär" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <img src="content/story-brunan-ljugarn.webp" alt="På restaurang Bruna Dörren i Ljugarn får du god mat, musikquiz och riktig gotländsk atmosfär" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                     </div>
                     <div class="space-y-2">
                         <span class="text-xs text-gotland-moss font-medium uppercase tracking-wide">Ljugarn • Mat & Dryck</span>
@@ -356,7 +362,7 @@
                         <div class="absolute top-3 left-3 z-20 bg-gotland-rust/90 text-white backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full">
                             Guide
                         </div>
-                        <img src="story-strand-snack.webp" alt="Vacker strand full av aktiviteter i närheten av Visby" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <img src="content/story-strand-snack.webp" alt="Vacker strand full av aktiviteter i närheten av Visby" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                     </div>
                     <div class="space-y-2">
                         <span class="text-xs text-gotland-moss font-medium uppercase tracking-wide">Visby • Stränder</span>
@@ -396,7 +402,13 @@
                 <article class="group cursor-default fade-in-up">
                     <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
-                        <img src="house-letatomt.jpg" alt="Letar efter tomt i Ljugarn" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                        <img 
+                            src="content/house-letatomt.webp" 
+                            srcset="content/house-letatomt-mobile.webp 500w, content/house-letatomt.webp 1200w"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            alt="Letar efter tomt i Ljugarn"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                        >
                     </div>
                     <div class="pr-4">
                         <span class="text-xs font-bold text-gotland-rust uppercase tracking-wider block mb-2">Tomten</span>
@@ -407,7 +419,13 @@
                 <article class="group cursor-default fade-in-up delay-100">
                     <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
-                        <img src="house-ritahus.jpg" alt="Bygger ett arkitektritat hus" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                        <img 
+                            src="content/house-ritahus.webp" 
+                            srcset="content/house-ritahus-mobile.webp 500w, content/house-ritahus.webp 1200w"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            alt="Bygger ett arkitektritat hus"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                        >
                     </div>
                     <div class="pr-4">
                         <span class="text-xs font-bold text-gotland-rust uppercase tracking-wider block mb-2">Arkitektur</span>
@@ -418,7 +436,13 @@
                 <article class="group cursor-default fade-in-up delay-200">
                     <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
-                        <img src="house-rensatomt.webp" alt="Rensar träd och förbereder tomten" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                        <img 
+                            src="content/house-rensatomt.webp" 
+                            srcset="content/house-rensatomt-mobile.webp 500w, content/house-rensatomt.webp 1200w"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            alt="Rensar träd och förbereder tomten"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                        >
                     </div>
                     <div class="pr-4">
                         <span class="text-xs font-bold text-gotland-rust uppercase tracking-wider block mb-2">Förberedelser</span>
@@ -476,8 +500,14 @@
                     <div class="absolute inset-0 bg-gotland-stoneDark transform translate-x-4 translate-y-4 rounded-sm -z-10"></div>
                     
                     <!-- Bilden -->
-                    <img src="about-kevinhenrik.webp" alt="Kevin och Henrik i grönskande natur" class="w-full h-auto rounded-sm shadow-lg object-cover aspect-[4/5]">
-                    
+                    <img 
+                        src="content/about-kevinhenrik.webp" 
+                        srcset="content/about-kevinhenrik-mobile.webp 500w, content/about-kevinhenrik.webp 1200w"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        alt="Kevin och Henrik i grönskande natur"
+                        class="w-full h-auto rounded-sm shadow-lg object-cover aspect-[1/1]"
+                    >
+
                     <!-- Citat -->
                     <div class="absolute -bottom-6 -right-6 bg-gotland-stone px-6 py-4 shadow-xl max-w-[200px] hidden md:block">
                         <p class="font-serif text-2xl text-gotland-rust italic leading-none">”</p>

@@ -7,8 +7,8 @@ const storiesDB = [
         title: "Årets loppis-favoriter",
         subtitle: "Gotland • Inredning",
         text: "Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visas även Henrik upp årets fynd.",
-        mediaSrc: "story-loppisar-gotland.webm", 
-        poster: "story-loppisar-gotland.jpg",
+        mediaSrc: "content/story-loppisar-gotland.webm", 
+        poster: "content/story-loppisar-gotland.webp",
         instagramLink: "https://www.instagram.com/reel/DSuzAP-iPaz/",
         tiktokLink: "https://www.tiktok.com/@gotlandstider/video/7588184079967866134"
     },
@@ -18,8 +18,8 @@ const storiesDB = [
         title: "Musikquiz och god mat vid stranden",
         subtitle: "Ljugarn • Mat & Dryck",
         text: "Du åker hit om du vill umgås med nära och kära i en gotländsk atmosfär.",
-        mediaSrc: "story-brunan-ljugarn.webm",
-        poster: "story-brunan-ljugarn.webp",
+        mediaSrc: "content/story-brunan-ljugarn.webm",
+        poster: "content/story-brunan-ljugarn.webp",
         instagramLink: "https://www.instagram.com/reel/DJUQIC3opEw/",
         tiktokLink: "https://www.tiktok.com/@gotlandstider/video/7501347863666887958"
     },
@@ -29,8 +29,8 @@ const storiesDB = [
         title: "En strand för stora & små",
         subtitle: "Visby • Stränder",
         text: "Ett stenkast från Visby hittar du stranden Snäck, där möjligheterna är oändliga.",
-        mediaSrc: "story-strand-snack.webm",
-        poster: "story-strand-snack.webp",
+        mediaSrc: "content/story-strand-snack.webm",
+        poster: "content/story-strand-snack.webp",
         instagramLink: "https://www.instagram.com/reel/DMQItODIMPC/",
         tiktokLink: "https://www.tiktok.com/@gotlandstider/video/7528426362655231254"
     }
