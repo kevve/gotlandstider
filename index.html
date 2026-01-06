@@ -255,19 +255,23 @@
                     <!-- VIDEO CONTAINER -->
                     <div class="relative w-full max-w-[320px] mx-auto lg:max-w-xs shadow-2xl rounded-xl overflow-hidden border-4 border-gotland-stoneDark bg-transparent">
                         <div class="aspect-[9/16] relative">
-                                                 
-                            <video 
+                                    
+                            <link rel="preload" href="content/story-5platser-gotland.webp" as="image" fetchpriority="high">
+                            <video
                                 id="vertical-player"
-                                class="w-full h-full object-cover outline-none focus:outline-none focus:ring-0" 
-                                controls 
+                                class="w-full h-full object-cover outline-none focus:outline-none focus:ring-0"
+                                controls
                                 playsinline
+                                preload="none"
                                 poster="content/story-5platser-gotland.webp"
-                            >
+                                onmouseenter="event.target.setAttribute('preload','metadata')">
+                                
                                 <source src="content/story-5platser-gotland.webm" type="video/webm">
                                 <!-- Fallback iPhone/Safari -->
                                 <source src="content/story-5platser-gotland.mp4" type="video/mp4">
                                 <p class="text-white p-4">Din webbläsare stödjer tyvärr inte denna video.</p>
                             </video>
+
                         </div>
                     </div>
 
