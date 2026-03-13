@@ -429,7 +429,7 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <article class="group cursor-default fade-in-up">
+                <article class="group cursor-pointer fade-in-up" data-house-modal-trigger>
                     <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
                         <img 
@@ -447,7 +447,7 @@
                     </div>
                 </article>
 
-                <article class="group cursor-default fade-in-up delay-100">
+                <article class="group cursor-pointer fade-in-up delay-100" data-house-modal-trigger>
                     <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
                         <img 
@@ -465,7 +465,7 @@
                     </div>
                 </article>
 
-                <article class="group cursor-default fade-in-up delay-200">
+                <article class="group cursor-pointer fade-in-up delay-200" data-house-modal-trigger>
                     <div class="overflow-hidden rounded-sm mb-5 aspect-[4/3] relative">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10"></div>
                         <img 
@@ -602,6 +602,20 @@
             </div>
         </div>
     </footer>
+
+
+    <!-- HOUSE IMAGE MODAL OVERLAY -->
+    <div id="house-image-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-gotland-deep/60 backdrop-blur-md transition-opacity" onclick="closeHouseImageModal()"></div>
+        <div class="absolute inset-0 p-4 md:p-8 flex items-center justify-center pointer-events-none">
+            <div class="relative w-full max-w-7xl pointer-events-auto">
+                <button id="house-image-modal-close" type="button" onclick="closeHouseImageModal()" aria-label="Stäng bildvisning" class="absolute top-4 right-4 z-50 p-2 bg-white/50 hover:bg-white rounded-full transition-colors text-gotland-deep backdrop-blur-sm">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <img id="house-image-modal-media" src="" alt="" class="w-full max-h-[90vh] object-contain rounded-xl shadow-2xl">
+            </div>
+        </div>
+    </div>
 
 
     <!-- STORY MODAL OVERLAY -->

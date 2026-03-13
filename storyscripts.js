@@ -38,6 +38,9 @@ const storiesDB = [
 // ELEMENT
 const modal = document.getElementById('story-modal');
 const modalContent = document.getElementById('modal-content');
+const houseImageModal = document.getElementById('house-image-modal');
+const houseImageModalMedia = document.getElementById('house-image-modal-media');
+let activeHouseImageTrigger = null;
 
 // --- 2. HJÄLPFUNKTION FÖR KNAPPAR ---
 // Nu tar den emot specifika URLer (igUrl, ttUrl) istället för att hårdkoda dem
@@ -199,9 +202,52 @@ function closeStory() {
     history.pushState("", document.title, window.location.pathname + window.location.search);
 }
 
+function openHouseImageModal(imageElement) {
+    if (!houseImageModal || !houseImageModalMedia || !imageElement) return;
+
+    activeHouseImageTrigger = imageElement;
+    houseImageModalMedia.src = imageElement.currentSrc || imageElement.src;
+    houseImageModalMedia.alt = imageElement.alt || 'Bild från projekt Ljugarn';
+
+    houseImageModal.classList.remove('hidden');
+    houseImageModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeHouseImageModal() {
+    if (!houseImageModal || !houseImageModalMedia) return;
+
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
+
+    houseImageModal.classList.add('hidden');
+    houseImageModal.setAttribute('aria-hidden', 'true');
+    houseImageModalMedia.src = '';
+    houseImageModalMedia.alt = '';
+
+    if (!modal || modal.classList.contains('hidden')) {
+        document.body.style.overflow = '';
+    }
+
+    if (activeHouseImageTrigger) {
+        activeHouseImageTrigger.focus();
+        activeHouseImageTrigger = null;
+    }
+}
+
 // Stäng med ESC
 document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") closeStory();
+    if (event.key !== "Escape") return;
+
+    if (houseImageModal && !houseImageModal.classList.contains('hidden')) {
+        closeHouseImageModal();
+        return;
+    }
+
+    if (modal && !modal.classList.contains('hidden')) {
+        closeStory();
+    }
 });
 
 // --- DEEP LINKING (Lyssna vid sidladdning) ---
@@ -217,6 +263,33 @@ window.addEventListener('DOMContentLoaded', () => {
             openStory(id);
         }
     }
+});
+
+// --- HOUSE IMAGE MODAL ---
+document.addEventListener('DOMContentLoaded', () => {
+    const houseImageTriggers = document.querySelectorAll('[data-house-modal-trigger]');
+    if (!houseImageTriggers.length) return;
+
+    houseImageTriggers.forEach((trigger) => {
+        const image = trigger.querySelector('img');
+        if (!image) return;
+
+        trigger.tabIndex = 0;
+        trigger.setAttribute('role', 'button');
+        trigger.setAttribute('aria-haspopup', 'dialog');
+        trigger.setAttribute('aria-label', `Öppna bild i helskärm: ${image.alt}`);
+
+        trigger.addEventListener('click', () => {
+            openHouseImageModal(image);
+        });
+
+        trigger.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openHouseImageModal(image);
+            }
+        });
+    });
 });
 
 // --- MOBILE ARCHIVE SCROLL DOTS ---
