@@ -6,8 +6,10 @@
     "dev": "tailwindcss -i ./src/input.css -o ./output.css --watch",
     "build": "tailwindcss -i ./src/input.css -o ./output.css --minify",
     "build:content": "node ./scripts/build-content.mjs",
+    "build:pages": "node ./scripts/build-pages.mjs",
     "validate:content": "node ./scripts/validate-content.mjs",
-    "test:content": "node --test ./tests/content-validation.test.mjs ./tests/build-content.test.mjs"
+    "test:content": "node --test ./tests/content-validation.test.mjs ./tests/build-content.test.mjs",
+    "test:pages": "node --test ./tests/build-pages.test.mjs"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1"
