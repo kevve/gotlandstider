@@ -14,5 +14,10 @@
   "legacySources": {
     "webm": "/content/story-brunan-ljugarn.webm",
     "mp4": "/content/story-brunan-ljugarn.mp4"
+  },
+  "homepage": {
+    "order": 2,
+    "badge": "Tips",
+    "subtitle": "Ljugarn • Mat & Dryck"
   }
 }

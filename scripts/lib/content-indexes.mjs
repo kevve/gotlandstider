@@ -18,6 +18,8 @@ export async function buildContentIndexes(rootDir = process.cwd()) {
     .map((video) => normalizeVideo(video, rootDir))
     .sort(compareByPublishedDateDesc);
 
+  const homepage = buildHomepageContent(validation.videos, rootDir);
+
   return {
     articles: {
       items: articles,
@@ -29,6 +31,7 @@ export async function buildContentIndexes(rootDir = process.cwd()) {
       articles: articles.filter((article) => article.featured && !article.draft),
       videos: videos.filter((video) => video.featured),
     },
+    homepage,
   };
 }
 
@@ -42,6 +45,7 @@ export async function writeContentIndexes(rootDir = process.cwd()) {
     writeJsonFile(path.join(outputDir, "articles.json"), indexes.articles),
     writeJsonFile(path.join(outputDir, "videos.json"), indexes.videos),
     writeJsonFile(path.join(outputDir, "featured.json"), indexes.featured),
+    writeJsonFile(path.join(outputDir, "homepage.json"), indexes.homepage),
   ]);
 
   return indexes;
@@ -77,6 +81,57 @@ function normalizeVideo(video, rootDir) {
     legacySources: video.data.legacySources,
     urlPath: `/videos/${video.data.slug}/`,
     sourceFile: toRepoRelativePath(video.filePath, rootDir),
+  };
+}
+
+function buildHomepageContent(videos, rootDir) {
+  const normalizedVideos = videos
+    .map((video) => normalizeVideo(video, rootDir))
+    .sort(compareByPublishedDateDesc);
+
+  const featuredSource = videos.find((video) => video.data.featured) ?? videos[0];
+  const featuredVideo = featuredSource
+    ? {
+        ...normalizeVideo(featuredSource, rootDir),
+        heading: featuredSource.data.homepage?.heading ?? {
+          prefix: featuredSource.data.title,
+          accent: "",
+        },
+        description: featuredSource.data.homepage?.description ?? featuredSource.data.excerpt,
+        highlights: featuredSource.data.homepage?.highlights ?? [],
+      }
+    : null;
+
+  const storyArchive = normalizedVideos
+    .filter((video) => !video.featured)
+    .map((video) => {
+      const source = videos.find((entry) => entry.data.slug === video.slug);
+      return {
+        ...video,
+        homepageOrder: source?.data.homepage?.order ?? Number.MAX_SAFE_INTEGER,
+        subtitle: source?.data.homepage?.subtitle ?? "",
+        badge: source?.data.homepage?.badge ?? "Video",
+      };
+    })
+    .sort((left, right) => {
+      if (left.homepageOrder === right.homepageOrder) {
+        return compareByPublishedDateDesc(left, right);
+      }
+
+      return left.homepageOrder - right.homepageOrder;
+    })
+    .slice(0, 3)
+    .map((video, index) => {
+      const { homepageOrder: _homepageOrder, ...rest } = video;
+      return {
+        id: index + 1,
+        ...rest,
+      };
+    });
+
+  return {
+    featuredVideo,
+    storyArchive,
   };
 }
 
