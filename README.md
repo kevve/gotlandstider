@@ -46,6 +46,31 @@ Watch CSS during development:
 npm run dev
 ```
 
+Run the full content and page checks locally:
+
+```bash
+npm run validate:content
+npm run build:content
+npm run test:content
+npm run build:pages
+npm run test:pages
+npm run build
+```
+
+## Continuous integration
+
+GitHub Actions CI runs the full validation and static build pipeline on every push and pull request:
+
+- `npm ci`
+- `npm run validate:content`
+- `npm run build:content`
+- `npm run test:content`
+- `npm run build:pages`
+- `npm run test:pages`
+- `npm run build`
+
+Deployment remains separate and will be added in a later PR so CI can be reviewed and rolled back independently.
+
 ## Planned workspace folders
 
 - `content/articles/`: future article source files
