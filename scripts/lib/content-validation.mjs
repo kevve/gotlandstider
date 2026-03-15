@@ -24,11 +24,16 @@ const VIDEO_REQUIRED_FIELDS = [
   "embedUrl",
   "socialLinks",
   "featured",
-  "legacySources",
 ];
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const LEGACY_VIDEO_SLUG_ALLOWLIST = new Set([
+  "fem-platser-att-besoka-pa-gotland-2026",
+  "arets-loppis-favoriter",
+  "musikquiz-och-god-mat-vid-stranden",
+  "en-strand-for-stora-och-sma",
+]);
 
 export async function loadContentCollections(rootDir = process.cwd()) {
   const articlesDir = path.join(rootDir, "content", "articles");
@@ -181,7 +186,10 @@ function validateVideos(videos, rootDir) {
       }
     }
 
-    if ("legacySources" in video.data) {
+    if (video.data.provider === "legacy-local") {
+      validateGrandfatheredLegacyVideo(video, errors);
+      validateLegacySources(video, errors, rootDir);
+    } else if ("legacySources" in video.data) {
       validateLegacySources(video, errors, rootDir);
     }
 
@@ -231,7 +239,7 @@ function validateLegacySources(video, errors, rootDir) {
   const legacySources = video.data.legacySources;
 
   if (!isPlainObject(legacySources)) {
-    errors.push(`${relativePath(video.filePath)}: "legacySources" must be an object`);
+    errors.push(`${relativePath(video.filePath)}: "legacySources" must be an object for legacy-local videos`);
     return;
   }
 
@@ -254,6 +262,18 @@ function validateLegacySources(video, errors, rootDir) {
     if (!fileExists(path.join(rootDir, sourcePath.slice(1)))) {
       errors.push(`${relativePath(video.filePath)}: legacy source "${key}" points to a missing file (${sourcePath})`);
     }
+  }
+}
+
+function validateGrandfatheredLegacyVideo(video, errors) {
+  if (typeof video.data.slug !== "string") {
+    return;
+  }
+
+  if (!LEGACY_VIDEO_SLUG_ALLOWLIST.has(video.data.slug)) {
+    errors.push(
+      `${relativePath(video.filePath)}: "legacy-local" is reserved for existing grandfathered videos; use an external embed provider for new entries`,
+    );
   }
 }
 

@@ -1,8 +1,7 @@
 # Content sources
 
 This folder is the source-of-truth workspace for the Git-as-CMS migration.
-
-Nothing in this folder is wired into the live site yet. These files establish the content model that later PRs will validate, transform, and publish into generated JSON and static pages.
+These files are validated, transformed, and published into generated JSON and static pages.
 
 ## Folder layout
 
@@ -60,9 +59,23 @@ Current planned keys:
 - `embedUrl`
 - `socialLinks`
 - `featured`
-- `legacySources`
+- `legacySources` for grandfathered `legacy-local` entries only
 
-For existing homepage videos, `provider` is set to `"legacy-local"` to reflect the current repo-hosted media files. Future videos are expected to prefer metadata plus an external embed URL instead of committing new video binaries to the repo.
+For the current grandfathered homepage videos, `provider` is set to `"legacy-local"` to reflect the existing repo-hosted media files. New videos should use metadata plus an external embed URL instead of committing new video binaries to the repo.
+
+Rules for new video entries:
+
+- use a non-legacy provider value such as `youtube`, `vimeo`, or another external embed source
+- include a valid `embedUrl`
+- use a local thumbnail image under `/content/`
+- do not add `legacySources`
+- do not use `provider: "legacy-local"` for new entries
+
+Rules for existing grandfathered legacy videos:
+
+- `provider` remains `"legacy-local"`
+- `legacySources.webm` and `legacySources.mp4` are still required
+- this mode is reserved for the current repo-hosted legacy video entries and should not be used for new content
 
 Optional homepage-specific fields can live under a `homepage` object when the current landing page needs a small amount of presentation metadata, for example:
 
