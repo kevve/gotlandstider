@@ -14,5 +14,10 @@
   "legacySources": {
     "webm": "/content/story-strand-snack.webm",
     "mp4": "/content/story-strand-snack.mp4"
+  },
+  "homepage": {
+    "order": 3,
+    "badge": "Guide",
+    "subtitle": "Visby • Stränder"
   }
 }

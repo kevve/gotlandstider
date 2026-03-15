@@ -14,5 +14,10 @@
   "legacySources": {
     "webm": "/content/story-loppisar-gotland.webm",
     "mp4": "/content/story-loppisar-gotland.mp4"
+  },
+  "homepage": {
+    "order": 1,
+    "badge": "Loppis",
+    "subtitle": "Gotland • Inredning"
   }
 }

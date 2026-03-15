@@ -49,8 +49,8 @@
       "provider": "legacy-local",
       "embedUrl": "https://www.gotlandstider.se/",
       "socialLinks": {
-        "instagram": null,
-        "tiktok": null
+        "instagram": "https://www.instagram.com/reel/DS9-b-_iLC2/",
+        "tiktok": "https://www.tiktok.com/@gotlandstider/video/7590372115220647190"
       },
       "featured": true,
       "legacySources": {

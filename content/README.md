@@ -64,6 +64,15 @@ Current planned keys:
 
 For existing homepage videos, `provider` is set to `"legacy-local"` to reflect the current repo-hosted media files. Future videos are expected to prefer metadata plus an external embed URL instead of committing new video binaries to the repo.
 
+Optional homepage-specific fields can live under a `homepage` object when the current landing page needs a small amount of presentation metadata, for example:
+
+- `badge`
+- `subtitle`
+- `order`
+- `description`
+- `heading`
+- `highlights`
+
 ## Naming guidance
 
 - Keep filenames aligned with slugs when possible.
