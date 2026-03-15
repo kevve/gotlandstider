@@ -46,7 +46,7 @@ Watch CSS during development:
 npm run dev
 ```
 
-Run the full content and page checks locally:
+Run the full validation and static build pipeline locally:
 
 ```bash
 npm run validate:content
@@ -57,19 +57,38 @@ npm run test:pages
 npm run build
 ```
 
-## Continuous integration
+## Deployment
 
-GitHub Actions CI runs the full validation and static build pipeline on every push and pull request:
+GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Users/kevin/Repos/Gotlandstider/gotlandstider/.github/workflows/deploy-pages.yml). On pushes to `main`, it:
 
-- `npm ci`
-- `npm run validate:content`
-- `npm run build:content`
-- `npm run test:content`
-- `npm run build:pages`
-- `npm run test:pages`
-- `npm run build`
+- installs dependencies with `npm ci`
+- validates content
+- rebuilds generated content and static pages
+- rebuilds `output.css`
+- stages the public site into a GitHub Pages artifact
+- deploys that artifact with GitHub Actions
 
-Deployment remains separate and will be added in a later PR so CI can be reviewed and rolled back independently.
+The staged Pages artifact includes the production files and directories the site currently needs:
+
+- `index.html`
+- `articles/`
+- `videos/`
+- `generated/`
+- `content/`
+- `fonts/`
+- `navscripts.js`
+- `storyscripts.js`
+- `output.css`
+- `favicon-v2.svg`
+- `robots.txt`
+- `sitemap.xml`
+- `CNAME`
+
+Manual repo setup for the first deploy:
+
+1. In GitHub repo settings, open Pages.
+2. Set the build and deployment source to GitHub Actions if it is still publishing from a branch.
+3. Merge the deploy workflow PR and confirm the first Actions deploy completes successfully.
 
 ## Planned workspace folders
 
