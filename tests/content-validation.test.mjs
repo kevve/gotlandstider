@@ -191,3 +191,130 @@ Innehåll.
     await fs.rm(tempDir, { recursive: true, force: true });
   }
 });
+
+test("validateContentCollections allows new external-embed videos without legacySources", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
+
+  try {
+    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, "content", "videos"), { recursive: true });
+    await Promise.all([
+      fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
+      fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image"),
+      fs.writeFile(
+        path.join(tempDir, "content", "articles", "article.md"),
+        `---
+title: Artikel
+slug: artikel
+excerpt: Kort text
+publishedAt: 2026-03-15
+updatedAt: 2026-03-15
+heroImage: /content/example.webp
+tags:
+  - Guide
+featured: false
+draft: false
+---
+
+Innehåll.
+`,
+      ),
+      fs.writeFile(
+        path.join(tempDir, "content", "videos", "video.json"),
+        JSON.stringify(
+          {
+            title: "Ny video",
+            slug: "ny-video-med-embed",
+            excerpt: "Kort text",
+            publishedAt: "2026-03-15",
+            thumbnail: "/content/video-thumb.webp",
+            provider: "youtube",
+            embedUrl: "https://www.youtube.com/watch?v=abc123",
+            socialLinks: {
+              instagram: null,
+              tiktok: null,
+            },
+            featured: false,
+          },
+          null,
+          2,
+        ),
+      ),
+    ]);
+
+    const result = await validateContentCollections(tempDir);
+
+    assert.equal(result.valid, true);
+    assert.equal(result.errors.length, 0);
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("validateContentCollections rejects new legacy-local video entries", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
+
+  try {
+    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, "content", "videos"), { recursive: true });
+    await Promise.all([
+      fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
+      fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image"),
+      fs.writeFile(path.join(tempDir, "content", "legacy.webm"), "video"),
+      fs.writeFile(path.join(tempDir, "content", "legacy.mp4"), "video"),
+      fs.writeFile(
+        path.join(tempDir, "content", "articles", "article.md"),
+        `---
+title: Artikel
+slug: artikel
+excerpt: Kort text
+publishedAt: 2026-03-15
+updatedAt: 2026-03-15
+heroImage: /content/example.webp
+tags:
+  - Guide
+featured: false
+draft: false
+---
+
+Innehåll.
+`,
+      ),
+      fs.writeFile(
+        path.join(tempDir, "content", "videos", "video.json"),
+        JSON.stringify(
+          {
+            title: "Ny lokal video",
+            slug: "ny-lokal-video",
+            excerpt: "Kort text",
+            publishedAt: "2026-03-15",
+            thumbnail: "/content/video-thumb.webp",
+            provider: "legacy-local",
+            embedUrl: "https://www.gotlandstider.se/videos/ny-lokal-video/",
+            socialLinks: {
+              instagram: null,
+              tiktok: null,
+            },
+            featured: false,
+            legacySources: {
+              webm: "/content/legacy.webm",
+              mp4: "/content/legacy.mp4",
+            },
+          },
+          null,
+          2,
+        ),
+      ),
+    ]);
+
+    const result = await validateContentCollections(tempDir);
+
+    assert.equal(result.valid, false);
+    assert.match(
+      result.errors.join("\n"),
+      /"legacy-local" is reserved for existing grandfathered videos; use an external embed provider for new entries/,
+    );
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
+});
