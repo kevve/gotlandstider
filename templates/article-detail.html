@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{pageTitle}}</title>
+  <meta name="description" content="{{metaDescription}}">
+  <link rel="canonical" href="{{canonicalUrl}}">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ogTitle}}">
+  <meta property="og:description" content="{{ogDescription}}">
+  <meta property="og:image" content="{{ogImage}}">
+  <meta property="og:url" content="{{canonicalUrl}}">
+  <meta property="og:site_name" content="Gotlandstider">
+  <link rel="icon" type="image/svg+xml" href="{{faviconHref}}">
+  <link rel="apple-touch-icon" href="{{faviconHref}}">
+  <link href="{{cssHref}}" rel="stylesheet">
+</head>
+<body class="bg-gotland-stone text-gotland-deep font-sans antialiased selection:bg-gotland-rust selection:text-white">
+  <div class="min-h-screen">
+    <header class="border-b border-gotland-stoneDark bg-gotland-stone/95 backdrop-blur-md">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 lg:px-10">
+        <a href="/" class="font-serif text-2xl font-semibold italic tracking-tight text-gotland-deep transition-colors hover:text-gotland-pine">
+          Gotlandstider.
+        </a>
+        <nav class="flex items-center gap-5 text-xs font-bold uppercase tracking-[0.2em] text-gotland-deep/70">
+          <a href="/" class="transition-colors hover:text-gotland-rust">Hem</a>
+          <a href="/articles/" class="transition-colors hover:text-gotland-rust">Artiklar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="pb-20">
+      <section class="mx-auto max-w-6xl px-6 pt-10 lg:px-10 lg:pt-16">
+        <a href="/articles/" class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-gotland-pine transition-colors hover:text-gotland-rust">
+          <span aria-hidden="true">←</span>
+          Tillbaka till artiklar
+        </a>
+      </section>
+
+      <article class="mx-auto max-w-6xl px-6 pt-8 lg:px-10">
+        <div class="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:items-start">
+          <div class="space-y-8">
+            <div class="space-y-5">
+              <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">Artikel</p>
+              <h1 class="font-serif text-4xl leading-tight text-gotland-deep md:text-6xl">{{articleTitle}}</h1>
+              <p class="max-w-3xl text-xl leading-8 text-gotland-deep/80">{{articleExcerpt}}</p>
+            </div>
+
+            <dl class="grid gap-4 rounded-[2rem] border border-gotland-stoneDark bg-white/60 p-6 backdrop-blur-sm sm:grid-cols-2">
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-[0.18em] text-gotland-pine">Publicerad</dt>
+                <dd class="mt-2 text-base text-gotland-deep">{{publishedLabel}}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-[0.18em] text-gotland-pine">Uppdaterad</dt>
+                <dd class="mt-2 text-base text-gotland-deep">{{updatedLabel}}</dd>
+              </div>
+            </dl>
+
+            <ul class="flex flex-wrap gap-2">
+              {{tagList}}
+            </ul>
+          </div>
+
+          <div class="overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-white/60 shadow-xl">
+            <img
+              src="{{heroImage}}"
+              alt="{{heroImageAlt}}"
+              class="h-full w-full object-cover"
+            >
+          </div>
+        </div>
+
+        <div class="mt-14 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12">
+          <div class="mx-auto max-w-3xl space-y-6">
+            {{articleBody}}
+          </div>
+        </div>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
