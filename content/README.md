@@ -42,7 +42,7 @@ featured: false
 draft: true
 ---
 
-Markdown-innehall har.
+Markdown-innehåll här.
 ```
 
 ## Video format
@@ -69,3 +69,4 @@ For existing homepage videos, `provider` is set to `"legacy-local"` to reflect t
 - Keep filenames aligned with slugs when possible.
 - Use stable slugs because later PRs will generate URLs from them.
 - Prefer existing repo assets for sample content in this phase so the examples stay realistic and reviewable.
+- Preserve Swedish characters such as `å`, `ä`, and `ö` in human-readable text fields like titles, excerpts, and article bodies.
