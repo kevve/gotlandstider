@@ -1,0 +1,43 @@
+{
+  "articles": [
+    {
+      "title": "5 platser att besöka på Gotland 2026",
+      "slug": "fem-platser-att-besoka-pa-gotland-2026",
+      "excerpt": "Fem platser vi tycker fångar olika sidor av Gotland, från natur och kultur till mat och utflykter.",
+      "publishedAt": "2026-01-03",
+      "updatedAt": "2026-01-12",
+      "heroImage": "/content/hero-coastline.webp",
+      "tags": [
+        "Gotland",
+        "Guide",
+        "Utflykt"
+      ],
+      "featured": true,
+      "draft": false,
+      "urlPath": "/articles/fem-platser-att-besoka-pa-gotland-2026/",
+      "sourceFile": "content/articles/fem-platser-att-besoka-pa-gotland-2026.md"
+    }
+  ],
+  "videos": [
+    {
+      "title": "5 platser att besöka på Gotland 2026",
+      "slug": "fem-platser-att-besoka-pa-gotland-2026",
+      "excerpt": "En guide till våra favoritplatser på Gotland inför säsongen 2026, inklusive Biograf Savannen och Stora Karlsö.",
+      "publishedAt": "2026-01-03",
+      "thumbnail": "/content/story-5platser-gotland.webp",
+      "provider": "legacy-local",
+      "embedUrl": "https://www.gotlandstider.se/",
+      "socialLinks": {
+        "instagram": null,
+        "tiktok": null
+      },
+      "featured": true,
+      "legacySources": {
+        "webm": "/content/story-5platser-gotland.webm",
+        "mp4": "/content/story-5platser-gotland.mp4"
+      },
+      "urlPath": "/videos/fem-platser-att-besoka-pa-gotland-2026/",
+      "sourceFile": "content/videos/fem-platser-att-besoka-pa-gotland-2026.json"
+    }
+  ]
+}

@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "tailwindcss -i ./src/input.css -o ./output.css --watch",
     "build": "tailwindcss -i ./src/input.css -o ./output.css --minify",
+    "build:content": "node ./scripts/build-content.mjs",
     "validate:content": "node ./scripts/validate-content.mjs",
-    "test:content": "node --test ./tests/content-validation.test.mjs"
+    "test:content": "node --test ./tests/content-validation.test.mjs ./tests/build-content.test.mjs"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1"
