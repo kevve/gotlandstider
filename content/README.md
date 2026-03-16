@@ -3,6 +3,8 @@
 This folder is the source-of-truth workspace for the Git-as-CMS migration.
 These files are validated, transformed, and published into generated JSON and static pages.
 
+See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the recommended draft-first publishing flow and copy-paste templates.
+
 Current publishing note: the article files in this repo are still draft/testing content. They may be used to validate the build pipeline and generate local pages, but they are not yet included in public sitemap or other public SEO outputs.
 
 ## Folder layout
@@ -50,6 +52,7 @@ Article draft rules:
 
 - `draft: true` keeps the article in repo-only/source-only mode
 - `draft: false` allows the article to appear in generated public output when article publishing is enabled later
+- New articles should start with `featured: false` unless they are intentionally being promoted
 
 ## Video format
 
@@ -76,6 +79,7 @@ Rules for new video entries:
 - use a non-legacy provider value such as `youtube`, `vimeo`, or another external embed source
 - include a valid `embedUrl`
 - start with `draft: true` until the video is ready to publish publicly
+- start with `featured: false` unless the video is intentionally being promoted
 - use a local thumbnail image under `/content/`
 - do not add `legacySources`
 - do not use `provider: "legacy-local"` for new entries
@@ -95,6 +99,8 @@ Optional homepage-specific fields can live under a `homepage` object when the cu
 - `description`
 - `heading`
 - `highlights`
+
+Only add the `homepage` object when the content is intentionally meant to appear on the current homepage.
 
 ## Naming guidance
 

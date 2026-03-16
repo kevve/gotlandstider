@@ -21,26 +21,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate content
-        run: npm run validate:content
-
-      - name: Build generated content
-        run: npm run build:content
-
-      - name: Run content tests
-        run: npm run test:content
-
-      - name: Build static pages
-        run: npm run build:pages
-
-      - name: Run page tests
-        run: npm run test:pages
-
-      - name: Run SEO tests
-        run: npm run test:seo
-
-      - name: Build SEO output
-        run: npm run build:seo
-
-      - name: Build CSS
-        run: npm run build
+      - name: Run full site checks
+        run: npm run check:site
