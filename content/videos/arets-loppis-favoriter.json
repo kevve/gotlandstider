@@ -11,6 +11,7 @@
     "tiktok": "https://www.tiktok.com/@gotlandstider/video/7588184079967866134"
   },
   "featured": false,
+  "draft": false,
   "legacySources": {
     "webm": "/content/story-loppisar-gotland.webm",
     "mp4": "/content/story-loppisar-gotland.mp4"

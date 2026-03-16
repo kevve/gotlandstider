@@ -24,6 +24,8 @@ The target state is a Git-as-CMS workflow with:
 
 For new videos, the preferred publishing model is metadata plus an external embed and local thumbnail image. The current repo-hosted video files are grandfathered legacy entries and should not be used as the pattern for new content.
 
+For both articles and videos, `draft: true` is the non-public default state. Only `draft: false` content is allowed into public generated output.
+
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
 See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.

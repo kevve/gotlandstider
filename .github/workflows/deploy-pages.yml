@@ -72,7 +72,9 @@ jobs:
             sitemap.xml \
             storyscripts.js
           do
-            cp -R "$path" "$site_dir/$path"
+            if [ -e "$path" ]; then
+              cp -R "$path" "$site_dir/$path"
+            fi
           done
 
           rm -rf "$site_dir/content/articles" "$site_dir/content/videos"

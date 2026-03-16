@@ -24,6 +24,7 @@ const VIDEO_REQUIRED_FIELDS = [
   "embedUrl",
   "socialLinks",
   "featured",
+  "draft",
 ];
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
@@ -164,6 +165,7 @@ function validateVideos(videos, rootDir) {
     });
 
     validateBooleanField(video, "featured", errors);
+    validateBooleanField(video, "draft", errors);
 
     if ("provider" in video.data && typeof video.data.provider !== "string") {
       errors.push(`${relativePath(video.filePath)}: "provider" must be a string`);

@@ -11,14 +11,19 @@ export async function buildContentIndexes(rootDir = process.cwd()) {
   }
 
   const articles = validation.articles
+    .filter((article) => !article.data.draft)
     .map((article) => normalizeArticle(article, rootDir))
     .sort(compareByPublishedDateDesc);
 
   const videos = validation.videos
+    .filter((video) => !video.data.draft)
     .map((video) => normalizeVideo(video, rootDir))
     .sort(compareByPublishedDateDesc);
 
-  const homepage = buildHomepageContent(validation.videos, rootDir);
+  const homepage = buildHomepageContent(
+    validation.videos.filter((video) => !video.data.draft),
+    rootDir,
+  );
 
   return {
     articles: {
@@ -28,7 +33,7 @@ export async function buildContentIndexes(rootDir = process.cwd()) {
       items: videos,
     },
     featured: {
-      articles: articles.filter((article) => article.featured && !article.draft),
+      articles: articles.filter((article) => article.featured),
       videos: videos.filter((video) => video.featured),
     },
     homepage,
@@ -78,6 +83,7 @@ function normalizeVideo(video, rootDir) {
     embedUrl: video.data.embedUrl,
     socialLinks: video.data.socialLinks,
     featured: video.data.featured,
+    draft: video.data.draft,
     legacySources: video.data.legacySources,
     urlPath: `/videos/${video.data.slug}/`,
     sourceFile: toRepoRelativePath(video.filePath, rootDir),

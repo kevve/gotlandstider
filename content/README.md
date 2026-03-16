@@ -46,6 +46,11 @@ draft: true
 Markdown-innehåll här.
 ```
 
+Article draft rules:
+
+- `draft: true` keeps the article in repo-only/source-only mode
+- `draft: false` allows the article to appear in generated public output when article publishing is enabled later
+
 ## Video format
 
 Video files live in `content/videos/` and use JSON.
@@ -61,6 +66,7 @@ Current planned keys:
 - `embedUrl`
 - `socialLinks`
 - `featured`
+- `draft`
 - `legacySources` for grandfathered `legacy-local` entries only
 
 For the current grandfathered homepage videos, `provider` is set to `"legacy-local"` to reflect the existing repo-hosted media files. New videos should use metadata plus an external embed URL instead of committing new video binaries to the repo.
@@ -69,6 +75,7 @@ Rules for new video entries:
 
 - use a non-legacy provider value such as `youtube`, `vimeo`, or another external embed source
 - include a valid `embedUrl`
+- start with `draft: true` until the video is ready to publish publicly
 - use a local thumbnail image under `/content/`
 - do not add `legacySources`
 - do not use `provider: "legacy-local"` for new entries
@@ -76,6 +83,7 @@ Rules for new video entries:
 Rules for existing grandfathered legacy videos:
 
 - `provider` remains `"legacy-local"`
+- `draft: false` keeps the current public videos published
 - `legacySources.webm` and `legacySources.mp4` are still required
 - this mode is reserved for the current repo-hosted legacy video entries and should not be used for new content
 

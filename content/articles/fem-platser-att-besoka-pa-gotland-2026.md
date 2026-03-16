@@ -10,7 +10,7 @@ tags:
   - Guide
   - Utflykt
 featured: true
-draft: false
+draft: true
 ---
 
 Gotland rymmer många helt olika upplevelser på liten yta. Den här exempelartikeln är med i PR2 för att etablera hur framtida redaktionellt innehåll kan ligga i repot som Markdown i stället för att hårdkodas i HTML eller JavaScript.
