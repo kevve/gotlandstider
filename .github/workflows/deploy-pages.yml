@@ -37,17 +37,8 @@ jobs:
       - name: Validate content
         run: npm run validate:content
 
-      - name: Build generated content
-        run: npm run build:content
-
-      - name: Build static pages
-        run: npm run build:pages
-
-      - name: Build SEO output
-        run: npm run build:seo
-
-      - name: Build CSS
-        run: npm run build
+      - name: Build site
+        run: npm run build:site
 
       - name: Stage Pages artifact
         run: |

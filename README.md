@@ -29,6 +29,7 @@ For both articles and videos, `draft: true` is the non-public default state. Onl
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
 See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
+See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the draft-to-publish author workflow and copy-paste content templates.
 
 ## Local development
 
@@ -50,17 +51,16 @@ Watch CSS during development:
 npm run dev
 ```
 
-Run the full validation and static build pipeline locally:
+Build the full site locally:
 
 ```bash
-npm run validate:content
-npm run build:content
-npm run test:content
-npm run build:pages
-npm run test:pages
-npm run test:seo
-npm run build:seo
-npm run build
+npm run build:site
+```
+
+Run the full validation, test, and static build pipeline locally:
+
+```bash
+npm run check:site
 ```
 
 ## Deployment
@@ -69,9 +69,7 @@ GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Us
 
 - installs dependencies with `npm ci`
 - validates content
-- rebuilds generated content and static pages
-- regenerates `sitemap.xml` and homepage structured data
-- rebuilds `output.css`
+- rebuilds the full public site with `npm run build:site`
 - stages the public site into a GitHub Pages artifact
 - deploys that artifact with GitHub Actions
 
@@ -122,3 +120,4 @@ Manual repo setup for the first deploy:
 
 - `CNAME` must remain in place for GitHub Pages and the custom domain.
 - Existing URLs, assets, and homepage behavior should stay stable until later migration PRs explicitly change them.
+- The recommended publishing workflow is draft-first: add content with `draft: true`, run `npm run check:site`, merge safely, and publish later by flipping `draft` to `false`.
