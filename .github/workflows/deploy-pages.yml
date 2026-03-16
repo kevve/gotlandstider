@@ -43,6 +43,9 @@ jobs:
       - name: Build static pages
         run: npm run build:pages
 
+      - name: Build SEO output
+        run: npm run build:seo
+
       - name: Build CSS
         run: npm run build
 

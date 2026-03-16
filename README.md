@@ -56,6 +56,8 @@ npm run build:content
 npm run test:content
 npm run build:pages
 npm run test:pages
+npm run test:seo
+npm run build:seo
 npm run build
 ```
 
@@ -66,6 +68,7 @@ GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Us
 - installs dependencies with `npm ci`
 - validates content
 - rebuilds generated content and static pages
+- regenerates `sitemap.xml` and homepage structured data
 - rebuilds `output.css`
 - stages the public site into a GitHub Pages artifact
 - deploys that artifact with GitHub Actions
@@ -85,6 +88,12 @@ The staged Pages artifact includes the production files and directories the site
 - `robots.txt`
 - `sitemap.xml`
 - `CNAME`
+
+Public SEO scope is intentionally limited for now:
+
+- the sitemap includes the homepage and public video routes
+- homepage structured data includes the public homepage videos
+- article routes are still excluded from sitemap and other public SEO features until the article content is ready to publish
 
 Manual repo setup for the first deploy:
 
