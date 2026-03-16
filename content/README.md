@@ -3,6 +3,8 @@
 This folder is the source-of-truth workspace for the Git-as-CMS migration.
 These files are validated, transformed, and published into generated JSON and static pages.
 
+Current publishing note: the article files in this repo are still draft/testing content. They may be used to validate the build pipeline and generate local pages, but they are not yet included in public sitemap or other public SEO outputs.
+
 ## Folder layout
 
 - `articles/`: Markdown articles with front matter

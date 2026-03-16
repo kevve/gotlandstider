@@ -36,5 +36,11 @@ jobs:
       - name: Run page tests
         run: npm run test:pages
 
+      - name: Run SEO tests
+        run: npm run test:seo
+
+      - name: Build SEO output
+        run: npm run build:seo
+
       - name: Build CSS
         run: npm run build

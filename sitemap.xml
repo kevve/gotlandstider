@@ -5,11 +5,9 @@
 
    <url>
       <loc>https://www.gotlandstider.se/</loc>
-      <lastmod>2026-01-12</lastmod>
+      <lastmod>2026-01-03</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
-
-      <!-- HERO & BRAND IMAGES -->
       <image:image>
          <image:loc>https://www.gotlandstider.se/content/hero-coastline.webp</image:loc>
          <image:title>Gotlandstider vid Langhammars raukfält på Fårö</image:title>
@@ -18,47 +16,71 @@
          <image:loc>https://www.gotlandstider.se/content/about-kevinhenrik.webp</image:loc>
          <image:title>Grundarna Kevin och Henrik</image:title>
       </image:image>
-
-      <!-- VIDEO 1: 5 Platser (Main Story) -->
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/videos/</loc>
+      <lastmod>2026-01-03</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/videos/arets-loppis-favoriter/</loc>
+      <lastmod>2026-01-03</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+      <video:video>
+         <video:thumbnail_loc>https://www.gotlandstider.se/content/story-loppisar-gotland.webp</video:thumbnail_loc>
+         <video:title>Årets loppis-favoriter</video:title>
+         <video:description>Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visar även Henrik upp årets fynd.</video:description>
+         <video:content_loc>https://www.gotlandstider.se/content/story-loppisar-gotland.webm</video:content_loc>
+         <video:publication_date>2026-01-03T00:00:00+00:00</video:publication_date>
+         <video:family_friendly>yes</video:family_friendly>
+         <video:live>no</video:live>
+      </video:video>
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/videos/en-strand-for-stora-och-sma/</loc>
+      <lastmod>2026-01-03</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+      <video:video>
+         <video:thumbnail_loc>https://www.gotlandstider.se/content/story-strand-snack.webp</video:thumbnail_loc>
+         <video:title>En strand för stora och små</video:title>
+         <video:description>Ett stenkast från Visby hittar du stranden Snäck, där möjligheterna är oändliga.</video:description>
+         <video:content_loc>https://www.gotlandstider.se/content/story-strand-snack.webm</video:content_loc>
+         <video:publication_date>2026-01-03T00:00:00+00:00</video:publication_date>
+         <video:family_friendly>yes</video:family_friendly>
+         <video:live>no</video:live>
+      </video:video>
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/videos/fem-platser-att-besoka-pa-gotland-2026/</loc>
+      <lastmod>2026-01-03</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
       <video:video>
          <video:thumbnail_loc>https://www.gotlandstider.se/content/story-5platser-gotland.webp</video:thumbnail_loc>
          <video:title>5 platser att besöka på Gotland 2026</video:title>
          <video:description>En guide till våra favoritplatser på Gotland inför säsongen 2026, inklusive Biograf Savannen och Stora Karlsö.</video:description>
          <video:content_loc>https://www.gotlandstider.se/content/story-5platser-gotland.webm</video:content_loc>
-         <video:publication_date>2026-01-03T00:00:00+01:00</video:publication_date>
+         <video:publication_date>2026-01-03T00:00:00+00:00</video:publication_date>
          <video:family_friendly>yes</video:family_friendly>
          <video:live>no</video:live>
       </video:video>
-
-      <!-- VIDEO 2: Loppisar -->
-      <video:video>
-         <video:thumbnail_loc>https://www.gotlandstider.se/content/story-loppisar-gotland.webp</video:thumbnail_loc>
-         <video:title>Årets loppis-favoriter på Gotland</video:title>
-         <video:description>Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visar även Henrik upp årets fynd.</video:description>
-         <video:content_loc>https://www.gotlandstider.se/content/story-loppisar-gotland.webm</video:content_loc>
-         <video:publication_date>2026-01-03T00:00:00+01:00</video:publication_date>
-         <video:family_friendly>yes</video:family_friendly>
-      </video:video>
-
-      <!-- VIDEO 3: Bruna Dörren -->
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/videos/musikquiz-och-god-mat-vid-stranden/</loc>
+      <lastmod>2026-01-03</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
       <video:video>
          <video:thumbnail_loc>https://www.gotlandstider.se/content/story-brunan-ljugarn.webp</video:thumbnail_loc>
-         <video:title>Musikquiz och god mat vid stranden i Ljugarn</video:title>
-         <video:description>Åk till Bruna Dörren om du vill umgås med nära och kära i en riktig gotländsk atmosfär.</video:description>
+         <video:title>Musikquiz och god mat vid stranden</video:title>
+         <video:description>Du åker hit om du vill umgås med nära och kära i en gotländsk atmosfär.</video:description>
          <video:content_loc>https://www.gotlandstider.se/content/story-brunan-ljugarn.webm</video:content_loc>
-         <video:publication_date>2026-01-03T00:00:00+01:00</video:publication_date>
+         <video:publication_date>2026-01-03T00:00:00+00:00</video:publication_date>
          <video:family_friendly>yes</video:family_friendly>
+         <video:live>no</video:live>
       </video:video>
-
-      <!-- VIDEO 4: Snäck Strand -->
-      <video:video>
-         <video:thumbnail_loc>https://www.gotlandstider.se/content/story-strand-snack.webp</video:thumbnail_loc>
-         <video:title>En strand för stora och små vid Visby</video:title>
-         <video:description>Ett stenkast från Visby hittar du stranden Snäck, med oändliga möjligheter.</video:description>
-         <video:content_loc>https://www.gotlandstider.se/content/story-strand-snack.webm</video:content_loc>
-         <video:publication_date>2026-01-03T00:00:00+01:00</video:publication_date>
-         <video:family_friendly>yes</video:family_friendly>
-      </video:video>
-
    </url>
 </urlset>
