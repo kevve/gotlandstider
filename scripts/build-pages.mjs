@@ -30,13 +30,17 @@ export async function buildArticlePages(rootDir = process.cwd()) {
     .sort((left, right) => indexes.articles.items.findIndex((item) => item.slug === left.slug) - indexes.articles.items.findIndex((item) => item.slug === right.slug));
 
   const pages = [
-    {
-      outputPath: path.join(rootDir, "articles", "index.html"),
-      html: renderArticleArchivePage({
-        template: archiveTemplate,
-        articles: publishedArticles,
-      }),
-    },
+    ...(publishedArticles.length > 0
+      ? [
+          {
+            outputPath: path.join(rootDir, "articles", "index.html"),
+            html: renderArticleArchivePage({
+              template: archiveTemplate,
+              articles: publishedArticles,
+            }),
+          },
+        ]
+      : []),
     ...publishedArticles.map((article) => ({
       outputPath: path.join(rootDir, "articles", article.slug, "index.html"),
       html: renderArticleDetailPage({
@@ -60,6 +64,7 @@ export async function buildVideoPages(rootDir = process.cwd()) {
 
   const publishedVideos = videos
     .map((video) => toVideoPageModel(video))
+    .filter((video) => !video.draft)
     .sort(
       (left, right) =>
         indexes.videos.items.findIndex((item) => item.slug === left.slug) -
@@ -67,13 +72,17 @@ export async function buildVideoPages(rootDir = process.cwd()) {
     );
 
   const pages = [
-    {
-      outputPath: path.join(rootDir, "videos", "index.html"),
-      html: renderVideoArchivePage({
-        template: archiveTemplate,
-        videos: publishedVideos,
-      }),
-    },
+    ...(publishedVideos.length > 0
+      ? [
+          {
+            outputPath: path.join(rootDir, "videos", "index.html"),
+            html: renderVideoArchivePage({
+              template: archiveTemplate,
+              videos: publishedVideos,
+            }),
+          },
+        ]
+      : []),
     ...publishedVideos.map((video) => ({
       outputPath: path.join(rootDir, "videos", video.slug, "index.html"),
       html: renderVideoDetailPage({

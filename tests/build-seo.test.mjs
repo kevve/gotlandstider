@@ -35,7 +35,7 @@ test("buildSeoOutputs excludes draft article routes from public SEO output", asy
     assert.doesNotMatch(outputs.sitemapXml, /https:\/\/www\.gotlandstider\.se\/articles\//);
     assert.match(outputs.indexHtml, /"@type": "VideoObject"/);
     assert.doesNotMatch(outputs.indexHtml, /projekt-ljugarn-fran-tomt-till-sommarhus/);
-    assert.doesNotMatch(outputs.indexHtml, /fem-platser-att-besoka-pa-gotland-2026\/index\.html/);
+    assert.doesNotMatch(outputs.indexHtml, /\/articles\//);
   } finally {
     await fs.rm(tempDir, { recursive: true, force: true });
   }

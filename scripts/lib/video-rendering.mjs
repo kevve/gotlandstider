@@ -95,6 +95,7 @@ export function toVideoPageModel(video) {
     embedUrl: video.data.embedUrl,
     socialLinks: video.data.socialLinks,
     featured: video.data.featured,
+    draft: video.data.draft,
     legacySources: video.data.legacySources,
     urlPath: `/videos/${video.data.slug}/`,
   };

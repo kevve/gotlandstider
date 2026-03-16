@@ -1,23 +1,5 @@
 {
-  "articles": [
-    {
-      "title": "5 platser att besöka på Gotland 2026",
-      "slug": "fem-platser-att-besoka-pa-gotland-2026",
-      "excerpt": "Fem platser vi tycker fångar olika sidor av Gotland, från natur och kultur till mat och utflykter.",
-      "publishedAt": "2026-01-03",
-      "updatedAt": "2026-01-12",
-      "heroImage": "/content/hero-coastline.webp",
-      "tags": [
-        "Gotland",
-        "Guide",
-        "Utflykt"
-      ],
-      "featured": true,
-      "draft": false,
-      "urlPath": "/articles/fem-platser-att-besoka-pa-gotland-2026/",
-      "sourceFile": "content/articles/fem-platser-att-besoka-pa-gotland-2026.md"
-    }
-  ],
+  "articles": [],
   "videos": [
     {
       "title": "5 platser att besöka på Gotland 2026",
@@ -32,6 +14,7 @@
         "tiktok": "https://www.tiktok.com/@gotlandstider/video/7590372115220647190"
       },
       "featured": true,
+      "draft": false,
       "legacySources": {
         "webm": "/content/story-5platser-gotland.webm",
         "mp4": "/content/story-5platser-gotland.mp4"

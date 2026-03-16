@@ -13,6 +13,7 @@
         "tiktok": "https://www.tiktok.com/@gotlandstider/video/7588184079967866134"
       },
       "featured": false,
+      "draft": false,
       "legacySources": {
         "webm": "/content/story-loppisar-gotland.webm",
         "mp4": "/content/story-loppisar-gotland.mp4"
@@ -33,6 +34,7 @@
         "tiktok": "https://www.tiktok.com/@gotlandstider/video/7528426362655231254"
       },
       "featured": false,
+      "draft": false,
       "legacySources": {
         "webm": "/content/story-strand-snack.webm",
         "mp4": "/content/story-strand-snack.mp4"
@@ -53,6 +55,7 @@
         "tiktok": "https://www.tiktok.com/@gotlandstider/video/7590372115220647190"
       },
       "featured": true,
+      "draft": false,
       "legacySources": {
         "webm": "/content/story-5platser-gotland.webm",
         "mp4": "/content/story-5platser-gotland.mp4"
@@ -73,6 +76,7 @@
         "tiktok": "https://www.tiktok.com/@gotlandstider/video/7501347863666887958"
       },
       "featured": false,
+      "draft": false,
       "legacySources": {
         "webm": "/content/story-brunan-ljugarn.webm",
         "mp4": "/content/story-brunan-ljugarn.mp4"

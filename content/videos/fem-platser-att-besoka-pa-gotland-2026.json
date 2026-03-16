@@ -11,6 +11,7 @@
     "tiktok": "https://www.tiktok.com/@gotlandstider/video/7590372115220647190"
   },
   "featured": true,
+  "draft": false,
   "legacySources": {
     "webm": "/content/story-5platser-gotland.webm",
     "mp4": "/content/story-5platser-gotland.mp4"

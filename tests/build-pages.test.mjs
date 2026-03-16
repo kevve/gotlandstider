@@ -10,20 +10,8 @@ import { renderVideoDetailPage } from "../scripts/lib/video-rendering.mjs";
 test("buildArticlePages returns archive and detail pages for published articles", async () => {
   const result = await buildArticlePages(process.cwd());
 
-  assert.equal(result.articles.length, 2);
-  assert.equal(result.pages.length, 3);
-
-  const archivePage = result.pages.find((page) => page.outputPath.endsWith(path.join("articles", "index.html")));
-  const detailPage = result.pages.find((page) =>
-    page.outputPath.endsWith(path.join("articles", "fem-platser-att-besoka-pa-gotland-2026", "index.html")),
-  );
-
-  assert.ok(archivePage);
-  assert.ok(detailPage);
-  assert.match(archivePage.html, /Artiklar från ön/);
-  assert.match(archivePage.html, /Projekt Ljugarn - från tomt till sommarhus/);
-  assert.match(detailPage.html, /framtida redaktionellt innehåll kan ligga i repot/);
-  assert.match(detailPage.html, /Tillbaka till artiklar/);
+  assert.equal(result.articles.length, 0);
+  assert.equal(result.pages.length, 0);
 });
 
 test("writeArticlePages writes deterministic article pages", async () => {
@@ -40,18 +28,7 @@ test("writeArticlePages writes deterministic article pages", async () => {
 
     assert.deepEqual(secondRun.articles, firstRun.articles);
     assert.equal(secondRun.pages.length, firstRun.pages.length);
-
-    const [archiveHtml, detailHtml] = await Promise.all([
-      fs.readFile(path.join(tempDir, "articles", "index.html"), "utf8"),
-      fs.readFile(
-        path.join(tempDir, "articles", "projekt-ljugarn-fran-tomt-till-sommarhus", "index.html"),
-        "utf8",
-      ),
-    ]);
-
-    assert.match(archiveHtml, /Artiklar från ön/);
-    assert.match(detailHtml, /Projekt Ljugarn - från tomt till sommarhus/);
-    assert.match(detailHtml, /När artikelarkivet byggs i senare PR:er/);
+    await assert.rejects(fs.access(path.join(tempDir, "articles", "index.html")));
   } finally {
     await fs.rm(tempDir, { recursive: true, force: true });
   }
@@ -79,9 +56,9 @@ test("buildVideoPages returns archive and detail pages for videos", async () => 
 test("buildPages returns both article and video routes", async () => {
   const result = await buildPages(process.cwd());
 
-  assert.equal(result.articles.length, 2);
+  assert.equal(result.articles.length, 0);
   assert.equal(result.videos.length, 4);
-  assert.equal(result.pages.length, 8);
+  assert.equal(result.pages.length, 5);
 });
 
 test("writePages writes deterministic article and video pages", async () => {
@@ -99,6 +76,7 @@ test("writePages writes deterministic article and video pages", async () => {
     assert.deepEqual(secondRun.articles, firstRun.articles);
     assert.deepEqual(secondRun.videos, firstRun.videos);
     assert.equal(secondRun.pages.length, firstRun.pages.length);
+    await assert.rejects(fs.access(path.join(tempDir, "articles", "index.html")));
 
     const [videoArchiveHtml, videoDetailHtml] = await Promise.all([
       fs.readFile(path.join(tempDir, "videos", "index.html"), "utf8"),

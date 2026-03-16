@@ -10,7 +10,7 @@ tags:
   - Sommarhus
   - Arkitektur
 featured: false
-draft: false
+draft: true
 ---
 
 Den här artikeln fungerar som en andra referens för artikelmodellen och speglar ett av sidans redan etablerade teman.

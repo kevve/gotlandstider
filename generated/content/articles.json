@@ -1,38 +1,3 @@
 {
-  "items": [
-    {
-      "title": "Projekt Ljugarn - från tomt till sommarhus",
-      "slug": "projekt-ljugarn-fran-tomt-till-sommarhus",
-      "excerpt": "En exempelartikel för husresan i Ljugarn, med plats för uppdateringar om tomt, ritningar och byggbeslut.",
-      "publishedAt": "2026-01-05",
-      "updatedAt": "2026-01-12",
-      "heroImage": "/content/house-ritahus.webp",
-      "tags": [
-        "Ljugarn",
-        "Sommarhus",
-        "Arkitektur"
-      ],
-      "featured": false,
-      "draft": false,
-      "urlPath": "/articles/projekt-ljugarn-fran-tomt-till-sommarhus/",
-      "sourceFile": "content/articles/projekt-ljugarn-fran-tomt-till-sommarhus.md"
-    },
-    {
-      "title": "5 platser att besöka på Gotland 2026",
-      "slug": "fem-platser-att-besoka-pa-gotland-2026",
-      "excerpt": "Fem platser vi tycker fångar olika sidor av Gotland, från natur och kultur till mat och utflykter.",
-      "publishedAt": "2026-01-03",
-      "updatedAt": "2026-01-12",
-      "heroImage": "/content/hero-coastline.webp",
-      "tags": [
-        "Gotland",
-        "Guide",
-        "Utflykt"
-      ],
-      "featured": true,
-      "draft": false,
-      "urlPath": "/articles/fem-platser-att-besoka-pa-gotland-2026/",
-      "sourceFile": "content/articles/fem-platser-att-besoka-pa-gotland-2026.md"
-    }
-  ]
+  "items": []
 }
