@@ -22,6 +22,8 @@ The target state is a Git-as-CMS workflow with:
 - static archive/detail pages for articles and videos
 - GitHub Actions used for validation, build, and deployment
 
+For new videos, the preferred publishing model is metadata plus an external embed and local thumbnail image. The current repo-hosted video files are grandfathered legacy entries and should not be used as the pattern for new content.
+
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
 See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
