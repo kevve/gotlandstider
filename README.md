@@ -79,7 +79,7 @@ The staged Pages artifact includes the production files and directories the site
 - `articles/`
 - `videos/`
 - `generated/`
-- `content/`
+- `content/` asset files only
 - `fonts/`
 - `navscripts.js`
 - `storyscripts.js`
@@ -88,6 +88,13 @@ The staged Pages artifact includes the production files and directories the site
 - `robots.txt`
 - `sitemap.xml`
 - `CNAME`
+
+Source content files remain in the repo, but the deploy artifact excludes:
+
+- `content/articles/`
+- `content/videos/`
+
+This keeps Markdown article sources and video JSON metadata private even though the rest of `/content/` is still used for public assets.
 
 Public SEO scope is intentionally limited for now:
 

@@ -75,6 +75,8 @@ jobs:
             cp -R "$path" "$site_dir/$path"
           done
 
+          rm -rf "$site_dir/content/articles" "$site_dir/content/videos"
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
