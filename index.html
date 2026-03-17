@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv" class="scroll-smooth">
+<html lang="sv">
 
 <head>
     <meta charset="UTF-8">
@@ -136,7 +136,7 @@
                 <div class="hidden md:flex items-center space-x-8 text-sm tracking-wide uppercase font-medium text-gotland-deep/80">
                     <a href="#stories" class="hover:text-gotland-rust transition-colors">Upplevelser</a>
                     <a href="#house" class="hover:text-gotland-rust transition-colors">Sommarhuset</a>
-                    <a href="#about" class="hover:text-gotland-rust transition-colors">Om oss</a>
+                    <a href="/videos/" class="hover:text-gotland-rust transition-colors">Arkivet</a>
                     <a href="#contact" class="px-6 py-2 bg-gotland-deep text-gotland-stone rounded-full hover:bg-gotland-pine transition-all shadow-md hover:shadow-lg">Kontakt</a>
                 </div>
 
@@ -148,10 +148,10 @@
 
         <div id="mobile-menu" class="bg-gotland-stone border-b border-gotland-stoneDark md:hidden">
             <div class="flex flex-col space-y-4 px-6 py-6 text-center text-sm uppercase tracking-widest font-medium">
-                <a href="#stories" class="hover:text-gotland-rust py-2" onclick="toggleMenu()">Upplevelser</a>
-                <a href="#house" class="hover:text-gotland-rust py-2" onclick="toggleMenu()">Sommarhuset</a>
-                <a href="#about" class="hover:text-gotland-rust py-2" onclick="toggleMenu()">Om oss</a>
-                <a href="#contact" class="text-gotland-rust font-bold py-2" onclick="toggleMenu()">Kontakt</a>
+                <a href="#stories" class="hover:text-gotland-rust py-2">Upplevelser</a>
+                <a href="#house" class="hover:text-gotland-rust py-2">Sommarhuset</a>
+                <a href="/videos/" class="hover:text-gotland-rust py-2">Arkivet</a>
+                <a href="#contact" class="text-gotland-rust font-bold py-2">Kontakt</a>
             </div>
         </div>
     </nav>
@@ -224,7 +224,7 @@
     </header>
     
     <!-- Berättelser (Stories) -->
-    <section id="stories" class="py-12 bg-gotland-stoneDark/30 border-y border-gotland-stoneDark/50">
+    <section id="stories" class="scroll-mt-24 py-12 bg-gotland-stoneDark/30 border-y border-gotland-stoneDark/50">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             <div class="text-center mb-12 fade-in-up">
                 <span class="text-xs font-bold text-gotland-rust uppercase tracking-[0.2em] block mb-3">Redaktionellt</span>
@@ -418,7 +418,7 @@
     </section>
 
     <!-- Projekt Ljugarn -->
-    <section id="house" class="py-12 bg-gotland-stoneDark relative">
+    <section id="house" class="scroll-mt-24 py-12 bg-gotland-stoneDark relative">
 
         <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
             <div class="text-center mb-16 fade-in-up">
@@ -522,7 +522,7 @@
 
 
     <!-- OM OSS SEKTION -->
-    <section id="about" class="py-20 px-6 md:px-12 max-w-7xl mx-auto border-t border-gotland-stoneDark/50">
+    <section id="about" class="scroll-mt-24 py-20 px-6 md:px-12 max-w-7xl mx-auto border-t border-gotland-stoneDark/50">
         <div class="grid md:grid-cols-12 gap-12 items-center">
             
             <!-- Bilden -->
@@ -573,7 +573,7 @@
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-gotland-deep text-gotland-stone py-20 px-6 border-t-4 border-gotland-pine">
+    <footer id="contact" class="scroll-mt-24 bg-gotland-deep text-gotland-stone py-20 px-6 border-t-4 border-gotland-pine">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
             <div class="fade-in-up">
                 <h2 class="font-serif text-4xl lg:text-5xl mb-6 leading-tight">Låt oss skapa något <br><span class="italic text-gotland-stone/60">vackert tillsammans.</span></h2>
@@ -646,6 +646,7 @@
 
     <!-- Navigation Scripts -->
     <script type="text/javascript" src="navscripts.js"></script>
+    <script type="text/javascript" src="homevideoscripts.js"></script>
 
     <!-- Script för Modal-logik -->
     <script type="text/javascript" src="storyscripts.js?v=20260313-2"></script>
