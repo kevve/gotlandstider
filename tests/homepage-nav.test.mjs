@@ -12,6 +12,8 @@ test("homepage navigation matches the current shared-menu rollout", async () => 
   assert.match(homepageHtml, />Sommarhuset</);
   assert.match(homepageHtml, />Arkivet</);
   assert.match(homepageHtml, />Kontakt</);
+  assert.match(homepageHtml, /href="#stories"[^>]*>Upplevelser</);
+  assert.match(homepageHtml, /href="#house"[^>]*>Sommarhuset</);
   assert.match(homepageHtml, /href="\/videos\/"[^>]*>Arkivet</);
   assert.doesNotMatch(homepageHtml, />Om oss</);
   assert.doesNotMatch(homepageHtml, /class="scroll-smooth"/);

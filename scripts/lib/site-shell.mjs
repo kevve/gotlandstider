@@ -18,11 +18,20 @@ export async function loadSiteShell(rootDir) {
   };
 }
 
-export function renderSiteShell({ headerTemplate, footerTemplate, brandHref, activeNavKey = null }) {
+export function renderSiteShell({
+  headerTemplate,
+  footerTemplate,
+  brandHref,
+  activeNavKey = null,
+  experiencesHref = "/#stories",
+  houseHref = "/#house",
+}) {
   return {
     siteHeader: headerTemplate
       ? injectTemplate(headerTemplate, {
       brandHref,
+      experiencesHref,
+      houseHref,
       experiencesClass: getNavClass(null, activeNavKey),
       houseClass: getNavClass(null, activeNavKey),
       archiveClass: getNavClass("archive", activeNavKey),
