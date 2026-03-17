@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import { loadSiteShell, renderSiteShell } from "./site-shell.mjs";
+
 const SITE_URL = "https://www.gotlandstider.se";
 const CSS_HREF = "/output.css?v=20260313-2";
 const FAVICON_HREF = "/favicon-v2.svg";
@@ -10,7 +12,7 @@ export async function loadTemplate(rootDir, templateName) {
   return fs.readFile(templatePath, "utf8");
 }
 
-export function renderArticleArchivePage({ template, articles }) {
+export function renderArticleArchivePage({ template, articles, shell = {} }) {
   const articleCards = articles
     .map((article) => {
       const tags = article.tags
@@ -52,6 +54,12 @@ export function renderArticleArchivePage({ template, articles }) {
     })
     .join("");
 
+  const siteShell = renderSiteShell({
+    ...shell,
+    activeNavKey: null,
+    brandHref: "/",
+  });
+
   return injectTemplate(template, {
     pageTitle: "Artiklar | Gotlandstider",
     metaDescription:
@@ -67,10 +75,19 @@ export function renderArticleArchivePage({ template, articles }) {
     lead:
       "Ett växande arkiv med guider, berättelser och uppdateringar från Gotland och projektet i Ljugarn.",
     articleCards,
+    siteHeader: siteShell.siteHeader,
+    siteFooter: siteShell.siteFooter,
+    siteScripts: siteShell.siteScripts,
   });
 }
 
-export function renderArticleDetailPage({ template, article }) {
+export function renderArticleDetailPage({ template, article, shell = {} }) {
+  const siteShell = renderSiteShell({
+    ...shell,
+    activeNavKey: null,
+    brandHref: "/",
+  });
+
   return injectTemplate(template, {
     pageTitle: `${article.title} | Gotlandstider`,
     metaDescription: article.excerpt,
@@ -96,6 +113,9 @@ export function renderArticleDetailPage({ template, article }) {
       .join(""),
     articleBody: renderMarkdown(article.body),
     articlePath: article.urlPath,
+    siteHeader: siteShell.siteHeader,
+    siteFooter: siteShell.siteFooter,
+    siteScripts: siteShell.siteScripts,
   });
 }
 
@@ -154,6 +174,18 @@ export function toArticlePageModel(article) {
     draft: article.data.draft,
     body: article.body,
     urlPath: `/articles/${article.data.slug}/`,
+  };
+}
+
+export async function loadPageTemplateBundle(rootDir, templateName) {
+  const [template, shell] = await Promise.all([
+    loadTemplate(rootDir, templateName),
+    loadSiteShell(rootDir),
+  ]);
+
+  return {
+    template,
+    shell,
   };
 }
 

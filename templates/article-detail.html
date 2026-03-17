@@ -18,19 +18,9 @@
 </head>
 <body class="bg-gotland-stone text-gotland-deep font-sans antialiased selection:bg-gotland-rust selection:text-white">
   <div class="min-h-screen">
-    <header class="border-b border-gotland-stoneDark bg-gotland-stone/95 backdrop-blur-md">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 lg:px-10">
-        <a href="/" class="font-serif text-2xl font-semibold italic tracking-tight text-gotland-deep transition-colors hover:text-gotland-pine">
-          Gotlandstider.
-        </a>
-        <nav class="flex items-center gap-5 text-xs font-bold uppercase tracking-[0.2em] text-gotland-deep/70">
-          <a href="/" class="transition-colors hover:text-gotland-rust">Hem</a>
-          <a href="/articles/" class="transition-colors hover:text-gotland-rust">Artiklar</a>
-        </nav>
-      </div>
-    </header>
+    {{siteHeader}}
 
-    <main class="pb-20">
+    <main class="pb-20 pt-20">
       <section class="mx-auto max-w-6xl px-6 pt-10 lg:px-10 lg:pt-16">
         <a href="/articles/" class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-gotland-pine transition-colors hover:text-gotland-rust">
           <span aria-hidden="true">←</span>
@@ -79,6 +69,9 @@
         </div>
       </article>
     </main>
+
+    {{siteFooter}}
   </div>
+  {{siteScripts}}
 </body>
 </html>

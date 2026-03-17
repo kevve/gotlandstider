@@ -49,8 +49,13 @@ test("buildVideoPages returns archive and detail pages for videos", async () => 
   assert.ok(detailPage);
   assert.match(archivePage.html, /Videor från ön/);
   assert.match(archivePage.html, /Årets loppis-favoriter/);
+  assert.match(archivePage.html, /<footer id="contact"/);
+  assert.match(archivePage.html, /src="\/navscripts\.js"/);
+  assert.match(archivePage.html, /href="\/videos\/" class="font-semibold text-gotland-rust transition-colors"/);
   assert.match(detailPage.html, /Lokalt videoarkiv/);
   assert.match(detailPage.html, /story-brunan-ljugarn\.mp4/);
+  assert.match(detailPage.html, /<footer id="contact"/);
+  assert.match(detailPage.html, /href="\/videos\/" class="font-semibold text-gotland-rust transition-colors"/);
 });
 
 test("buildPages returns both article and video routes", async () => {
@@ -84,8 +89,11 @@ test("writePages writes deterministic article and video pages", async () => {
     ]);
 
     assert.match(videoArchiveHtml, /Videor från ön/);
+    assert.match(videoArchiveHtml, /<footer id="contact"/);
+    assert.match(videoArchiveHtml, /src="\/navscripts\.js"/);
     assert.match(videoDetailHtml, /Årets loppis-favoriter/);
     assert.match(videoDetailHtml, /story-loppisar-gotland\.webm/);
+    assert.match(videoDetailHtml, /<footer id="contact"/);
   } finally {
     await fs.rm(tempDir, { recursive: true, force: true });
   }
