@@ -14,11 +14,10 @@ test("validateContentCollections passes for the current repo content", async () 
 
   assert.equal(result.valid, true);
   assert.equal(result.errors.length, 0);
-  assert.equal(result.articles.length, 2);
-  assert.equal(result.videos.length, 4);
+  assert.equal(result.articles.length, 5);
 });
 
-test("parseArticleFile reads the current markdown front matter shape", () => {
+test("parseArticleFile reads nested markdown front matter", () => {
   const article = parseArticleFile(
     "content/articles/example.md",
     `---
@@ -33,6 +32,17 @@ tags:
   - Guide
 featured: false
 draft: true
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/example123
+  thumbnail: /content/example.webp
+  socialLinks:
+    instagram: https://www.instagram.com/example/
+    tiktok: null
+homepage:
+  badge: Tips
+  subtitle: Gotland • Guide
+  order: 2
 ---
 
 Brödtext.
@@ -43,6 +53,8 @@ Brödtext.
   assert.deepEqual(article.data.tags, ["Gotland", "Guide"]);
   assert.equal(article.data.featured, false);
   assert.equal(article.data.draft, true);
+  assert.equal(article.data.video.provider, "youtube");
+  assert.equal(article.data.homepage.order, 2);
   assert.equal(article.body, "Brödtext.");
 });
 
@@ -51,14 +63,10 @@ test("validateContentCollections reports invalid dates and duplicate article slu
 
   try {
     await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
-    await fs.mkdir(path.join(tempDir, "content", "videos"), { recursive: true });
     await fs.mkdir(path.join(tempDir, "content"), { recursive: true });
 
     await Promise.all([
       fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
-      fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image"),
-      fs.writeFile(path.join(tempDir, "content", "legacy.webm"), "video"),
-      fs.writeFile(path.join(tempDir, "content", "legacy.mp4"), "video"),
       fs.writeFile(
         path.join(tempDir, "content", "articles", "first.md"),
         `---
@@ -95,32 +103,6 @@ draft: false
 Innehåll.
 `,
       ),
-      fs.writeFile(
-        path.join(tempDir, "content", "videos", "video.json"),
-        JSON.stringify(
-          {
-            title: "Video",
-            slug: "video",
-            excerpt: "Kort text",
-            publishedAt: "2026-03-15",
-            thumbnail: "/content/video-thumb.webp",
-            provider: "legacy-local",
-            embedUrl: "https://www.gotlandstider.se/video",
-            socialLinks: {
-              instagram: null,
-              tiktok: "https://www.tiktok.com/example",
-            },
-            featured: false,
-            draft: false,
-            legacySources: {
-              webm: "/content/legacy.webm",
-              mp4: "/content/legacy.mp4",
-            },
-          },
-          null,
-          2,
-        ),
-      ),
     ]);
 
     const result = await validateContentCollections(tempDir);
@@ -133,18 +115,18 @@ Innehåll.
   }
 });
 
-test("validateContentCollections rejects malformed legacy video definitions", async () => {
+test("validateContentCollections rejects malformed nested video metadata", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
 
   try {
     await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
-    await fs.mkdir(path.join(tempDir, "content", "videos"), { recursive: true });
-    await fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image");
-    await fs.writeFile(
-      path.join(tempDir, "content", "articles", "article.md"),
-      `---
-title: Artikel
-slug: artikel
+    await Promise.all([
+      fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image"),
+      fs.writeFile(
+        path.join(tempDir, "content", "articles", "video.md"),
+        `---
+title: Videoartikel
+slug: videoartikel
 excerpt: Kort text
 publishedAt: 2026-03-15
 updatedAt: 2026-03-15
@@ -153,61 +135,43 @@ tags:
   - Guide
 featured: false
 draft: false
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/watch?v=abc123
+  thumbnail: /content/video-thumb.webp
+  socialLinks: inte-ett-objekt
+homepage:
+  badge:
+    - fel
 ---
 
 Innehåll.
 `,
-    );
-    await fs.writeFile(
-      path.join(tempDir, "content", "videos", "video.json"),
-      JSON.stringify(
-        {
-          title: "Video",
-          slug: "video",
-          excerpt: "Kort text",
-          publishedAt: "2026-03-15",
-          thumbnail: "/content/video-thumb.webp",
-          provider: "youtube",
-          embedUrl: "https://www.youtube.com/watch?v=abc123",
-          socialLinks: {
-            instagram: "https://www.instagram.com/example/",
-          },
-          featured: true,
-          draft: false,
-          legacySources: {
-            webm: "/content/missing.webm",
-            mp4: "/content/missing.mp4",
-          },
-        },
-        null,
-        2,
       ),
-    );
+    ]);
 
     const result = await validateContentCollections(tempDir);
 
     assert.equal(result.valid, false);
-    assert.match(result.errors.join("\n"), /"legacySources" is only allowed when provider is "legacy-local"/);
-    assert.match(result.errors.join("\n"), /legacy source "webm" points to a missing file/);
+    assert.match(result.errors.join("\n"), /"video\.socialLinks" must be an object/);
+    assert.match(result.errors.join("\n"), /"homepage\.badge" must be a string/);
   } finally {
     await fs.rm(tempDir, { recursive: true, force: true });
   }
 });
 
-test("validateContentCollections allows new external-embed videos without legacySources", async () => {
+test("validateContentCollections allows new external-embed video articles without legacySources", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
 
   try {
     await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
-    await fs.mkdir(path.join(tempDir, "content", "videos"), { recursive: true });
     await Promise.all([
       fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
-      fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image"),
       fs.writeFile(
         path.join(tempDir, "content", "articles", "article.md"),
         `---
-title: Artikel
-slug: artikel
+title: Artikel med video
+slug: artikel-med-video
 excerpt: Kort text
 publishedAt: 2026-03-15
 updatedAt: 2026-03-15
@@ -216,32 +180,17 @@ tags:
   - Guide
 featured: false
 draft: false
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/abc123
+  thumbnail: /content/example.webp
+  socialLinks:
+    instagram: null
+    tiktok: null
 ---
 
 Innehåll.
 `,
-      ),
-      fs.writeFile(
-        path.join(tempDir, "content", "videos", "video.json"),
-        JSON.stringify(
-          {
-            title: "Ny video",
-            slug: "ny-video-med-embed",
-            excerpt: "Kort text",
-            publishedAt: "2026-03-15",
-            thumbnail: "/content/video-thumb.webp",
-            provider: "youtube",
-            embedUrl: "https://www.youtube.com/watch?v=abc123",
-            socialLinks: {
-              instagram: null,
-              tiktok: null,
-            },
-            featured: false,
-            draft: false,
-          },
-          null,
-          2,
-        ),
       ),
     ]);
 
@@ -254,22 +203,20 @@ Innehåll.
   }
 });
 
-test("validateContentCollections rejects new legacy-local video entries", async () => {
+test("validateContentCollections rejects non-legacy video articles with legacySources", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
 
   try {
     await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
-    await fs.mkdir(path.join(tempDir, "content", "videos"), { recursive: true });
     await Promise.all([
       fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
-      fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image"),
       fs.writeFile(path.join(tempDir, "content", "legacy.webm"), "video"),
       fs.writeFile(path.join(tempDir, "content", "legacy.mp4"), "video"),
       fs.writeFile(
         path.join(tempDir, "content", "articles", "article.md"),
         `---
-title: Artikel
-slug: artikel
+title: Artikel med legacy-fel
+slug: artikel-med-legacy-fel
 excerpt: Kort text
 publishedAt: 2026-03-15
 updatedAt: 2026-03-15
@@ -278,36 +225,68 @@ tags:
   - Guide
 featured: false
 draft: false
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/abc123
+  thumbnail: /content/example.webp
+  socialLinks:
+    instagram: null
+    tiktok: null
+  legacySources:
+    webm: /content/legacy.webm
+    mp4: /content/legacy.mp4
 ---
 
 Innehåll.
 `,
       ),
+    ]);
+
+    const result = await validateContentCollections(tempDir);
+
+    assert.equal(result.valid, false);
+    assert.match(result.errors.join("\n"), /"video\.legacySources" is only allowed when video.provider is "legacy-local"/);
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("validateContentCollections rejects new legacy-local video article entries", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
+
+  try {
+    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
+    await Promise.all([
+      fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
+      fs.writeFile(path.join(tempDir, "content", "legacy.webm"), "video"),
+      fs.writeFile(path.join(tempDir, "content", "legacy.mp4"), "video"),
       fs.writeFile(
-        path.join(tempDir, "content", "videos", "video.json"),
-        JSON.stringify(
-          {
-            title: "Ny lokal video",
-            slug: "ny-lokal-video",
-            excerpt: "Kort text",
-            publishedAt: "2026-03-15",
-            thumbnail: "/content/video-thumb.webp",
-            provider: "legacy-local",
-            embedUrl: "https://www.gotlandstider.se/videos/ny-lokal-video/",
-            socialLinks: {
-              instagram: null,
-              tiktok: null,
-            },
-            featured: false,
-            draft: false,
-            legacySources: {
-              webm: "/content/legacy.webm",
-              mp4: "/content/legacy.mp4",
-            },
-          },
-          null,
-          2,
-        ),
+        path.join(tempDir, "content", "articles", "article.md"),
+        `---
+title: Ny lokal video
+slug: ny-lokal-video
+excerpt: Kort text
+publishedAt: 2026-03-15
+updatedAt: 2026-03-15
+heroImage: /content/example.webp
+tags:
+  - Guide
+featured: false
+draft: false
+video:
+  provider: legacy-local
+  embedUrl: https://www.gotlandstider.se/articles/ny-lokal-video/
+  thumbnail: /content/example.webp
+  socialLinks:
+    instagram: null
+    tiktok: null
+  legacySources:
+    webm: /content/legacy.webm
+    mp4: /content/legacy.mp4
+---
+
+Innehåll.
+`,
       ),
     ]);
 
@@ -316,67 +295,8 @@ Innehåll.
     assert.equal(result.valid, false);
     assert.match(
       result.errors.join("\n"),
-      /"legacy-local" is reserved for existing grandfathered videos; use an external embed provider for new entries/,
+      /"video.provider: legacy-local" is reserved for existing grandfathered videos; use an external embed provider for new entries/,
     );
-  } finally {
-    await fs.rm(tempDir, { recursive: true, force: true });
-  }
-});
-
-test("validateContentCollections requires draft for videos", async () => {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
-
-  try {
-    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
-    await fs.mkdir(path.join(tempDir, "content", "videos"), { recursive: true });
-    await Promise.all([
-      fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
-      fs.writeFile(path.join(tempDir, "content", "video-thumb.webp"), "image"),
-      fs.writeFile(
-        path.join(tempDir, "content", "articles", "article.md"),
-        `---
-title: Artikel
-slug: artikel
-excerpt: Kort text
-publishedAt: 2026-03-15
-updatedAt: 2026-03-15
-heroImage: /content/example.webp
-tags:
-  - Guide
-featured: false
-draft: false
----
-
-Innehåll.
-`,
-      ),
-      fs.writeFile(
-        path.join(tempDir, "content", "videos", "video.json"),
-        JSON.stringify(
-          {
-            title: "Video",
-            slug: "video",
-            excerpt: "Kort text",
-            publishedAt: "2026-03-15",
-            thumbnail: "/content/video-thumb.webp",
-            provider: "youtube",
-            embedUrl: "https://www.youtube.com/watch?v=abc123",
-            socialLinks: {
-              instagram: null,
-              tiktok: null,
-            },
-            featured: false,
-          },
-          null,
-          2,
-        ),
-      ),
-    ]);
-
-    const result = await validateContentCollections(tempDir);
-
-    assert.equal(result.valid, false);
-    assert.match(result.errors.join("\n"), /missing required field "draft"/);
   } finally {
     await fs.rm(tempDir, { recursive: true, force: true });
   }

@@ -15,13 +15,8 @@ export async function buildContentIndexes(rootDir = process.cwd()) {
     .map((article) => normalizeArticle(article, rootDir))
     .sort(compareByPublishedDateDesc);
 
-  const videos = validation.videos
-    .filter((video) => !video.data.draft)
-    .map((video) => normalizeVideo(video, rootDir))
-    .sort(compareByPublishedDateDesc);
-
   const homepage = buildHomepageContent(
-    validation.videos.filter((video) => !video.data.draft),
+    validation.articles.filter((article) => !article.data.draft && article.data.video),
     rootDir,
   );
 
@@ -29,12 +24,8 @@ export async function buildContentIndexes(rootDir = process.cwd()) {
     articles: {
       items: articles,
     },
-    videos: {
-      items: videos,
-    },
     featured: {
       articles: articles.filter((article) => article.featured),
-      videos: videos.filter((video) => video.featured),
     },
     homepage,
   };
@@ -48,7 +39,6 @@ export async function writeContentIndexes(rootDir = process.cwd()) {
 
   await Promise.all([
     writeJsonFile(path.join(outputDir, "articles.json"), indexes.articles),
-    writeJsonFile(path.join(outputDir, "videos.json"), indexes.videos),
     writeJsonFile(path.join(outputDir, "featured.json"), indexes.featured),
     writeJsonFile(path.join(outputDir, "homepage.json"), indexes.homepage),
   ]);
@@ -57,48 +47,44 @@ export async function writeContentIndexes(rootDir = process.cwd()) {
 }
 
 function normalizeArticle(article, rootDir) {
+  const { video, homepage, ...data } = article.data;
+
   return {
-    title: article.data.title,
-    slug: article.data.slug,
-    excerpt: article.data.excerpt,
-    publishedAt: article.data.publishedAt,
-    updatedAt: article.data.updatedAt,
-    heroImage: article.data.heroImage,
-    tags: article.data.tags,
-    featured: article.data.featured,
-    draft: article.data.draft,
-    urlPath: `/articles/${article.data.slug}/`,
+    title: data.title,
+    slug: data.slug,
+    excerpt: data.excerpt,
+    publishedAt: data.publishedAt,
+    updatedAt: data.updatedAt,
+    heroImage: data.heroImage,
+    tags: data.tags,
+    featured: data.featured,
+    draft: data.draft,
+    urlPath: `/articles/${data.slug}/`,
     sourceFile: toRepoRelativePath(article.filePath, rootDir),
+    ...(video
+      ? {
+          video: {
+            provider: video.provider,
+            embedUrl: video.embedUrl,
+            thumbnail: video.thumbnail,
+            socialLinks: video.socialLinks,
+            legacySources: video.legacySources,
+          },
+        }
+      : {}),
+    ...(homepage ? { homepage } : {}),
   };
 }
 
-function normalizeVideo(video, rootDir) {
-  return {
-    title: video.data.title,
-    slug: video.data.slug,
-    excerpt: video.data.excerpt,
-    publishedAt: video.data.publishedAt,
-    thumbnail: video.data.thumbnail,
-    provider: video.data.provider,
-    embedUrl: video.data.embedUrl,
-    socialLinks: video.data.socialLinks,
-    featured: video.data.featured,
-    draft: video.data.draft,
-    legacySources: video.data.legacySources,
-    urlPath: `/videos/${video.data.slug}/`,
-    sourceFile: toRepoRelativePath(video.filePath, rootDir),
-  };
-}
-
-function buildHomepageContent(videos, rootDir) {
-  const normalizedVideos = videos
-    .map((video) => normalizeVideo(video, rootDir))
+function buildHomepageContent(articles, rootDir) {
+  const normalizedVideoArticles = articles
+    .map((article) => normalizeHomepageVideoArticle(article, rootDir))
     .sort(compareByPublishedDateDesc);
 
-  const featuredSource = videos.find((video) => video.data.featured) ?? videos[0];
+  const featuredSource = articles.find((article) => article.data.featured) ?? articles[0];
   const featuredVideo = featuredSource
     ? {
-        ...normalizeVideo(featuredSource, rootDir),
+        ...normalizeHomepageVideoArticle(featuredSource, rootDir),
         heading: featuredSource.data.homepage?.heading ?? {
           prefix: featuredSource.data.title,
           accent: "",
@@ -108,12 +94,12 @@ function buildHomepageContent(videos, rootDir) {
       }
     : null;
 
-  const storyArchive = normalizedVideos
-    .filter((video) => !video.featured)
-    .map((video) => {
-      const source = videos.find((entry) => entry.data.slug === video.slug);
+  const storyArchive = normalizedVideoArticles
+    .filter((article) => !article.featured)
+    .map((article) => {
+      const source = articles.find((entry) => entry.data.slug === article.slug);
       return {
-        ...video,
+        ...article,
         homepageOrder: source?.data.homepage?.order ?? Number.MAX_SAFE_INTEGER,
         subtitle: source?.data.homepage?.subtitle ?? "",
         badge: source?.data.homepage?.badge ?? "Video",
@@ -127,8 +113,8 @@ function buildHomepageContent(videos, rootDir) {
       return left.homepageOrder - right.homepageOrder;
     })
     .slice(0, 3)
-    .map((video, index) => {
-      const { homepageOrder: _homepageOrder, ...rest } = video;
+    .map((article, index) => {
+      const { homepageOrder: _homepageOrder, ...rest } = article;
       return {
         id: index + 1,
         ...rest,
@@ -138,6 +124,24 @@ function buildHomepageContent(videos, rootDir) {
   return {
     featuredVideo,
     storyArchive,
+  };
+}
+
+function normalizeHomepageVideoArticle(article, rootDir) {
+  return {
+    title: article.data.title,
+    slug: article.data.slug,
+    excerpt: article.data.excerpt,
+    publishedAt: article.data.publishedAt,
+    thumbnail: article.data.video.thumbnail,
+    provider: article.data.video.provider,
+    embedUrl: article.data.video.embedUrl,
+    socialLinks: article.data.video.socialLinks,
+    featured: article.data.featured,
+    draft: article.data.draft,
+    legacySources: article.data.video.legacySources,
+    urlPath: `/articles/${article.data.slug}/`,
+    sourceFile: toRepoRelativePath(article.filePath, rootDir),
   };
 }
 

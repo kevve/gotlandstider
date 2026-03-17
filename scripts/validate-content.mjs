@@ -11,5 +11,5 @@ if (!result.valid) {
 }
 
 console.log(
-  `Content validation passed for ${result.articles.length} article(s) and ${result.videos.length} video(s).`,
+  `Content validation passed for ${result.articles.length} article(s).`,
 );

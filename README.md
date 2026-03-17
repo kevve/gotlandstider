@@ -2,7 +2,7 @@
 
 Gotlandstider is the public website for [www.gotlandstider.se](https://www.gotlandstider.se), currently built as a simple static site with HTML, JavaScript, and Tailwind-generated CSS.
 
-The current production site continues to be served from the repository root. This repo is being migrated incrementally toward an agent-friendly publishing setup where articles and videos can be added through structured content files and deployed automatically, without breaking the existing site along the way.
+The current production site continues to be served from the repository root. This repo is being migrated incrementally toward an agent-friendly publishing setup where articles can be added through structured content files and deployed automatically, without breaking the existing site along the way.
 
 ## Current site structure
 
@@ -16,15 +16,13 @@ The current production site continues to be served from the repository root. Thi
 
 The target state is a Git-as-CMS workflow with:
 
-- articles stored as Markdown with front matter
-- videos stored as structured JSON metadata
+- articles stored as Markdown with YAML front matter
+- optional nested video metadata on article entries for embeds, legacy hosted clips, and homepage story cards
 - generated JSON indexes committed under `generated/content/`
-- static archive/detail pages for articles and videos
+- static archive/detail pages generated under `/articles/`
 - GitHub Actions used for validation, build, and deployment
 
-For new videos, the preferred publishing model is metadata plus an external embed and local thumbnail image. The current repo-hosted video files are grandfathered legacy entries and should not be used as the pattern for new content.
-
-For both articles and videos, `draft: true` is the non-public default state. Only `draft: false` content is allowed into public generated output.
+For all content, `draft: true` is the non-public default state. Only `draft: false` content is allowed into public generated output.
 
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
@@ -77,7 +75,6 @@ The staged Pages artifact includes the production files and directories the site
 
 - `index.html`
 - `articles/`
-- `videos/`
 - `generated/`
 - `content/` asset files only
 - `fonts/`
@@ -92,15 +89,13 @@ The staged Pages artifact includes the production files and directories the site
 Source content files remain in the repo, but the deploy artifact excludes:
 
 - `content/articles/`
-- `content/videos/`
 
-This keeps Markdown article sources and video JSON metadata private even though the rest of `/content/` is still used for public assets.
+This keeps Markdown article sources private even though the rest of `/content/` is still used for public assets.
 
 Public SEO scope is intentionally limited for now:
 
-- the sitemap includes the homepage and public video routes
-- homepage structured data includes the public homepage videos
-- article routes are still excluded from sitemap and other public SEO features until the article content is ready to publish
+- the sitemap includes the homepage, `/articles/`, and public article routes
+- homepage structured data includes the public homepage videos derived from video-backed articles
 
 Manual repo setup for the first deploy:
 
@@ -111,7 +106,6 @@ Manual repo setup for the first deploy:
 ## Planned workspace folders
 
 - `content/articles/`: future article source files
-- `content/videos/`: future video metadata files
 - `generated/content/`: future generated indexes consumed by the site
 - `scripts/`: future validation/build scripts
 - `templates/`: future static page templates

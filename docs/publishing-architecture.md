@@ -17,25 +17,24 @@ This migration keeps that production setup working while we incrementally add a 
 - Ship small pull requests that are easy to review, test, and roll back.
 - Prefer Git as CMS: content files in the repo, generated static output, and GitHub Actions for automation.
 - Avoid framework migration unless it becomes clearly necessary later.
-- Treat new video publishing as metadata plus external embed, while keeping current repo-hosted videos working during the transition.
+- Treat video-backed stories as articles with optional video metadata, while keeping current repo-hosted videos working during the transition.
 
 ## Planned folders
 
 - `content/articles/`: article source files in Markdown with front matter.
-- `content/videos/`: video source files in JSON metadata.
-- `generated/content/`: committed generated indexes such as `articles.json`, `videos.json`, and `featured.json`.
+- `generated/content/`: committed generated indexes such as `articles.json`, `homepage.json`, and `featured.json`.
 - `scripts/`: Node-based validation and build scripts.
 - `templates/`: static HTML templates used to generate archive and detail pages.
 
 ## Planned publishing flow
 
-1. Add structured article and video source files under `content/`.
+1. Add structured article source files under `content/`.
 2. Validate source files with lightweight scripts before generation.
 3. Generate JSON indexes under `generated/content/`.
-4. Generate static archive and detail pages for articles and videos.
+4. Generate static archive and detail pages under `/articles/`.
 5. Update the homepage to read generated featured content instead of hardcoded data.
 6. Add GitHub Actions for validation, build, and deployment to GitHub Pages.
-7. Block new repo-hosted video binaries for future content while preserving legacy entries.
+7. Block new repo-hosted video binaries for future content while preserving legacy entries through article metadata.
 
 ## Non-goals for the early PRs
 

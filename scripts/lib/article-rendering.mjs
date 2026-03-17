@@ -15,36 +15,31 @@ export async function loadTemplate(rootDir, templateName) {
 export function renderArticleArchivePage({ template, articles, shell = {} }) {
   const articleCards = articles
     .map((article) => {
-      const tags = article.tags
-        .map(
-          (tag) =>
-            `<span class="rounded-full border border-gotland-stoneDark bg-gotland-stone px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-gotland-pine">${escapeHtml(
-              tag,
-            )}</span>`,
-        )
-        .join("");
+      const providerLabel = getArchiveLabel(article);
+      const coverImage = article.video?.thumbnail ?? article.heroImage;
 
       return `
         <article class="group overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-white/70 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
           <a href="${escapeAttribute(article.urlPath)}" class="block">
-            <div class="aspect-[4/3] overflow-hidden bg-gotland-stoneDark/30">
+            <div class="aspect-[4/5] overflow-hidden bg-gotland-stoneDark/30">
               <img
-                src="${escapeAttribute(article.heroImage)}"
+                src="${escapeAttribute(coverImage)}"
                 alt="${escapeAttribute(article.title)}"
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               >
             </div>
             <div class="space-y-5 p-6 md:p-8">
               <div class="space-y-3">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">${formatDate(article.publishedAt)}</p>
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">${providerLabel} • ${formatDate(
+                  article.publishedAt,
+                )}</p>
                 <h2 class="font-serif text-3xl leading-tight text-gotland-deep transition-colors group-hover:text-gotland-pine">${escapeHtml(
                   article.title,
                 )}</h2>
                 <p class="text-base leading-8 text-gotland-deep/80">${escapeHtml(article.excerpt)}</p>
               </div>
-              <div class="flex flex-wrap gap-2">${tags}</div>
               <span class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-gotland-deep">
-                Läs artikel
+                ${article.video ? "Titta vidare" : "Läs vidare"}
                 <span aria-hidden="true">→</span>
               </span>
             </div>
@@ -56,24 +51,24 @@ export function renderArticleArchivePage({ template, articles, shell = {} }) {
 
   const siteShell = renderSiteShell({
     ...shell,
-    activeNavKey: null,
+    activeNavKey: "archive",
     brandHref: "/",
   });
 
   return injectTemplate(template, {
-    pageTitle: "Artiklar | Gotlandstider",
+    pageTitle: "Arkiv | Gotlandstider",
     metaDescription:
-      "Redaktionella artiklar från Gotlandstider om Gotland, Ljugarn, upplevelser, hem och sommarhusprojekt.",
+      "Ett växande arkiv med guider, berättelser, videor och uppdateringar från Gotland, Ljugarn och livet på ön.",
     canonicalUrl: `${SITE_URL}/articles/`,
-    ogTitle: "Artiklar | Gotlandstider",
+    ogTitle: "Arkiv | Gotlandstider",
     ogDescription:
-      "Utforska artiklar från Gotlandstider om Gotland, arkitektur, utflykter och livet på ön.",
-    ogImage: `${SITE_URL}${articles[0]?.heroImage ?? "/content/hero-coastline.webp"}`,
+      "Utforska Gotlandstiders arkiv med videor, guider, berättelser och uppdateringar från Gotland och Ljugarn.",
+    ogImage: `${SITE_URL}${articles[0]?.video?.thumbnail ?? articles[0]?.heroImage ?? "/content/hero-coastline.webp"}`,
     cssHref: CSS_HREF,
     faviconHref: FAVICON_HREF,
-    pageHeading: "Artiklar från ön",
+    pageHeading: "Arkiv från ön",
     lead:
-      "Ett växande arkiv med guider, berättelser och uppdateringar från Gotland och projektet i Ljugarn.",
+      "Ett växande arkiv med tips, guider, berättelser och glimtar från Gotland, Ljugarn och våra favoritplatser på ön.",
     articleCards,
     siteHeader: siteShell.siteHeader,
     siteFooter: siteShell.siteFooter,
@@ -82,9 +77,12 @@ export function renderArticleArchivePage({ template, articles, shell = {} }) {
 }
 
 export function renderArticleDetailPage({ template, article, shell = {} }) {
+  const isVideoArticle = Boolean(article.video);
+  const mediaBlock = isVideoArticle ? renderVideoMedia(article) : "";
+  const socialLinks = isVideoArticle ? renderSocialLinks(article.video.socialLinks) : "";
   const siteShell = renderSiteShell({
     ...shell,
-    activeNavKey: null,
+    activeNavKey: "archive",
     brandHref: "/",
   });
 
@@ -92,17 +90,30 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
     pageTitle: `${article.title} | Gotlandstider`,
     metaDescription: article.excerpt,
     canonicalUrl: `${SITE_URL}${article.urlPath}`,
+    ogType: isVideoArticle ? "video.other" : "article",
     ogTitle: `${article.title} | Gotlandstider`,
     ogDescription: article.excerpt,
-    ogImage: `${SITE_URL}${article.heroImage}`,
+    ogImage: `${SITE_URL}${article.video?.thumbnail ?? article.heroImage}`,
     cssHref: CSS_HREF,
     faviconHref: FAVICON_HREF,
+    backHref: "/articles/",
+    backLabel: "Tillbaka till arkivet",
+    contentLabel: isVideoArticle ? getDetailLabel(article) : "Artikel",
     articleTitle: article.title,
-    publishedLabel: formatDate(article.publishedAt),
-    updatedLabel: formatDate(article.updatedAt),
     articleExcerpt: article.excerpt,
-    heroImage: article.heroImage,
-    heroImageAlt: article.title,
+    publishedLabel: formatDate(article.publishedAt),
+    updatedMetaBlock: isVideoArticle
+      ? ""
+      : `
+          <div>
+            <dt class="text-xs font-bold uppercase tracking-[0.18em] text-gotland-pine">Uppdaterad</dt>
+            <dd class="mt-2 text-base text-gotland-deep">${formatDate(article.updatedAt)}</dd>
+          </div>
+        `,
+    socialLinks,
+    coverImage: article.video?.thumbnail ?? article.heroImage,
+    coverImageAlt: article.title,
+    mediaBlock,
     tagList: article.tags
       .map(
         (tag) =>
@@ -112,7 +123,12 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
       )
       .join(""),
     articleBody: renderMarkdown(article.body),
-    articlePath: article.urlPath,
+    bodyWrapperClass: isVideoArticle
+      ? "mx-auto max-w-3xl space-y-6"
+      : "mx-auto max-w-3xl space-y-6",
+    bodySectionClass: isVideoArticle
+      ? "mt-10 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12"
+      : "mt-14 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12",
     siteHeader: siteShell.siteHeader,
     siteFooter: siteShell.siteFooter,
     siteScripts: siteShell.siteScripts,
@@ -174,6 +190,8 @@ export function toArticlePageModel(article) {
     draft: article.data.draft,
     body: article.body,
     urlPath: `/articles/${article.data.slug}/`,
+    ...(article.data.video ? { video: article.data.video } : {}),
+    ...(article.data.homepage ? { homepage: article.data.homepage } : {}),
   };
 }
 
@@ -187,6 +205,71 @@ export async function loadPageTemplateBundle(rootDir, templateName) {
     template,
     shell,
   };
+}
+
+function renderVideoMedia(article) {
+  return article.video.provider === "legacy-local" ? renderLegacyVideo(article) : renderEmbeddedVideo(article);
+}
+
+function renderLegacyVideo(article) {
+  return `
+    <div class="mt-14 overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-gotland-deep shadow-xl">
+      <div class="mx-auto max-w-[420px]">
+        <div class="aspect-[9/16]">
+          <video
+            class="h-full w-full object-cover"
+            controls
+            playsinline
+            preload="metadata"
+            poster="${escapeAttribute(article.video.thumbnail)}"
+          >
+            <source src="${escapeAttribute(article.video.legacySources.webm)}" type="video/webm">
+            <source src="${escapeAttribute(article.video.legacySources.mp4)}" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderEmbeddedVideo(article) {
+  return `
+    <div class="mt-14 overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-gotland-deep shadow-xl">
+      <div class="aspect-video">
+        <iframe
+          class="h-full w-full"
+          src="${escapeAttribute(article.video.embedUrl)}"
+          title="${escapeAttribute(article.title)}"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </div>
+  `;
+}
+
+function renderSocialLinks(socialLinks) {
+  const links = Object.entries(socialLinks ?? {})
+    .filter(([, value]) => value)
+    .map(([key, value]) => {
+      const label = key === "instagram" ? "Instagram" : key === "tiktok" ? "TikTok" : key;
+      return `<a href="${escapeAttribute(value)}" class="rounded-full border border-gotland-stoneDark bg-white/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-gotland-deep transition-colors hover:text-gotland-rust">${escapeHtml(
+        label,
+      )}</a>`;
+    })
+    .join("");
+
+  if (!links) {
+    return "";
+  }
+
+  return `
+    <div class="flex flex-wrap gap-3">
+      ${links}
+    </div>
+  `;
 }
 
 function injectTemplate(template, values) {
@@ -209,6 +292,18 @@ function renderInlineMarkdown(text) {
   html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
 
   return html;
+}
+
+function getArchiveLabel(article) {
+  if (!article.video) {
+    return "Artikel";
+  }
+
+  return article.video.provider === "legacy-local" ? "Video" : "Embed";
+}
+
+function getDetailLabel(article) {
+  return article.video.provider === "legacy-local" ? "Lokalt videoarkiv" : "Extern videospelare";
 }
 
 function formatDate(value) {

@@ -27,7 +27,7 @@ test("writeHomepageShell keeps the homepage header and footer in sync with the s
     assert.match(homepageHtml, /GENERATED_SITE_FOOTER_START/);
     assert.match(homepageHtml, /href="#stories" class="hover:text-gotland-rust transition-colors">Upplevelser</);
     assert.match(homepageHtml, /href="#house" class="hover:text-gotland-rust transition-colors">Sommarhuset</);
-    assert.match(homepageHtml, /href="\/videos\/" class="hover:text-gotland-rust transition-colors">Arkivet</);
+    assert.match(homepageHtml, /href="\/articles\/" class="hover:text-gotland-rust transition-colors">Arkivet</);
     assert.match(homepageHtml, /href="mailto:info@gotlandstider\.se"/);
     assert.doesNotMatch(homepageHtml, /cdn-cgi\/l\/email-protection/);
   } finally {

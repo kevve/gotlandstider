@@ -2,6 +2,8 @@ import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
+import { parse as parseYaml } from "yaml";
+
 const ARTICLE_REQUIRED_FIELDS = [
   "title",
   "slug",
@@ -10,19 +12,6 @@ const ARTICLE_REQUIRED_FIELDS = [
   "updatedAt",
   "heroImage",
   "tags",
-  "featured",
-  "draft",
-];
-
-const VIDEO_REQUIRED_FIELDS = [
-  "title",
-  "slug",
-  "excerpt",
-  "publishedAt",
-  "thumbnail",
-  "provider",
-  "embedUrl",
-  "socialLinks",
   "featured",
   "draft",
 ];
@@ -38,12 +27,7 @@ const LEGACY_VIDEO_SLUG_ALLOWLIST = new Set([
 
 export async function loadContentCollections(rootDir = process.cwd()) {
   const articlesDir = path.join(rootDir, "content", "articles");
-  const videosDir = path.join(rootDir, "content", "videos");
-
-  const [articleEntries, videoEntries] = await Promise.all([
-    readContentFiles(articlesDir, ".md"),
-    readContentFiles(videosDir, ".json"),
-  ]);
+  const articleEntries = await readContentFiles(articlesDir, ".md");
 
   const articles = await Promise.all(
     articleEntries.map(async (entry) => {
@@ -52,26 +36,15 @@ export async function loadContentCollections(rootDir = process.cwd()) {
     }),
   );
 
-  const videos = await Promise.all(
-    videoEntries.map(async (entry) => {
-      const raw = await fs.readFile(entry.absolutePath, "utf8");
-      return parseVideoFile(entry.absolutePath, raw);
-    }),
-  );
-
-  return { articles, videos };
+  return { articles };
 }
 
 export async function validateContentCollections(rootDir = process.cwd()) {
-  const { articles, videos } = await loadContentCollections(rootDir);
-  const errors = [
-    ...validateArticles(articles, rootDir),
-    ...validateVideos(videos, rootDir),
-  ];
+  const { articles } = await loadContentCollections(rootDir);
+  const errors = validateArticles(articles, rootDir);
 
   return {
     articles,
-    videos,
     errors,
     valid: errors.length === 0,
   };
@@ -90,23 +63,6 @@ export function parseArticleFile(filePath, raw) {
     stem: path.basename(filePath, path.extname(filePath)),
     body,
     data: frontMatter,
-  };
-}
-
-export function parseVideoFile(filePath, raw) {
-  let data;
-
-  try {
-    data = JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`${relativePath(filePath)}: invalid JSON (${error.message})`);
-  }
-
-  return {
-    filePath,
-    filename: path.basename(filePath),
-    stem: path.basename(filePath, path.extname(filePath)),
-    data,
   };
 }
 
@@ -139,63 +95,9 @@ function validateArticles(articles, rootDir) {
 
     validateBooleanField(article, "featured", errors);
     validateBooleanField(article, "draft", errors);
+    validateVideoFields(article, errors, rootDir);
+    validateHomepageFields(article, errors);
     trackDuplicateSlug(article, slugMap, errors);
-  }
-
-  return errors;
-}
-
-function validateVideos(videos, rootDir) {
-  const errors = [];
-  const slugMap = new Map();
-
-  for (const video of videos) {
-    for (const field of VIDEO_REQUIRED_FIELDS) {
-      if (!(field in video.data)) {
-        errors.push(`${relativePath(video.filePath)}: missing required field "${field}"`);
-      }
-    }
-
-    validateCommonContentFields({
-      entry: video,
-      errors,
-      dateFields: ["publishedAt"],
-      assetFields: ["thumbnail"],
-      rootDir,
-    });
-
-    validateBooleanField(video, "featured", errors);
-    validateBooleanField(video, "draft", errors);
-
-    if ("provider" in video.data && typeof video.data.provider !== "string") {
-      errors.push(`${relativePath(video.filePath)}: "provider" must be a string`);
-    }
-
-    if ("embedUrl" in video.data && !isOptionalUrl(video.data.embedUrl)) {
-      errors.push(`${relativePath(video.filePath)}: "embedUrl" must be an https URL`);
-    }
-
-    if ("socialLinks" in video.data) {
-      const socialLinks = video.data.socialLinks;
-      if (!isPlainObject(socialLinks)) {
-        errors.push(`${relativePath(video.filePath)}: "socialLinks" must be an object`);
-      } else {
-        for (const [key, value] of Object.entries(socialLinks)) {
-          if (value !== null && !isHttpsUrl(value)) {
-            errors.push(`${relativePath(video.filePath)}: social link "${key}" must be null or an https URL`);
-          }
-        }
-      }
-    }
-
-    if (video.data.provider === "legacy-local") {
-      validateGrandfatheredLegacyVideo(video, errors);
-      validateLegacySources(video, errors, rootDir);
-    } else if ("legacySources" in video.data) {
-      validateLegacySources(video, errors, rootDir);
-    }
-
-    trackDuplicateSlug(video, slugMap, errors);
   }
 
   return errors;
@@ -221,61 +123,196 @@ function validateCommonContentFields({ entry, errors, dateFields, assetFields, r
   }
 
   for (const field of assetFields) {
-    if (!(field in entry.data)) {
-      continue;
-    }
-
-    const assetPath = entry.data[field];
-    if (typeof assetPath !== "string" || !assetPath.startsWith("/")) {
-      errors.push(`${relativePath(entry.filePath)}: "${field}" must be a root-relative path`);
-      continue;
-    }
-
-    if (!fileExists(path.join(rootDir, assetPath.slice(1)))) {
-      errors.push(`${relativePath(entry.filePath)}: "${field}" points to a missing file (${assetPath})`);
+    if (field in entry.data) {
+      validateRootRelativeAssetPath({
+        entry,
+        value: entry.data[field],
+        field,
+        errors,
+        rootDir,
+      });
     }
   }
 }
 
-function validateLegacySources(video, errors, rootDir) {
-  const legacySources = video.data.legacySources;
-
-  if (!isPlainObject(legacySources)) {
-    errors.push(`${relativePath(video.filePath)}: "legacySources" must be an object for legacy-local videos`);
+function validateVideoFields(article, errors, rootDir) {
+  if (!("video" in article.data)) {
     return;
   }
 
-  if (video.data.provider !== "legacy-local") {
-    errors.push(`${relativePath(video.filePath)}: "legacySources" is only allowed when provider is "legacy-local"`);
+  const { video } = article.data;
+
+  if (!isPlainObject(video)) {
+    errors.push(`${relativePath(article.filePath)}: "video" must be an object`);
+    return;
+  }
+
+  for (const field of ["provider", "embedUrl", "thumbnail", "socialLinks"]) {
+    if (!(field in video)) {
+      errors.push(`${relativePath(article.filePath)}: video.${field} is required when "video" is present`);
+    }
+  }
+
+  if ("provider" in video && typeof video.provider !== "string") {
+    errors.push(`${relativePath(article.filePath)}: "video.provider" must be a string`);
+  }
+
+  if ("embedUrl" in video && !isOptionalUrl(video.embedUrl)) {
+    errors.push(`${relativePath(article.filePath)}: "video.embedUrl" must be an https URL`);
+  }
+
+  if ("thumbnail" in video) {
+    validateRootRelativeAssetPath({
+      entry: article,
+      value: video.thumbnail,
+      field: "video.thumbnail",
+      errors,
+      rootDir,
+    });
+  }
+
+  if ("socialLinks" in video) {
+    validateSocialLinks(video.socialLinks, article.filePath, errors, "video.socialLinks");
+  }
+
+  if (video.provider === "legacy-local") {
+    validateGrandfatheredLegacyVideo(article, errors);
+    validateLegacySources(article, video.legacySources, errors, rootDir);
+  } else if ("legacySources" in video) {
+    validateLegacySources(article, video.legacySources, errors, rootDir, false);
+  }
+}
+
+function validateHomepageFields(article, errors) {
+  if (!("homepage" in article.data)) {
+    return;
+  }
+
+  const { homepage } = article.data;
+
+  if (!isPlainObject(homepage)) {
+    errors.push(`${relativePath(article.filePath)}: "homepage" must be an object`);
+    return;
+  }
+
+  if (!("video" in article.data)) {
+    errors.push(`${relativePath(article.filePath)}: "homepage" metadata is only allowed for articles with a "video" block`);
+  }
+
+  if ("badge" in homepage && typeof homepage.badge !== "string") {
+    errors.push(`${relativePath(article.filePath)}: "homepage.badge" must be a string`);
+  }
+
+  if ("subtitle" in homepage && typeof homepage.subtitle !== "string") {
+    errors.push(`${relativePath(article.filePath)}: "homepage.subtitle" must be a string`);
+  }
+
+  if ("order" in homepage && !Number.isInteger(homepage.order)) {
+    errors.push(`${relativePath(article.filePath)}: "homepage.order" must be an integer`);
+  }
+
+  if ("description" in homepage && typeof homepage.description !== "string") {
+    errors.push(`${relativePath(article.filePath)}: "homepage.description" must be a string`);
+  }
+
+  if ("heading" in homepage) {
+    if (!isPlainObject(homepage.heading)) {
+      errors.push(`${relativePath(article.filePath)}: "homepage.heading" must be an object`);
+    } else {
+      if ("prefix" in homepage.heading && typeof homepage.heading.prefix !== "string") {
+        errors.push(`${relativePath(article.filePath)}: "homepage.heading.prefix" must be a string`);
+      }
+      if ("accent" in homepage.heading && typeof homepage.heading.accent !== "string") {
+        errors.push(`${relativePath(article.filePath)}: "homepage.heading.accent" must be a string`);
+      }
+    }
+  }
+
+  if ("highlights" in homepage) {
+    if (!Array.isArray(homepage.highlights)) {
+      errors.push(`${relativePath(article.filePath)}: "homepage.highlights" must be an array`);
+    } else {
+      homepage.highlights.forEach((highlight, index) => {
+        if (!isPlainObject(highlight)) {
+          errors.push(`${relativePath(article.filePath)}: "homepage.highlights[${index}]" must be an object`);
+          return;
+        }
+
+        for (const field of ["label", "title", "description"]) {
+          if (!(field in highlight) || typeof highlight[field] !== "string" || highlight[field].trim() === "") {
+            errors.push(
+              `${relativePath(article.filePath)}: "homepage.highlights[${index}].${field}" must be a non-empty string`,
+            );
+          }
+        }
+      });
+    }
+  }
+}
+
+function validateLegacySources(article, legacySources, errors, rootDir, requireLegacyProvider = true) {
+  if (!isPlainObject(legacySources)) {
+    errors.push(`${relativePath(article.filePath)}: "video.legacySources" must be an object for legacy-local videos`);
+    return;
+  }
+
+  if (requireLegacyProvider === false) {
+    errors.push(`${relativePath(article.filePath)}: "video.legacySources" is only allowed when video.provider is "legacy-local"`);
   }
 
   for (const key of ["webm", "mp4"]) {
     if (!(key in legacySources)) {
-      errors.push(`${relativePath(video.filePath)}: legacy source "${key}" is required for legacy-local videos`);
+      errors.push(`${relativePath(article.filePath)}: video.legacySources.${key} is required for legacy-local videos`);
       continue;
     }
 
     const sourcePath = legacySources[key];
     if (typeof sourcePath !== "string" || !sourcePath.startsWith("/content/")) {
-      errors.push(`${relativePath(video.filePath)}: legacy source "${key}" must be a /content/ path`);
+      errors.push(`${relativePath(article.filePath)}: video.legacySources.${key} must be a /content/ path`);
       continue;
     }
 
     if (!fileExists(path.join(rootDir, sourcePath.slice(1)))) {
-      errors.push(`${relativePath(video.filePath)}: legacy source "${key}" points to a missing file (${sourcePath})`);
+      errors.push(
+        `${relativePath(article.filePath)}: video.legacySources.${key} points to a missing file (${sourcePath})`,
+      );
     }
   }
 }
 
-function validateGrandfatheredLegacyVideo(video, errors) {
-  if (typeof video.data.slug !== "string") {
+function validateGrandfatheredLegacyVideo(article, errors) {
+  if (typeof article.data.slug !== "string") {
     return;
   }
 
-  if (!LEGACY_VIDEO_SLUG_ALLOWLIST.has(video.data.slug)) {
+  if (!LEGACY_VIDEO_SLUG_ALLOWLIST.has(article.data.slug)) {
     errors.push(
-      `${relativePath(video.filePath)}: "legacy-local" is reserved for existing grandfathered videos; use an external embed provider for new entries`,
+      `${relativePath(article.filePath)}: "video.provider: legacy-local" is reserved for existing grandfathered videos; use an external embed provider for new entries`,
     );
+  }
+}
+
+function validateSocialLinks(socialLinks, filePath, errors, fieldName) {
+  if (!isPlainObject(socialLinks)) {
+    errors.push(`${relativePath(filePath)}: "${fieldName}" must be an object`);
+    return;
+  }
+
+  for (const [key, value] of Object.entries(socialLinks)) {
+    if (value !== null && !isHttpsUrl(value)) {
+      errors.push(`${relativePath(filePath)}: ${fieldName}.${key} must be null or an https URL`);
+    }
+  }
+}
+
+function validateRootRelativeAssetPath({ entry, value, field, errors, rootDir }) {
+  if (typeof value !== "string" || !value.startsWith("/")) {
+    errors.push(`${relativePath(entry.filePath)}: "${field}" must be a root-relative path`);
+    return;
+  }
+
+  if (!fileExists(path.join(rootDir, value.slice(1)))) {
+    errors.push(`${relativePath(entry.filePath)}: "${field}" points to a missing file (${value})`);
   }
 }
 
@@ -313,54 +350,19 @@ function parseFrontMatter(filePath, raw) {
 
   const frontMatterBlock = raw.slice(4, closingIndex);
   const body = raw.slice(closingIndex + 5).trim();
-  const frontMatter = {};
-  let activeArrayKey = null;
+  let frontMatter;
 
-  for (const line of frontMatterBlock.split("\n")) {
-    if (line.trim() === "") {
-      continue;
-    }
+  try {
+    frontMatter = parseYaml(frontMatterBlock);
+  } catch (error) {
+    throw new Error(`${relativePath(filePath)}: invalid YAML front matter (${error.message})`);
+  }
 
-    if (line.startsWith("  - ")) {
-      if (!activeArrayKey) {
-        throw new Error(`${relativePath(filePath)}: array item found before an array key`);
-      }
-
-      frontMatter[activeArrayKey].push(line.slice(4));
-      continue;
-    }
-
-    activeArrayKey = null;
-    const separatorIndex = line.indexOf(":");
-    if (separatorIndex === -1) {
-      throw new Error(`${relativePath(filePath)}: invalid front matter line "${line}"`);
-    }
-
-    const key = line.slice(0, separatorIndex).trim();
-    const rawValue = line.slice(separatorIndex + 1).trim();
-
-    if (rawValue === "") {
-      frontMatter[key] = [];
-      activeArrayKey = key;
-      continue;
-    }
-
-    frontMatter[key] = parseScalar(rawValue);
+  if (!isPlainObject(frontMatter)) {
+    throw new Error(`${relativePath(filePath)}: front matter must be a YAML object`);
   }
 
   return { frontMatter, body };
-}
-
-function parseScalar(rawValue) {
-  if (rawValue === "true") {
-    return true;
-  }
-
-  if (rawValue === "false") {
-    return false;
-  }
-
-  return rawValue;
 }
 
 async function readContentFiles(directoryPath, extension) {
