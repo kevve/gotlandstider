@@ -51,10 +51,14 @@ test("buildVideoPages returns archive and detail pages for videos", async () => 
   assert.match(archivePage.html, /Årets loppis-favoriter/);
   assert.match(archivePage.html, /<footer id="contact"/);
   assert.match(archivePage.html, /src="\/navscripts\.js"/);
+  assert.match(archivePage.html, /href="\/#stories" class="hover:text-gotland-rust transition-colors">Upplevelser</);
+  assert.match(archivePage.html, /href="\/#house" class="hover:text-gotland-rust transition-colors">Sommarhuset</);
   assert.match(archivePage.html, /href="\/videos\/" class="font-semibold text-gotland-rust transition-colors"/);
   assert.match(detailPage.html, /Lokalt videoarkiv/);
   assert.match(detailPage.html, /story-brunan-ljugarn\.mp4/);
   assert.match(detailPage.html, /<footer id="contact"/);
+  assert.match(detailPage.html, /href="\/#stories" class="hover:text-gotland-rust transition-colors">Upplevelser</);
+  assert.match(detailPage.html, /href="\/#house" class="hover:text-gotland-rust transition-colors">Sommarhuset</);
   assert.match(detailPage.html, /href="\/videos\/" class="font-semibold text-gotland-rust transition-colors"/);
 });
 

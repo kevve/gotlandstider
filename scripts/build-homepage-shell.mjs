@@ -21,6 +21,8 @@ export async function writeHomepageShell(rootDir = process.cwd()) {
     ...shellTemplates,
     brandHref: "#",
     activeNavKey: null,
+    experiencesHref: "#stories",
+    houseHref: "#house",
   });
 
   const nextHtml = replaceBlock(
