@@ -7,12 +7,13 @@ import { pathToFileURL } from "node:url";
 import { loadContentCollections } from "./lib/content-validation.mjs";
 import { buildContentIndexes } from "./lib/content-indexes.mjs";
 import {
-  loadTemplate,
+  loadPageTemplateBundle,
   renderArticleArchivePage,
   renderArticleDetailPage,
   toArticlePageModel,
 } from "./lib/article-rendering.mjs";
 import {
+  loadVideoTemplateBundle,
   renderVideoArchivePage,
   renderVideoDetailPage,
   toVideoPageModel,
@@ -21,8 +22,10 @@ import {
 export async function buildArticlePages(rootDir = process.cwd()) {
   const { articles } = await loadContentCollections(rootDir);
   const indexes = await buildContentIndexes(rootDir);
-  const archiveTemplate = await loadTemplate(rootDir, "article-archive.html");
-  const detailTemplate = await loadTemplate(rootDir, "article-detail.html");
+  const [{ template: archiveTemplate, shell }, { template: detailTemplate }] = await Promise.all([
+    loadPageTemplateBundle(rootDir, "article-archive.html"),
+    loadPageTemplateBundle(rootDir, "article-detail.html"),
+  ]);
 
   const publishedArticles = articles
     .map((article) => toArticlePageModel(article))
@@ -37,6 +40,7 @@ export async function buildArticlePages(rootDir = process.cwd()) {
             html: renderArticleArchivePage({
               template: archiveTemplate,
               articles: publishedArticles,
+              shell,
             }),
           },
         ]
@@ -46,6 +50,7 @@ export async function buildArticlePages(rootDir = process.cwd()) {
       html: renderArticleDetailPage({
         template: detailTemplate,
         article,
+        shell,
       }),
     })),
   ];
@@ -59,8 +64,10 @@ export async function buildArticlePages(rootDir = process.cwd()) {
 export async function buildVideoPages(rootDir = process.cwd()) {
   const { videos } = await loadContentCollections(rootDir);
   const indexes = await buildContentIndexes(rootDir);
-  const archiveTemplate = await loadTemplate(rootDir, "video-archive.html");
-  const detailTemplate = await loadTemplate(rootDir, "video-detail.html");
+  const [{ template: archiveTemplate, shell }, { template: detailTemplate }] = await Promise.all([
+    loadVideoTemplateBundle(rootDir, "video-archive.html"),
+    loadVideoTemplateBundle(rootDir, "video-detail.html"),
+  ]);
 
   const publishedVideos = videos
     .map((video) => toVideoPageModel(video))
@@ -79,6 +86,7 @@ export async function buildVideoPages(rootDir = process.cwd()) {
             html: renderVideoArchivePage({
               template: archiveTemplate,
               videos: publishedVideos,
+              shell,
             }),
           },
         ]
@@ -88,6 +96,7 @@ export async function buildVideoPages(rootDir = process.cwd()) {
       html: renderVideoDetailPage({
         template: detailTemplate,
         video,
+        shell,
       }),
     })),
   ];

@@ -1,4 +1,5 @@
 import { loadTemplate } from "./article-rendering.mjs";
+import { loadSiteShell, renderSiteShell } from "./site-shell.mjs";
 
 const SITE_URL = "https://www.gotlandstider.se";
 const CSS_HREF = "/output.css?v=20260313-2";
@@ -6,7 +7,7 @@ const FAVICON_HREF = "/favicon-v2.svg";
 
 export { loadTemplate };
 
-export function renderVideoArchivePage({ template, videos }) {
+export function renderVideoArchivePage({ template, videos, shell = {} }) {
   const videoCards = videos
     .map((video) => {
       const providerLabel = video.provider === "legacy-local" ? "Video" : "Embed";
@@ -42,6 +43,12 @@ export function renderVideoArchivePage({ template, videos }) {
     })
     .join("");
 
+  const siteShell = renderSiteShell({
+    ...shell,
+    activeNavKey: "archive",
+    brandHref: "/",
+  });
+
   return injectTemplate(template, {
     pageTitle: "Videor | Gotlandstider",
     metaDescription:
@@ -57,12 +64,20 @@ export function renderVideoArchivePage({ template, videos }) {
     lead:
       "Ett växande videoarkiv med tips, guider och glimtar från Gotland, Ljugarn och våra favoritplatser på ön.",
     videoCards,
+    siteHeader: siteShell.siteHeader,
+    siteFooter: siteShell.siteFooter,
+    siteScripts: siteShell.siteScripts,
   });
 }
 
-export function renderVideoDetailPage({ template, video }) {
+export function renderVideoDetailPage({ template, video, shell = {} }) {
   const mediaBlock = video.provider === "legacy-local" ? renderLegacyVideo(video) : renderEmbeddedVideo(video);
   const socialLinks = renderSocialLinks(video.socialLinks);
+  const siteShell = renderSiteShell({
+    ...shell,
+    activeNavKey: "archive",
+    brandHref: "/",
+  });
 
   return injectTemplate(template, {
     pageTitle: `${video.title} | Gotlandstider`,
@@ -81,6 +96,9 @@ export function renderVideoDetailPage({ template, video }) {
     thumbnailAlt: video.title,
     mediaBlock,
     socialLinks,
+    siteHeader: siteShell.siteHeader,
+    siteFooter: siteShell.siteFooter,
+    siteScripts: siteShell.siteScripts,
   });
 }
 
@@ -189,4 +207,16 @@ function escapeHtml(value) {
 
 function escapeAttribute(value) {
   return escapeHtml(value);
+}
+
+export async function loadVideoTemplateBundle(rootDir, templateName) {
+  const [template, shell] = await Promise.all([
+    loadTemplate(rootDir, templateName),
+    loadSiteShell(rootDir),
+  ]);
+
+  return {
+    template,
+    shell,
+  };
 }
