@@ -53,6 +53,7 @@ jobs:
             content \
             fonts \
             generated \
+            homevideoscripts.js \
             videos \
             CNAME \
             favicon-v2.svg \
