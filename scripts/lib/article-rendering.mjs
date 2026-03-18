@@ -92,6 +92,7 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
   const socialLinks = isVideoArticle ? renderSocialLinks(article.video.socialLinks) : "";
   const tagDisplay = getArchiveTagDisplay(article.tags);
   const tagMetadata = [tagDisplay.metaPrefix, tagDisplay.metaSuffix].filter(Boolean).join(" • ");
+  const relatedArticles = article.relatedArticles ?? [];
   const siteShell = renderSiteShell({
     ...shell,
     activeNavKey: "archive",
@@ -115,13 +116,12 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
     socialLinks,
     mediaBlock,
     tagRow: renderDetailTagRow(tagDisplay, tagMetadata),
+    relatedArticlesSection: renderRelatedArticlesSection(relatedArticles),
     articleBody: renderMarkdown(article.body),
-    bodyWrapperClass: isVideoArticle
-      ? "mx-auto max-w-3xl space-y-6"
-      : "mx-auto max-w-3xl space-y-6",
-    bodySectionClass: isVideoArticle
-      ? "mt-12 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12"
-      : "mt-12 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12",
+    bodyWrapperClass: "space-y-6",
+    bodySectionClass:
+      "mt-2 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12 lg:col-start-1 lg:mt-0",
+    relatedSectionClass: "lg:col-start-2",
     siteHeader: siteShell.siteHeader,
     siteFooter: siteShell.siteFooter,
     siteScripts: siteShell.siteScripts,
@@ -271,6 +271,54 @@ function renderSocialLinks(socialLinks) {
     <div class="flex flex-wrap gap-3">
       ${links}
     </div>
+  `;
+}
+
+function renderRelatedArticlesSection(relatedArticles) {
+  if (!relatedArticles.length) {
+    return "";
+  }
+
+  const cards = relatedArticles.map((article) => renderRelatedArticleCard(article)).join("");
+
+  return `
+    <section class="mt-12 space-y-5 lg:mt-8">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">Arkiv</p>
+        <h2 class="mt-2 font-serif text-2xl leading-tight text-gotland-deep">Fler upplevelser</h2>
+      </div>
+      <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide -mx-6 px-6 lg:mx-0 lg:grid lg:grid-cols-2 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0">
+        ${cards}
+      </div>
+    </section>
+  `;
+}
+
+function renderRelatedArticleCard(article) {
+  const coverImage = article.video?.thumbnail ?? article.heroImage;
+  const tagDisplay = getArchiveTagDisplay(article.tags);
+
+  return `
+    <article class="min-w-[72vw] snap-center lg:min-w-0">
+      <a href="${escapeAttribute(article.urlPath)}" class="group block overflow-hidden rounded-[1.25rem] border border-gotland-stoneDark bg-white/70 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <div class="relative aspect-video overflow-hidden bg-gotland-stoneDark/30">
+          <div class="absolute inset-0 z-10 bg-gotland-deep/10 transition-colors group-hover:bg-transparent"></div>
+          <div class="absolute left-3 top-3 z-20 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${getArchiveBadgeClass(
+            tagDisplay.badge,
+          )}">${escapeHtml(tagDisplay.badge)}</div>
+          <img
+            src="${escapeAttribute(coverImage)}"
+            alt="${escapeAttribute(article.title)}"
+            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          >
+        </div>
+        <div class="p-4">
+          <h3 class="font-serif text-lg leading-snug text-gotland-deep transition-colors group-hover:text-gotland-rust">${escapeHtml(
+            article.title,
+          )}</h3>
+        </div>
+      </a>
+    </article>
   `;
 }
 

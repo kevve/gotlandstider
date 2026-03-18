@@ -37,6 +37,13 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(detailPage.html, /Gotland • Inredning/);
   assert.match(detailPage.html, /Instagram/);
   assert.match(detailPage.html, /TikTok/);
+  assert.match(detailPage.html, /Fler upplevelser/);
+  assert.match(detailPage.html, /min-w-\[72vw\]/);
+  assert.match(detailPage.html, /lg:grid-cols-2/);
+  assert.match(detailPage.html, /href="\/articles\/en-strand-for-stora-och-sma\/"/);
+  assert.match(detailPage.html, /href="\/articles\/fem-platser-att-besoka-pa-gotland-2026\/"/);
+  assert.match(detailPage.html, /href="\/articles\/musikquiz-och-god-mat-vid-stranden\/"/);
+  assert.doesNotMatch(detailPage.html, /Ett stenkast från Visby hittar du stranden Snäck/);
   assert.doesNotMatch(detailPage.html, /Publicerad/);
   assert.doesNotMatch(detailPage.html, /Lokalt videoarkiv/);
   assert.doesNotMatch(detailPage.html, /<img[^>]+story-loppisar-gotland\.webp/);
@@ -96,6 +103,7 @@ test("writePages writes deterministic article pages", async () => {
     assert.match(articleArchiveHtml, /src="\/navscripts\.js"/);
     assert.match(articleDetailHtml, /Årets loppis-favoriter/);
     assert.match(articleDetailHtml, /story-loppisar-gotland\.webm/);
+    assert.match(articleDetailHtml, /Fler upplevelser/);
     assert.match(articleDetailHtml, /<footer id="contact"/);
   } finally {
     await removeTempDir(tempDir);
@@ -107,7 +115,7 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
     template: `
       <html>
         <head><title>{{pageTitle}}</title></head>
-        <body>{{tagRow}}{{mediaBlock}}{{socialLinks}}</body>
+        <body>{{tagRow}}{{mediaBlock}}{{socialLinks}}{{bodySectionClass}}{{relatedSectionClass}}{{relatedArticlesSection}}</body>
       </html>
     `,
     article: {
@@ -127,15 +135,29 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
         },
       },
       urlPath: "/articles/extern-video/",
+      relatedArticles: [
+        {
+          title: "Relaterad artikel",
+          excerpt: "Kort beskrivning som inte ska synas.",
+          heroImage: "/content/story-loppisar-gotland.webp",
+          tags: ["Gotland", "Loppis"],
+          urlPath: "/articles/relaterad-artikel/",
+        },
+      ],
       body: "Brödtext.",
     },
   });
 
+  assert.match(html, /lg:col-start-1/);
+  assert.match(html, /lg:col-start-2/);
   assert.match(html, /aspect-\[9\/16\]/);
   assert.match(html, /iframe/);
   assert.match(html, /youtube\.com\/embed\/example123/);
   assert.match(html, /Guide/);
   assert.match(html, /Instagram/);
+  assert.match(html, /Fler upplevelser/);
+  assert.match(html, /Relaterad artikel/);
+  assert.doesNotMatch(html, /Kort beskrivning som inte ska synas/);
   assert.doesNotMatch(html, /Publicerad/);
 });
 
@@ -208,7 +230,7 @@ test("renderArticleDetailPage omits social links and video media for non-video a
   const html = renderArticleDetailPage({
     template: `
       <html>
-        <body>{{tagRow}}{{socialLinks}}{{mediaBlock}}{{articleBody}}</body>
+        <body>{{tagRow}}{{socialLinks}}{{mediaBlock}}{{relatedArticlesSection}}{{articleBody}}</body>
       </html>
     `,
     article: {
@@ -219,6 +241,15 @@ test("renderArticleDetailPage omits social links and video media for non-video a
       heroImage: "/content/hero-coastline.webp",
       tags: ["Ljugarn", "Sommarhus", "Arkitektur"],
       urlPath: "/articles/artikel/",
+      relatedArticles: [
+        {
+          title: "Relaterad artikel",
+          excerpt: "Kort beskrivning som inte ska synas.",
+          heroImage: "/content/story-loppisar-gotland.webp",
+          tags: ["Gotland", "Loppis"],
+          urlPath: "/articles/relaterad-artikel/",
+        },
+      ],
       body: "Brödtext.",
     },
   });
@@ -228,6 +259,7 @@ test("renderArticleDetailPage omits social links and video media for non-video a
   assert.doesNotMatch(html, /Instagram/);
   assert.doesNotMatch(html, /<video/);
   assert.doesNotMatch(html, /iframe/);
+  assert.match(html, /Fler upplevelser/);
   assert.match(html, /<img/);
 });
 
@@ -235,7 +267,7 @@ test("renderArticleDetailPage supports non-video articles", () => {
   const html = renderArticleDetailPage({
     template: `
       <html>
-        <body>{{tagRow}}{{mediaBlock}}{{articleBody}}</body>
+        <body>{{tagRow}}{{bodySectionClass}}{{relatedSectionClass}}{{mediaBlock}}{{relatedArticlesSection}}{{articleBody}}</body>
       </html>
     `,
     article: {
@@ -251,9 +283,48 @@ test("renderArticleDetailPage supports non-video articles", () => {
   });
 
   assert.match(html, /Guide/);
+  assert.match(html, /lg:col-start-1/);
+  assert.match(html, /lg:col-start-2/);
   assert.doesNotMatch(html, /iframe/);
   assert.doesNotMatch(html, /Publicerad/);
   assert.match(html, /Brödtext/);
+});
+
+test("renderArticleDetailPage limits related items to available articles and excludes excerpts", () => {
+  const html = renderArticleDetailPage({
+    template: "<html><body>{{relatedArticlesSection}}</body></html>",
+    article: {
+      title: "Artikel",
+      excerpt: "Beskrivning",
+      publishedAt: "2026-03-15",
+      updatedAt: "2026-03-16",
+      heroImage: "/content/hero-coastline.webp",
+      tags: ["Guide"],
+      urlPath: "/articles/artikel/",
+      relatedArticles: [
+        {
+          title: "Relaterad ett",
+          excerpt: "Första utdraget.",
+          heroImage: "/content/story-loppisar-gotland.webp",
+          tags: ["Gotland", "Loppis"],
+          urlPath: "/articles/relaterad-ett/",
+        },
+        {
+          title: "Relaterad två",
+          excerpt: "Andra utdraget.",
+          heroImage: "/content/story-strand-snack.webp",
+          tags: ["Visby", "Stränder"],
+          urlPath: "/articles/relaterad-tva/",
+        },
+      ],
+      body: "Brödtext.",
+    },
+  });
+
+  assert.match(html, /Relaterad ett/);
+  assert.match(html, /Relaterad två/);
+  assert.doesNotMatch(html, /Första utdraget/);
+  assert.doesNotMatch(html, /Andra utdraget/);
 });
 
 async function removeTempDir(tempDir) {

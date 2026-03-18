@@ -47,7 +47,10 @@ export async function buildArticlePages(rootDir = process.cwd()) {
       outputPath: path.join(rootDir, "articles", article.slug, "index.html"),
       html: renderArticleDetailPage({
         template: detailTemplate,
-        article,
+        article: {
+          ...article,
+          relatedArticles: publishedArticles.filter((candidate) => candidate.slug !== article.slug).slice(0, 4),
+        },
         shell,
       }),
     })),
