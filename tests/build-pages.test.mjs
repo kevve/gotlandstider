@@ -37,12 +37,21 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(detailPage.html, /Gotland • Inredning/);
   assert.match(detailPage.html, /Instagram/);
   assert.match(detailPage.html, /TikTok/);
+  assert.match(detailPage.html, /hidden lg:block/);
+  assert.match(detailPage.html, /lg:hidden/);
   assert.match(detailPage.html, /Fler upplevelser/);
   assert.match(detailPage.html, /min-w-\[72vw\]/);
   assert.match(detailPage.html, /lg:grid-cols-2/);
+  assert.match(detailPage.html, /flex h-full flex-col/);
+  assert.match(detailPage.html, /line-clamp-2 font-serif text-base leading-snug/);
   assert.match(detailPage.html, /href="\/articles\/en-strand-for-stora-och-sma\/"/);
   assert.match(detailPage.html, /href="\/articles\/fem-platser-att-besoka-pa-gotland-2026\/"/);
   assert.match(detailPage.html, /href="\/articles\/musikquiz-och-god-mat-vid-stranden\/"/);
+  assert.match(
+    detailPage.html,
+    /class="flex flex-wrap gap-3"[\s\S]*hidden lg:block[\s\S]*class="lg:col-start-2"/,
+  );
+  assert.match(detailPage.html, /lg:hidden[\s\S]*Fler upplevelser/);
   assert.doesNotMatch(detailPage.html, /Ett stenkast från Visby hittar du stranden Snäck/);
   assert.doesNotMatch(detailPage.html, /Publicerad/);
   assert.doesNotMatch(detailPage.html, /Lokalt videoarkiv/);
@@ -115,7 +124,7 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
     template: `
       <html>
         <head><title>{{pageTitle}}</title></head>
-        <body>{{tagRow}}{{mediaBlock}}{{socialLinks}}{{bodySectionClass}}{{relatedSectionClass}}{{relatedArticlesSection}}</body>
+        <body>{{tagRow}}{{mediaBlock}}{{socialLinks}}{{desktopBodySection}}{{mobileBodySection}}{{relatedSectionClass}}{{relatedArticlesSection}}</body>
       </html>
     `,
     article: {
@@ -148,7 +157,8 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
     },
   });
 
-  assert.match(html, /lg:col-start-1/);
+  assert.match(html, /hidden lg:block/);
+  assert.match(html, /lg:hidden/);
   assert.match(html, /lg:col-start-2/);
   assert.match(html, /aspect-\[9\/16\]/);
   assert.match(html, /iframe/);
@@ -157,6 +167,8 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
   assert.match(html, /Instagram/);
   assert.match(html, /Fler upplevelser/);
   assert.match(html, /Relaterad artikel/);
+  assert.match(html, /flex h-full flex-col/);
+  assert.match(html, /line-clamp-2 font-serif text-base leading-snug/);
   assert.doesNotMatch(html, /Kort beskrivning som inte ska synas/);
   assert.doesNotMatch(html, /Publicerad/);
 });
@@ -230,7 +242,7 @@ test("renderArticleDetailPage omits social links and video media for non-video a
   const html = renderArticleDetailPage({
     template: `
       <html>
-        <body>{{tagRow}}{{socialLinks}}{{mediaBlock}}{{relatedArticlesSection}}{{articleBody}}</body>
+        <body>{{tagRow}}{{socialLinks}}{{mediaBlock}}{{desktopBodySection}}{{mobileBodySection}}{{relatedArticlesSection}}</body>
       </html>
     `,
     article: {
@@ -259,6 +271,8 @@ test("renderArticleDetailPage omits social links and video media for non-video a
   assert.doesNotMatch(html, /Instagram/);
   assert.doesNotMatch(html, /<video/);
   assert.doesNotMatch(html, /iframe/);
+  assert.match(html, /hidden lg:block/);
+  assert.match(html, /lg:hidden/);
   assert.match(html, /Fler upplevelser/);
   assert.match(html, /<img/);
 });
@@ -267,7 +281,7 @@ test("renderArticleDetailPage supports non-video articles", () => {
   const html = renderArticleDetailPage({
     template: `
       <html>
-        <body>{{tagRow}}{{bodySectionClass}}{{relatedSectionClass}}{{mediaBlock}}{{relatedArticlesSection}}{{articleBody}}</body>
+        <body>{{tagRow}}{{desktopBodySection}}{{mobileBodySection}}{{relatedSectionClass}}{{mediaBlock}}{{relatedArticlesSection}}</body>
       </html>
     `,
     article: {
@@ -283,7 +297,8 @@ test("renderArticleDetailPage supports non-video articles", () => {
   });
 
   assert.match(html, /Guide/);
-  assert.match(html, /lg:col-start-1/);
+  assert.match(html, /hidden lg:block/);
+  assert.match(html, /lg:hidden/);
   assert.match(html, /lg:col-start-2/);
   assert.doesNotMatch(html, /iframe/);
   assert.doesNotMatch(html, /Publicerad/);
@@ -323,6 +338,8 @@ test("renderArticleDetailPage limits related items to available articles and exc
 
   assert.match(html, /Relaterad ett/);
   assert.match(html, /Relaterad två/);
+  assert.match(html, /flex h-full flex-col/);
+  assert.match(html, /line-clamp-2 font-serif text-base leading-snug/);
   assert.doesNotMatch(html, /Första utdraget/);
   assert.doesNotMatch(html, /Andra utdraget/);
 });
