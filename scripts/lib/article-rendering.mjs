@@ -93,6 +93,7 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
   const tagDisplay = getArchiveTagDisplay(article.tags);
   const tagMetadata = [tagDisplay.metaPrefix, tagDisplay.metaSuffix].filter(Boolean).join(" • ");
   const relatedArticles = article.relatedArticles ?? [];
+  const articleBody = renderMarkdown(article.body);
   const siteShell = renderSiteShell({
     ...shell,
     activeNavKey: "archive",
@@ -117,10 +118,8 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
     mediaBlock,
     tagRow: renderDetailTagRow(tagDisplay, tagMetadata),
     relatedArticlesSection: renderRelatedArticlesSection(relatedArticles),
-    articleBody: renderMarkdown(article.body),
-    bodyWrapperClass: "space-y-6",
-    bodySectionClass:
-      "mt-2 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12 lg:col-start-1 lg:mt-0",
+    desktopBodySection: renderBodySection(articleBody, "hidden lg:block"),
+    mobileBodySection: renderBodySection(articleBody, "lg:hidden"),
     relatedSectionClass: "lg:col-start-2",
     siteHeader: siteShell.siteHeader,
     siteFooter: siteShell.siteFooter,
@@ -300,7 +299,7 @@ function renderRelatedArticleCard(article) {
 
   return `
     <article class="min-w-[72vw] snap-center lg:min-w-0">
-      <a href="${escapeAttribute(article.urlPath)}" class="group block overflow-hidden rounded-[1.25rem] border border-gotland-stoneDark bg-white/70 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <a href="${escapeAttribute(article.urlPath)}" class="group flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-gotland-stoneDark bg-white/70 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
         <div class="relative aspect-video overflow-hidden bg-gotland-stoneDark/30">
           <div class="absolute inset-0 z-10 bg-gotland-deep/10 transition-colors group-hover:bg-transparent"></div>
           <div class="absolute left-3 top-3 z-20 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${getArchiveBadgeClass(
@@ -312,13 +311,23 @@ function renderRelatedArticleCard(article) {
             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           >
         </div>
-        <div class="p-4">
-          <h3 class="font-serif text-lg leading-snug text-gotland-deep transition-colors group-hover:text-gotland-rust">${escapeHtml(
+        <div class="flex flex-1 items-start p-4">
+          <h3 class="line-clamp-2 font-serif text-base leading-snug text-gotland-deep transition-colors group-hover:text-gotland-rust">${escapeHtml(
             article.title,
           )}</h3>
         </div>
       </a>
     </article>
+  `;
+}
+
+function renderBodySection(articleBody, responsiveClass) {
+  return `
+    <div class="rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12 ${responsiveClass}">
+      <div class="space-y-6">
+        ${articleBody}
+      </div>
+    </div>
   `;
 }
 
