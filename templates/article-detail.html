@@ -29,39 +29,22 @@
       </section>
 
       <article class="mx-auto max-w-6xl px-6 pt-8 lg:px-10">
-        <div class="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.95fr)] lg:items-start">
-          <div class="space-y-8">
-            <div class="space-y-5">
-              <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">{{contentLabel}}</p>
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:items-start">
+          <div class="space-y-6">
+            <div class="space-y-4">
               <h1 class="font-serif text-4xl leading-tight text-gotland-deep md:text-6xl">{{articleTitle}}</h1>
               <p class="max-w-3xl text-xl leading-8 text-gotland-deep/80">{{articleExcerpt}}</p>
             </div>
 
-            <dl class="grid gap-4 rounded-[2rem] border border-gotland-stoneDark bg-white/60 p-6 backdrop-blur-sm sm:grid-cols-2">
-              <div>
-                <dt class="text-xs font-bold uppercase tracking-[0.18em] text-gotland-pine">Publicerad</dt>
-                <dd class="mt-2 text-base text-gotland-deep">{{publishedLabel}}</dd>
-              </div>
-              {{updatedMetaBlock}}
-            </dl>
+            <div class="flex flex-wrap items-center gap-3">
+              {{tagRow}}
+            </div>
 
             {{socialLinks}}
-
-            <ul class="flex flex-wrap gap-2">
-              {{tagList}}
-            </ul>
           </div>
 
-          <div class="overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-white/60 shadow-xl">
-            <img
-              src="{{coverImage}}"
-              alt="{{coverImageAlt}}"
-              class="h-full w-full object-cover"
-            >
-          </div>
+          {{mediaBlock}}
         </div>
-
-        {{mediaBlock}}
 
         <div class="{{bodySectionClass}}">
           <div class="{{bodyWrapperClass}}">

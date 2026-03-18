@@ -88,8 +88,10 @@ export function renderArticleArchivePage({ template, articles, shell = {} }) {
 
 export function renderArticleDetailPage({ template, article, shell = {} }) {
   const isVideoArticle = Boolean(article.video);
-  const mediaBlock = isVideoArticle ? renderVideoMedia(article) : "";
+  const mediaBlock = isVideoArticle ? renderVideoMedia(article) : renderImageMedia(article);
   const socialLinks = isVideoArticle ? renderSocialLinks(article.video.socialLinks) : "";
+  const tagDisplay = getArchiveTagDisplay(article.tags);
+  const tagMetadata = [tagDisplay.metaPrefix, tagDisplay.metaSuffix].filter(Boolean).join(" • ");
   const siteShell = renderSiteShell({
     ...shell,
     activeNavKey: "archive",
@@ -108,37 +110,18 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
     faviconHref: FAVICON_HREF,
     backHref: "/articles/",
     backLabel: "Tillbaka till arkivet",
-    contentLabel: isVideoArticle ? getDetailLabel(article) : "Artikel",
     articleTitle: article.title,
     articleExcerpt: article.excerpt,
-    publishedLabel: formatDate(article.publishedAt),
-    updatedMetaBlock: isVideoArticle
-      ? ""
-      : `
-          <div>
-            <dt class="text-xs font-bold uppercase tracking-[0.18em] text-gotland-pine">Uppdaterad</dt>
-            <dd class="mt-2 text-base text-gotland-deep">${formatDate(article.updatedAt)}</dd>
-          </div>
-        `,
     socialLinks,
-    coverImage: article.video?.thumbnail ?? article.heroImage,
-    coverImageAlt: article.title,
     mediaBlock,
-    tagList: article.tags
-      .map(
-        (tag) =>
-          `<li class="rounded-full border border-gotland-stoneDark bg-white/75 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-gotland-pine">${escapeHtml(
-            tag,
-          )}</li>`,
-      )
-      .join(""),
+    tagRow: renderDetailTagRow(tagDisplay, tagMetadata),
     articleBody: renderMarkdown(article.body),
     bodyWrapperClass: isVideoArticle
       ? "mx-auto max-w-3xl space-y-6"
       : "mx-auto max-w-3xl space-y-6",
     bodySectionClass: isVideoArticle
-      ? "mt-10 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12"
-      : "mt-14 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12",
+      ? "mt-12 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12"
+      : "mt-12 rounded-[2rem] border border-gotland-stoneDark bg-white/65 px-6 py-8 shadow-sm backdrop-blur-sm md:px-10 md:py-12",
     siteHeader: siteShell.siteHeader,
     siteFooter: siteShell.siteFooter,
     siteScripts: siteShell.siteScripts,
@@ -223,8 +206,8 @@ function renderVideoMedia(article) {
 
 function renderLegacyVideo(article) {
   return `
-    <div class="mt-14 overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-gotland-deep shadow-xl">
-      <div class="mx-auto max-w-[420px]">
+    <div class="flex justify-center lg:justify-end">
+      <div class="w-full max-w-[320px] overflow-hidden rounded-[1.75rem] border border-gotland-stoneDark bg-gotland-deep shadow-xl md:max-w-[360px]">
         <div class="aspect-[9/16]">
           <video
             class="h-full w-full object-cover"
@@ -244,18 +227,32 @@ function renderLegacyVideo(article) {
 
 function renderEmbeddedVideo(article) {
   return `
-    <div class="mt-14 overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-gotland-deep shadow-xl">
-      <div class="aspect-video">
-        <iframe
-          class="h-full w-full"
-          src="${escapeAttribute(article.video.embedUrl)}"
-          title="${escapeAttribute(article.title)}"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
+    <div class="flex justify-center lg:justify-end">
+      <div class="w-full max-w-[320px] overflow-hidden rounded-[1.75rem] border border-gotland-stoneDark bg-gotland-deep shadow-xl md:max-w-[360px]">
+        <div class="aspect-[9/16]">
+          <iframe
+            class="h-full w-full"
+            src="${escapeAttribute(article.video.embedUrl)}"
+            title="${escapeAttribute(article.title)}"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
       </div>
+    </div>
+  `;
+}
+
+function renderImageMedia(article) {
+  return `
+    <div class="overflow-hidden rounded-[1.75rem] border border-gotland-stoneDark bg-white/60 shadow-xl">
+      <img
+        src="${escapeAttribute(article.heroImage)}"
+        alt="${escapeAttribute(article.title)}"
+        class="h-full w-full object-cover"
+      >
     </div>
   `;
 }
@@ -263,12 +260,7 @@ function renderEmbeddedVideo(article) {
 function renderSocialLinks(socialLinks) {
   const links = Object.entries(socialLinks ?? {})
     .filter(([, value]) => value)
-    .map(([key, value]) => {
-      const label = key === "instagram" ? "Instagram" : key === "tiktok" ? "TikTok" : key;
-      return `<a href="${escapeAttribute(value)}" class="rounded-full border border-gotland-stoneDark bg-white/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-gotland-deep transition-colors hover:text-gotland-rust">${escapeHtml(
-        label,
-      )}</a>`;
-    })
+    .map(([key, value]) => renderSocialLinkButton(key, value))
     .join("");
 
   if (!links) {
@@ -280,6 +272,28 @@ function renderSocialLinks(socialLinks) {
       ${links}
     </div>
   `;
+}
+
+function renderSocialLinkButton(key, value) {
+  const label = key === "instagram" ? "Instagram" : key === "tiktok" ? "TikTok" : key;
+  const icon =
+    key === "instagram"
+      ? renderInstagramIcon("text-gotland-deep")
+      : key === "tiktok"
+        ? renderTikTokIcon("text-gotland-deep")
+        : "";
+
+  return `<a href="${escapeAttribute(value)}" target="_blank" class="group relative flex w-40 items-center justify-center gap-3 rounded-xl border border-white/40 bg-white/20 px-6 py-3 backdrop-blur-md transition-all duration-300 hover:border-white/60 hover:bg-white/40">${icon}<span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gotland-deep transition-colors group-hover:text-gotland-rust">${escapeHtml(
+    label,
+  )}</span></a>`;
+}
+
+function renderInstagramIcon(colorClass) {
+  return `<svg class="h-5 w-5 ${colorClass} transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+}
+
+function renderTikTokIcon(colorClass) {
+  return `<svg class="h-5 w-5 ${colorClass} transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>`;
 }
 
 function injectTemplate(template, values) {
@@ -336,8 +350,10 @@ function getArchiveBadgeClass(label) {
     : "bg-gotland-rust/90 text-white";
 }
 
-function getDetailLabel(article) {
-  return article.video.provider === "legacy-local" ? "Lokalt videoarkiv" : "Extern videospelare";
+function renderDetailTagRow(tagDisplay, tagMetadata) {
+  return `<span class="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${getArchiveBadgeClass(
+    tagDisplay.badge,
+  )}">${escapeHtml(tagDisplay.badge)}</span>${tagMetadata ? `<span class="text-xs font-medium uppercase tracking-wide text-gotland-moss">${escapeHtml(tagMetadata)}</span>` : ""}`;
 }
 
 function formatDate(value) {
