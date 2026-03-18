@@ -67,17 +67,17 @@ const ORGANIZATION_SCHEMA = {
 
 export async function buildSeoOutputs(rootDir = process.cwd()) {
   const indexes = await buildContentIndexes(rootDir);
-  const homepageVideos = [
+  const homepageArticles = [
     indexes.homepage.featuredVideo,
     ...indexes.homepage.storyArchive,
   ].filter(Boolean);
 
-  const structuredData = buildHomepageStructuredData(homepageVideos);
+  const structuredData = buildHomepageStructuredData(homepageArticles);
   const indexHtmlPath = path.join(rootDir, "index.html");
   const currentIndexHtml = await fs.readFile(indexHtmlPath, "utf8");
 
   return {
-    sitemapXml: buildSitemapXml(indexes.videos.items),
+    sitemapXml: buildSitemapXml(indexes.articles.items),
     indexHtml: replaceStructuredDataBlock(currentIndexHtml, structuredData),
     structuredData,
   };
@@ -94,43 +94,43 @@ export async function writeSeoOutputs(rootDir = process.cwd()) {
   return outputs;
 }
 
-export function buildHomepageStructuredData(videos) {
+export function buildHomepageStructuredData(articles) {
   return {
     "@context": "https://schema.org",
     "@graph": [
       ORGANIZATION_SCHEMA,
-      ...videos.map((video) => buildVideoStructuredData(video)),
+      ...articles.map((article) => buildVideoStructuredData(article)),
     ],
   };
 }
 
-export function buildSitemapXml(videos) {
-  const latestVideoDate = videos.reduce(
-    (latest, video) => (video.publishedAt > latest ? video.publishedAt : latest),
+export function buildSitemapXml(articles) {
+  const latestArticleDate = articles.reduce(
+    (latest, article) => (article.publishedAt > latest ? article.publishedAt : latest),
     "2026-01-01",
   );
 
   const entries = [
     renderUrlEntry({
       loc: `${SITE_URL}/`,
-      lastmod: latestVideoDate,
+      lastmod: latestArticleDate,
       priority: "1.0",
       changefreq: "weekly",
       images: HOMEPAGE_IMAGE_ENTRIES,
     }),
     renderUrlEntry({
-      loc: `${SITE_URL}/videos/`,
-      lastmod: latestVideoDate,
+      loc: `${SITE_URL}/articles/`,
+      lastmod: latestArticleDate,
       priority: "0.8",
       changefreq: "weekly",
     }),
-    ...videos.map((video) =>
+    ...articles.map((article) =>
       renderUrlEntry({
-        loc: toAbsoluteUrl(video.urlPath),
-        lastmod: video.publishedAt,
+        loc: toAbsoluteUrl(article.urlPath),
+        lastmod: article.publishedAt,
         priority: "0.7",
         changefreq: "monthly",
-        video,
+        video: article.video ? toSitemapVideo(article) : null,
       }),
     ),
   ];
@@ -147,21 +147,34 @@ export function buildSitemapXml(videos) {
   ].join("\n");
 }
 
-function buildVideoStructuredData(video) {
+function buildVideoStructuredData(article) {
   const data = {
     "@type": "VideoObject",
-    name: video.title,
-    description: video.excerpt,
-    thumbnailUrl: toAbsoluteUrl(video.thumbnail),
-    uploadDate: `${video.publishedAt}T00:00:00+00:00`,
-    embedUrl: video.provider === "legacy-local" ? toAbsoluteUrl(video.urlPath) : video.embedUrl,
+    name: article.title,
+    description: article.excerpt,
+    thumbnailUrl: toAbsoluteUrl(article.thumbnail),
+    uploadDate: `${article.publishedAt}T00:00:00+00:00`,
+    embedUrl: article.provider === "legacy-local" ? toAbsoluteUrl(article.urlPath) : article.embedUrl,
   };
 
-  if (video.legacySources?.webm) {
-    data.contentUrl = toAbsoluteUrl(video.legacySources.webm);
+  if (article.legacySources?.webm) {
+    data.contentUrl = toAbsoluteUrl(article.legacySources.webm);
   }
 
   return data;
+}
+
+function toSitemapVideo(article) {
+  return {
+    title: article.title,
+    excerpt: article.excerpt,
+    publishedAt: article.publishedAt,
+    thumbnail: article.video.thumbnail,
+    embedUrl: article.video.embedUrl,
+    provider: article.video.provider,
+    legacySources: article.video.legacySources,
+    urlPath: article.urlPath,
+  };
 }
 
 function replaceStructuredDataBlock(indexHtml, structuredData) {

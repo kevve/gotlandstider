@@ -17,8 +17,8 @@
       "webm": "/content/story-5platser-gotland.webm",
       "mp4": "/content/story-5platser-gotland.mp4"
     },
-    "urlPath": "/videos/fem-platser-att-besoka-pa-gotland-2026/",
-    "sourceFile": "content/videos/fem-platser-att-besoka-pa-gotland-2026.json",
+    "urlPath": "/articles/fem-platser-att-besoka-pa-gotland-2026/",
+    "sourceFile": "content/articles/fem-platser-att-besoka-pa-gotland-2026.md",
     "heading": {
       "prefix": "5 platser att besöka",
       "accent": "2026"
@@ -72,8 +72,8 @@
         "webm": "/content/story-loppisar-gotland.webm",
         "mp4": "/content/story-loppisar-gotland.mp4"
       },
-      "urlPath": "/videos/arets-loppis-favoriter/",
-      "sourceFile": "content/videos/arets-loppis-favoriter.json",
+      "urlPath": "/articles/arets-loppis-favoriter/",
+      "sourceFile": "content/articles/arets-loppis-favoriter.md",
       "subtitle": "Gotland • Inredning",
       "badge": "Loppis"
     },
@@ -96,8 +96,8 @@
         "webm": "/content/story-brunan-ljugarn.webm",
         "mp4": "/content/story-brunan-ljugarn.mp4"
       },
-      "urlPath": "/videos/musikquiz-och-god-mat-vid-stranden/",
-      "sourceFile": "content/videos/musikquiz-och-god-mat-vid-stranden.json",
+      "urlPath": "/articles/musikquiz-och-god-mat-vid-stranden/",
+      "sourceFile": "content/articles/musikquiz-och-god-mat-vid-stranden.md",
       "subtitle": "Ljugarn • Mat & Dryck",
       "badge": "Tips"
     },
@@ -120,8 +120,8 @@
         "webm": "/content/story-strand-snack.webm",
         "mp4": "/content/story-strand-snack.mp4"
       },
-      "urlPath": "/videos/en-strand-for-stora-och-sma/",
-      "sourceFile": "content/videos/en-strand-for-stora-och-sma.json",
+      "urlPath": "/articles/en-strand-for-stora-och-sma/",
+      "sourceFile": "content/articles/en-strand-for-stora-och-sma.md",
       "subtitle": "Visby • Stränder",
       "badge": "Guide"
     }

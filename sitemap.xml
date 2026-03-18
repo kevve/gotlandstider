@@ -18,13 +18,13 @@
       </image:image>
    </url>
    <url>
-      <loc>https://www.gotlandstider.se/videos/</loc>
+      <loc>https://www.gotlandstider.se/articles/</loc>
       <lastmod>2026-01-03</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://www.gotlandstider.se/videos/arets-loppis-favoriter/</loc>
+      <loc>https://www.gotlandstider.se/articles/arets-loppis-favoriter/</loc>
       <lastmod>2026-01-03</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
@@ -39,7 +39,7 @@
       </video:video>
    </url>
    <url>
-      <loc>https://www.gotlandstider.se/videos/en-strand-for-stora-och-sma/</loc>
+      <loc>https://www.gotlandstider.se/articles/en-strand-for-stora-och-sma/</loc>
       <lastmod>2026-01-03</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
@@ -54,7 +54,7 @@
       </video:video>
    </url>
    <url>
-      <loc>https://www.gotlandstider.se/videos/fem-platser-att-besoka-pa-gotland-2026/</loc>
+      <loc>https://www.gotlandstider.se/articles/fem-platser-att-besoka-pa-gotland-2026/</loc>
       <lastmod>2026-01-03</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
@@ -69,7 +69,7 @@
       </video:video>
    </url>
    <url>
-      <loc>https://www.gotlandstider.se/videos/musikquiz-och-god-mat-vid-stranden/</loc>
+      <loc>https://www.gotlandstider.se/articles/musikquiz-och-god-mat-vid-stranden/</loc>
       <lastmod>2026-01-03</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>

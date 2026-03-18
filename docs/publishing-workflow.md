@@ -4,12 +4,12 @@ This repo now supports a simple Git-as-CMS workflow where new content starts as 
 
 ## Recommended flow
 
-1. Add a new source file in `content/articles/` or `content/videos/`.
+1. Add a new source file in `content/articles/`.
 2. Start with:
    - `draft: true`
    - `featured: false`
 3. Only add homepage-specific metadata when the content is meant to appear on the homepage.
-4. For new videos, use an external embed provider and do not use `legacy-local`.
+4. For new videos, add a `video` block to the article and use an external embed provider instead of `legacy-local`.
 5. Run:
 
 ```bash
@@ -41,34 +41,40 @@ draft: true
 Ingress eller brödtext här.
 ```
 
-## Draft video template
+## Draft video-backed article template
 
-Copy this into a new file under `content/videos/`:
+Copy this into a new file under `content/articles/`:
 
-```json
-{
-  "title": "Exempelvideo",
-  "slug": "exempelvideo",
-  "excerpt": "Kort sammanfattning som kan visas i listor och förhandsvisningar.",
-  "publishedAt": "2026-03-16",
-  "thumbnail": "/content/example.webp",
-  "provider": "youtube",
-  "embedUrl": "https://www.youtube.com/embed/VIDEO_ID",
-  "socialLinks": {
-    "instagram": "https://www.instagram.com/gotlandstider/"
-  },
-  "featured": false,
-  "draft": true
-}
+```md
+---
+title: Exempelvideo
+slug: exempelvideo
+excerpt: Kort sammanfattning som kan visas i listor och förhandsvisningar.
+publishedAt: 2026-03-16
+updatedAt: 2026-03-16
+heroImage: /content/example.webp
+tags:
+  - Gotland
+featured: false
+draft: true
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/VIDEO_ID
+  thumbnail: /content/example.webp
+  socialLinks:
+    instagram: https://www.instagram.com/gotlandstider/
+    tiktok: null
+---
+
+Ingress eller brödtext här.
 ```
 
 ## Publishing rules
 
 - `draft: true` keeps the content out of public JSON, public routes, sitemap, and homepage structured data.
 - `draft: false` makes the content eligible for public generated output.
-- Articles remain excluded from public SEO until the article launch work is intentionally revisited.
-- New videos should use metadata plus an external embed URL and a local thumbnail image.
-- New videos should not include `legacySources`.
+- New videos should use article front matter plus an external embed URL and a local thumbnail image.
+- New videos should not include `video.legacySources`.
 
 ## Useful commands
 
