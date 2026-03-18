@@ -117,10 +117,10 @@ export function renderArticleDetailPage({ template, article, shell = {} }) {
     socialLinks,
     mediaBlock,
     tagRow: renderDetailTagRow(tagDisplay, tagMetadata),
-    relatedArticlesSection: renderRelatedArticlesSection(relatedArticles),
     desktopBodySection: renderBodySection(articleBody, "hidden lg:block"),
     mobileBodySection: renderBodySection(articleBody, "lg:hidden"),
-    relatedSectionClass: "lg:col-start-2",
+    desktopRelatedSection: renderRelatedArticlesSection(relatedArticles, "hidden lg:block"),
+    mobileRelatedSection: renderRelatedArticlesSection(relatedArticles, "mt-12 lg:hidden"),
     siteHeader: siteShell.siteHeader,
     siteFooter: siteShell.siteFooter,
     siteScripts: siteShell.siteScripts,
@@ -273,7 +273,7 @@ function renderSocialLinks(socialLinks) {
   `;
 }
 
-function renderRelatedArticlesSection(relatedArticles) {
+function renderRelatedArticlesSection(relatedArticles, sectionClass = "") {
   if (!relatedArticles.length) {
     return "";
   }
@@ -281,7 +281,7 @@ function renderRelatedArticlesSection(relatedArticles) {
   const cards = relatedArticles.map((article) => renderRelatedArticleCard(article)).join("");
 
   return `
-    <section class="mt-12 space-y-5 lg:mt-8">
+    <section class="${sectionClass} space-y-5">
       <div>
         <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">Arkiv</p>
         <h2 class="mt-2 font-serif text-2xl leading-tight text-gotland-deep">Fler upplevelser</h2>
