@@ -71,10 +71,7 @@ export async function buildPages(rootDir = process.cwd()) {
 export async function writePages(rootDir = process.cwd()) {
   const result = await buildPages(rootDir);
 
-  await Promise.all([
-    fs.rm(path.join(rootDir, "articles"), { recursive: true, force: true }),
-    fs.rm(path.join(rootDir, "videos"), { recursive: true, force: true }),
-  ]);
+  await fs.rm(path.join(rootDir, "articles"), { recursive: true, force: true });
 
   for (const page of result.pages) {
     await fs.mkdir(path.dirname(page.outputPath), { recursive: true });

@@ -60,7 +60,7 @@ test("buildPages returns article routes only", async () => {
   assert.equal(result.pages.length, 5);
 });
 
-test("writePages writes deterministic article pages and removes videos directory", async () => {
+test("writePages writes deterministic article pages", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-build-pages-"));
 
   try {
@@ -68,15 +68,12 @@ test("writePages writes deterministic article pages and removes videos directory
       fs.cp(path.join(process.cwd(), "content"), path.join(tempDir, "content"), { recursive: true }),
       fs.cp(path.join(process.cwd(), "templates"), path.join(tempDir, "templates"), { recursive: true }),
     ]);
-    await fs.mkdir(path.join(tempDir, "videos", "old"), { recursive: true });
-    await fs.writeFile(path.join(tempDir, "videos", "old", "index.html"), "old", "utf8");
 
     const firstRun = await writePages(tempDir);
     const secondRun = await writePages(tempDir);
 
     assert.deepEqual(secondRun.articles, firstRun.articles);
     assert.equal(secondRun.pages.length, firstRun.pages.length);
-    await assert.rejects(fs.access(path.join(tempDir, "videos", "old", "index.html")));
 
     const [articleArchiveHtml, articleDetailHtml] = await Promise.all([
       fs.readFile(path.join(tempDir, "articles", "index.html"), "utf8"),
