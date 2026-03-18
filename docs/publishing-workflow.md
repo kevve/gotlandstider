@@ -69,11 +69,14 @@ video:
 Ingress eller brödtext här.
 ```
 
+Add a `homepage` block only when the article should appear in the homepage story section.
+
 ## Publishing rules
 
 - `draft: true` keeps the content out of public JSON, public routes, sitemap, and homepage structured data.
 - `draft: false` makes the content eligible for public generated output.
 - New videos should use article front matter plus an external embed URL and a local thumbnail image.
+- Video-backed articles should include `video.socialLinks`, using `null` for channels that are not used.
 - New videos should not include `video.legacySources`.
 
 ## Useful commands
