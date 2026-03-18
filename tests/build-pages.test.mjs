@@ -49,9 +49,13 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(detailPage.html, /href="\/articles\/musikquiz-och-god-mat-vid-stranden\/"/);
   assert.match(
     detailPage.html,
-    /class="flex flex-wrap gap-3"[\s\S]*hidden lg:block[\s\S]*class="lg:col-start-2"/,
+    /class="flex flex-wrap gap-3"[\s\S]*hidden lg:block[\s\S]*class="space-y-8 lg:col-start-2"/,
   );
-  assert.match(detailPage.html, /lg:hidden[\s\S]*Fler upplevelser/);
+  assert.match(
+    detailPage.html,
+    /class="space-y-8 lg:col-start-2"[\s\S]*aspect-\[9\/16\][\s\S]*hidden lg:block space-y-5[\s\S]*Fler upplevelser/,
+  );
+  assert.match(detailPage.html, /lg:hidden[\s\S]*mt-12 lg:hidden space-y-5[\s\S]*Fler upplevelser/);
   assert.doesNotMatch(detailPage.html, /Ett stenkast från Visby hittar du stranden Snäck/);
   assert.doesNotMatch(detailPage.html, /Publicerad/);
   assert.doesNotMatch(detailPage.html, /Lokalt videoarkiv/);
@@ -124,7 +128,7 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
     template: `
       <html>
         <head><title>{{pageTitle}}</title></head>
-        <body>{{tagRow}}{{mediaBlock}}{{socialLinks}}{{desktopBodySection}}{{mobileBodySection}}{{relatedSectionClass}}{{relatedArticlesSection}}</body>
+        <body>{{tagRow}}{{mediaBlock}}{{socialLinks}}{{desktopBodySection}}{{desktopRelatedSection}}{{mobileBodySection}}{{mobileRelatedSection}}</body>
       </html>
     `,
     article: {
@@ -159,7 +163,8 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
 
   assert.match(html, /hidden lg:block/);
   assert.match(html, /lg:hidden/);
-  assert.match(html, /lg:col-start-2/);
+  assert.match(html, /hidden lg:block space-y-5/);
+  assert.match(html, /mt-12 lg:hidden space-y-5/);
   assert.match(html, /aspect-\[9\/16\]/);
   assert.match(html, /iframe/);
   assert.match(html, /youtube\.com\/embed\/example123/);
@@ -242,7 +247,7 @@ test("renderArticleDetailPage omits social links and video media for non-video a
   const html = renderArticleDetailPage({
     template: `
       <html>
-        <body>{{tagRow}}{{socialLinks}}{{mediaBlock}}{{desktopBodySection}}{{mobileBodySection}}{{relatedArticlesSection}}</body>
+        <body>{{tagRow}}{{socialLinks}}{{mediaBlock}}{{desktopBodySection}}{{desktopRelatedSection}}{{mobileBodySection}}{{mobileRelatedSection}}</body>
       </html>
     `,
     article: {
@@ -273,6 +278,8 @@ test("renderArticleDetailPage omits social links and video media for non-video a
   assert.doesNotMatch(html, /iframe/);
   assert.match(html, /hidden lg:block/);
   assert.match(html, /lg:hidden/);
+  assert.match(html, /hidden lg:block space-y-5/);
+  assert.match(html, /mt-12 lg:hidden space-y-5/);
   assert.match(html, /Fler upplevelser/);
   assert.match(html, /<img/);
 });
@@ -281,7 +288,7 @@ test("renderArticleDetailPage supports non-video articles", () => {
   const html = renderArticleDetailPage({
     template: `
       <html>
-        <body>{{tagRow}}{{desktopBodySection}}{{mobileBodySection}}{{relatedSectionClass}}{{mediaBlock}}{{relatedArticlesSection}}</body>
+        <body>{{tagRow}}{{desktopBodySection}}{{mediaBlock}}{{desktopRelatedSection}}{{mobileBodySection}}{{mobileRelatedSection}}</body>
       </html>
     `,
     article: {
@@ -299,7 +306,6 @@ test("renderArticleDetailPage supports non-video articles", () => {
   assert.match(html, /Guide/);
   assert.match(html, /hidden lg:block/);
   assert.match(html, /lg:hidden/);
-  assert.match(html, /lg:col-start-2/);
   assert.doesNotMatch(html, /iframe/);
   assert.doesNotMatch(html, /Publicerad/);
   assert.match(html, /Brödtext/);
@@ -307,7 +313,7 @@ test("renderArticleDetailPage supports non-video articles", () => {
 
 test("renderArticleDetailPage limits related items to available articles and excludes excerpts", () => {
   const html = renderArticleDetailPage({
-    template: "<html><body>{{relatedArticlesSection}}</body></html>",
+    template: "<html><body>{{desktopRelatedSection}}{{mobileRelatedSection}}</body></html>",
     article: {
       title: "Artikel",
       excerpt: "Beskrivning",
