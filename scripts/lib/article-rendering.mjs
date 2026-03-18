@@ -15,33 +15,43 @@ export async function loadTemplate(rootDir, templateName) {
 export function renderArticleArchivePage({ template, articles, shell = {} }) {
   const articleCards = articles
     .map((article) => {
-      const providerLabel = getArchiveLabel(article);
       const coverImage = article.video?.thumbnail ?? article.heroImage;
+      const tagDisplay = getArchiveTagDisplay(article.tags);
+      const metadata = [tagDisplay.metaPrefix, tagDisplay.metaSuffix].filter(Boolean).join(" • ");
 
       return `
-        <article class="group overflow-hidden rounded-[2rem] border border-gotland-stoneDark bg-white/70 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-          <a href="${escapeAttribute(article.urlPath)}" class="block">
-            <div class="aspect-[4/5] overflow-hidden bg-gotland-stoneDark/30">
+        <article class="group overflow-hidden rounded-[1.5rem] border border-gotland-stoneDark bg-white/70 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <a href="${escapeAttribute(article.urlPath)}" class="flex h-full flex-col">
+            <div class="relative aspect-video overflow-hidden bg-gotland-stoneDark/30">
+              <div class="absolute inset-0 bg-gotland-deep/10 transition-colors z-10 group-hover:bg-transparent"></div>
+              <div class="absolute left-3 top-3 z-20 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${getArchiveBadgeClass(
+                tagDisplay.badge,
+              )}">${escapeHtml(tagDisplay.badge)}</div>
               <img
                 src="${escapeAttribute(coverImage)}"
                 alt="${escapeAttribute(article.title)}"
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               >
             </div>
-            <div class="space-y-5 p-6 md:p-8">
-              <div class="space-y-3">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">${providerLabel} • ${formatDate(
-                  article.publishedAt,
-                )}</p>
-                <h2 class="font-serif text-3xl leading-tight text-gotland-deep transition-colors group-hover:text-gotland-pine">${escapeHtml(
+            <div class="flex flex-1 flex-col justify-between space-y-4 p-4 md:p-5">
+              <div class="space-y-2">
+                ${
+                  metadata
+                    ? `<p class="text-xs font-medium uppercase tracking-wide text-gotland-moss">${escapeHtml(metadata)}</p>`
+                    : ""
+                }
+                <h2 class="font-serif text-2xl leading-snug text-gotland-deep transition-colors group-hover:text-gotland-rust">${escapeHtml(
                   article.title,
                 )}</h2>
-                <p class="text-base leading-8 text-gotland-deep/80">${escapeHtml(article.excerpt)}</p>
+                <p class="line-clamp-2 text-sm leading-relaxed text-gray-600">${escapeHtml(article.excerpt)}</p>
               </div>
-              <span class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-gotland-deep">
-                ${article.video ? "Titta vidare" : "Läs vidare"}
-                <span aria-hidden="true">→</span>
-              </span>
+              <div class="flex items-center justify-between gap-3 pt-2">
+                <p class="text-xs font-medium text-gotland-deep/80">${formatDate(article.publishedAt)}</p>
+                <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-gotland-deep transition-colors group-hover:text-gotland-rust">
+                  ${article.video ? "Titta vidare" : "Läs vidare"}
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
             </div>
           </a>
         </article>
@@ -294,12 +304,36 @@ function renderInlineMarkdown(text) {
   return html;
 }
 
-function getArchiveLabel(article) {
-  if (!article.video) {
-    return "Artikel";
+function getArchiveTagDisplay(tags) {
+  const normalizedTags = (tags ?? []).filter(Boolean);
+
+  if (normalizedTags.length >= 2) {
+    return {
+      badge: normalizedTags[1],
+      metaPrefix: normalizedTags[0] ?? "",
+      metaSuffix: normalizedTags[2] ?? "",
+    };
   }
 
-  return article.video.provider === "legacy-local" ? "Video" : "Embed";
+  if (normalizedTags.length === 1) {
+    return {
+      badge: normalizedTags[0],
+      metaPrefix: "",
+      metaSuffix: "",
+    };
+  }
+
+  return {
+    badge: "Artikel",
+    metaPrefix: "",
+    metaSuffix: "",
+  };
+}
+
+function getArchiveBadgeClass(label) {
+  return label === "Tips"
+    ? "bg-gotland-stone/90 text-gotland-deep"
+    : "bg-gotland-rust/90 text-white";
 }
 
 function getDetailLabel(article) {

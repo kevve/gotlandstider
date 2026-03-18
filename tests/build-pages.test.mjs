@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 
 import { buildArticlePages, buildPages, writeArticlePages, writePages } from "../scripts/build-pages.mjs";
-import { renderArticleDetailPage } from "../scripts/lib/article-rendering.mjs";
+import { renderArticleArchivePage, renderArticleDetailPage } from "../scripts/lib/article-rendering.mjs";
 
 test("buildArticlePages returns archive and detail pages for published articles", async () => {
   const result = await buildArticlePages(process.cwd());
@@ -22,6 +22,10 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.ok(detailPage);
   assert.match(archivePage.html, /Arkiv från ön/);
   assert.match(archivePage.html, /Årets loppis-favoriter/);
+  assert.match(archivePage.html, /aspect-video/);
+  assert.match(archivePage.html, /line-clamp-2/);
+  assert.match(archivePage.html, /Loppis/);
+  assert.match(archivePage.html, /Gotland • Inredning/);
   assert.match(archivePage.html, /<footer id="contact"/);
   assert.match(archivePage.html, /src="\/navscripts\.js"/);
   assert.match(archivePage.html, /href="\/#stories" class="hover:text-gotland-rust transition-colors">Upplevelser</);
@@ -123,6 +127,36 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
   assert.match(html, /iframe/);
   assert.match(html, /youtube\.com\/embed\/example123/);
   assert.match(html, /Instagram/);
+});
+
+test("renderArticleArchivePage omits empty archive tag separators for short tag lists", () => {
+  const html = renderArticleArchivePage({
+    template: "<html><body>{{articleCards}}</body></html>",
+    articles: [
+      {
+        title: "Kort tagglista",
+        excerpt: "Kort beskrivning",
+        publishedAt: "2026-03-15",
+        heroImage: "/content/hero-coastline.webp",
+        tags: ["Ensamtagg"],
+        urlPath: "/articles/kort-tagglista/",
+      },
+      {
+        title: "Tvataggar",
+        excerpt: "Kort beskrivning",
+        publishedAt: "2026-03-16",
+        heroImage: "/content/hero-coastline.webp",
+        tags: ["Plats", "Badge"],
+        urlPath: "/articles/tvataggar/",
+      },
+    ],
+  });
+
+  assert.match(html, />Ensamtagg</);
+  assert.match(html, />Badge</);
+  assert.match(html, />Plats</);
+  assert.doesNotMatch(html, /Ensamtagg •/);
+  assert.doesNotMatch(html, /Plats •/);
 });
 
 test("renderArticleDetailPage supports non-video articles", () => {
