@@ -283,8 +283,7 @@ function renderRelatedArticlesSection(relatedArticles, sectionClass = "") {
   return `
     <section class="${sectionClass} space-y-5">
       <div>
-        <p class="text-xs font-bold uppercase tracking-[0.2em] text-gotland-rust">Arkiv</p>
-        <h2 class="mt-2 font-serif text-2xl leading-tight text-gotland-deep">Fler upplevelser</h2>
+        <h2 class="font-serif text-2xl leading-tight text-gotland-deep">Fler upplevelser</h2>
       </div>
       <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide -mx-6 px-6 lg:mx-0 lg:grid lg:grid-cols-2 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0">
         ${cards}

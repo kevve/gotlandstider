@@ -37,6 +37,7 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(detailPage.html, /Gotland • Inredning/);
   assert.match(detailPage.html, /Instagram/);
   assert.match(detailPage.html, /TikTok/);
+  assert.match(detailPage.html, /flex flex-col gap-10 lg:grid lg:grid-cols-\[minmax\(0,1fr\)_minmax\(280px,360px\)\] lg:items-start/);
   assert.match(detailPage.html, /hidden lg:block/);
   assert.match(detailPage.html, /lg:hidden/);
   assert.match(detailPage.html, /Fler upplevelser/);
@@ -49,13 +50,14 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(detailPage.html, /href="\/articles\/musikquiz-och-god-mat-vid-stranden\/"/);
   assert.match(
     detailPage.html,
-    /class="flex flex-wrap gap-3"[\s\S]*hidden lg:block[\s\S]*class="space-y-8 lg:col-start-2"/,
+    /class="flex flex-wrap gap-3"[\s\S]*hidden lg:block[\s\S]*class="space-y-10 lg:col-start-2"/,
   );
   assert.match(
     detailPage.html,
-    /class="space-y-8 lg:col-start-2"[\s\S]*aspect-\[9\/16\][\s\S]*hidden lg:block space-y-5[\s\S]*Fler upplevelser/,
+    /class="space-y-10 lg:col-start-2"[\s\S]*aspect-\[9\/16\][\s\S]*hidden lg:block space-y-5[\s\S]*Fler upplevelser/,
   );
   assert.match(detailPage.html, /lg:hidden[\s\S]*mt-12 lg:hidden space-y-5[\s\S]*Fler upplevelser/);
+  assert.doesNotMatch(detailPage.html, />Arkiv<\/p>/);
   assert.doesNotMatch(detailPage.html, /Ett stenkast från Visby hittar du stranden Snäck/);
   assert.doesNotMatch(detailPage.html, /Publicerad/);
   assert.doesNotMatch(detailPage.html, /Lokalt videoarkiv/);
@@ -165,6 +167,7 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
   assert.match(html, /lg:hidden/);
   assert.match(html, /hidden lg:block space-y-5/);
   assert.match(html, /mt-12 lg:hidden space-y-5/);
+  assert.doesNotMatch(html, />Arkiv<\/p>/);
   assert.match(html, /aspect-\[9\/16\]/);
   assert.match(html, /iframe/);
   assert.match(html, /youtube\.com\/embed\/example123/);
