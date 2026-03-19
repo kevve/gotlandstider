@@ -61,6 +61,37 @@ Brödtext.
   assert.equal(article.body, "Brödtext.");
 });
 
+test("parseArticleFile normalizes blank Decap social links to null", () => {
+  const article = parseArticleFile(
+    "content/articles/example.md",
+    `---
+title: Exempelartikel
+slug: exempelartikel
+excerpt: Kort text
+publishedAt: 2026-03-15
+updatedAt: 2026-03-15
+heroImage: /content/example.webp
+tags:
+  - Gotland
+featured: false
+draft: true
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/example123
+  thumbnail: /content/example.webp
+  socialLinks:
+    instagram: ""
+    tiktok: "   "
+---
+
+Brödtext.
+`,
+  );
+
+  assert.equal(article.data.video.socialLinks.instagram, null);
+  assert.equal(article.data.video.socialLinks.tiktok, null);
+});
+
 test("validateContentCollections reports invalid dates and duplicate article slugs", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
 
@@ -190,6 +221,49 @@ video:
   socialLinks:
     instagram: null
     tiktok: null
+---
+
+Innehåll.
+`,
+      ),
+    ]);
+
+    const result = await validateContentCollections(tempDir);
+
+    assert.equal(result.valid, true);
+    assert.equal(result.errors.length, 0);
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("validateContentCollections accepts blank Decap social link fields after normalization", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
+
+  try {
+    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
+    await Promise.all([
+      fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
+      fs.writeFile(
+        path.join(tempDir, "content", "articles", "article.md"),
+        `---
+title: Artikel med video
+slug: artikel-med-video
+excerpt: Kort text
+publishedAt: 2026-03-15
+updatedAt: 2026-03-15
+heroImage: /content/example.webp
+tags:
+  - Guide
+featured: false
+draft: false
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/abc123
+  thumbnail: /content/example.webp
+  socialLinks:
+    instagram: ""
+    tiktok: ""
 ---
 
 Innehåll.

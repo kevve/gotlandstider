@@ -1,0 +1,9 @@
+name = "gotlandstider-cms-auth"
+main = "src/index.ts"
+compatibility_date = "2026-03-19"
+workers_dev = false
+
+route = { pattern = "cms-auth.gotlandstider.se", zone_name = "gotlandstider.se", custom_domain = true }
+
+[vars]
+GITHUB_REPO_PRIVATE = "0"

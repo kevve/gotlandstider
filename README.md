@@ -28,6 +28,7 @@ The migration is intentionally split into small, reviewable pull requests so eac
 
 See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
 See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the draft-to-publish author workflow and copy-paste content templates.
+See [docs/decap-cms.md](docs/decap-cms.md) for the CMS setup, Cloudflare worker deployment, and manual smoke-test checklist.
 
 ## Local development
 
@@ -70,6 +71,10 @@ GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Us
 - rebuilds the full public site with `npm run build:site`
 - stages the public site into a GitHub Pages artifact
 - deploys that artifact with GitHub Actions
+
+The CMS admin panel is published from `/admin/`, and the Cloudflare OAuth worker source lives under [`workers/cms-auth/`](workers/cms-auth/).
+
+Generated repo artifacts are kept in sync by [`.github/workflows/sync-generated-site.yml`](.github/workflows/sync-generated-site.yml). That workflow rebuilds and commits tracked outputs such as `/articles/`, `/generated/`, `index.html`, `output.css`, and `sitemap.xml` after source changes land on `main`.
 
 The staged Pages artifact includes the production files and directories the site currently needs:
 
