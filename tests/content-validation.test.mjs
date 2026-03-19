@@ -92,6 +92,36 @@ Brödtext.
   assert.equal(article.data.video.socialLinks.tiktok, null);
 });
 
+test("parseArticleFile removes empty optional Decap objects", () => {
+  const article = parseArticleFile(
+    "content/articles/example.md",
+    `---
+title: Exempelartikel
+slug: exempelartikel
+excerpt: Kort text
+publishedAt: 2026-03-15
+updatedAt: 2026-03-15
+heroImage: /content/example.webp
+tags:
+  - Gotland
+featured: false
+draft: true
+video:
+  socialLinks:
+    instagram: ""
+    tiktok: ""
+homepage:
+  heading: {}
+---
+
+Brödtext.
+`,
+  );
+
+  assert.equal("video" in article.data, false);
+  assert.equal("homepage" in article.data, false);
+});
+
 test("validateContentCollections reports invalid dates and duplicate article slugs", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
 
