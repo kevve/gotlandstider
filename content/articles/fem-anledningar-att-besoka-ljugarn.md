@@ -11,29 +11,29 @@ tags:
   - Östra Gotland
   - Mat & Dryck
 featured: false
-draft: true
+draft: false
 ---
 
-Ljugarn är ett bra val om du vill boka in några dagar på östra Gotland och ha nära till både strandliv, mat och fler saker att göra än att bara ligga still i solen. Här är fem anledningar som lyfts fram i videon.
+Ljugarn är ett perfekt val om du vill spendera några dagar på östra Gotland! Här finns både strandliv, matupplevelser och massor med saker att göra utöver att sola och bada. Här är fem anledningar varför de flesta älskar Ljugarn.
 
-## 1. Det finns flera bra stopp för mat och kvällshäng
+## 1. Mat och kvällshäng i gotländsk atmosfär
 
-I videon nämns Bruna Dörren som ett givet stopp för after beach. Där går det att köpa pizza, thai, kaffe, glass och ta en drink i solen. En gång i veckan ordnas också musikquiz, vilket beskrivs som en kväll när stora delar av Ljugarn samlas på samma plats.
+Bruna Dörren är ett givet stopp för after beach. Där går det att köpa pizza, thai, kaffe, glass eller bara ta en drink i solen. En gång i veckan på torsdagar under sommarhalvåret är det också musikquiz, där många av de som hänger i Ljugarn samlas. Så se till att vara där i tid!
 
-## 2. Du har mycket att göra om du vill variera dagarna
+## 2. För dig som vill variera dagarna
 
-Ljugarn passar inte bara den som vill ligga på stranden från morgon till kväll. I transkriptet lyfts beachvolley, padel, tennis, golfbana och löpspår fram, vilket gör området användbart även för dig som vill få in aktivitet mellan bad och restaurangbesök.
+Ljugarn passar inte bara den som vill ligga på stranden från morgon till kväll. Här finns allt ifrån beachvolley, padel, tennis, till golfbana och löpspår. Perfekt för dig som vill få in olika aktiviteter mellan bad och restaurangbesök.
 
-## 3. Våffelmagasinet ger dig ett tydligt matstopp att planera in
+## 3. Våfflor inspirerade av Maggio
 
-Ett annat tips i videon är Våffelmagasinet, som lyfts fram för sina mat- och dessertvåfflor. Menyn beskrivs som lekfull, med namn inspirerade av Veronica Maggios låtar, vilket gör stoppet till mer än bara en snabb fika på vägen vidare.
+Vem älskar inte mat- och dessertvåfflor? Menyn uppdateras ofta och brukar hålla sig till namn på våfflor som är inspirerade av Veronica Maggios låtar. Helhetsupplevelsen gör Våffelmagasinet verkligen värt mer än bara en snabb fika på vägen.
 
-## 4. Stranden rymmer både lugn och mer liv
+## 4. Stranden som har allt
 
-Ljugarns strand beskrivs som lång, med plats för olika sorters dagar. Du kan söka dig till lugnare partier om du vill ha en stillsam stund, eller slå dig ner närmare strandcaféet där det är mer rörelse och social stämning.
+Ljugarns strand är flera kilometer lång och passar alla olika sorters dagar. Sandstrand, stenstrand, eler nåt där emellan? Allt det har du inom gångavstånd. Helt perfekt för dig som vissa dagar gillar lugnare partier, och andra dagar vill ha mer håll-igång kring Stranfcaféet.
 
-## 5. Du får raukar som en självklar del av upplevelsen
+## 5. Underbara raukar du inte får missa
 
-Om ett Gotlandsbesök inte känns komplett utan raukar är det här ytterligare ett skäl att välja Ljugarn. I videon nämns att det finns ett eget raukområde här, vilket gör det enkelt att få in både strand, mat och naturupplevelse under samma resa.
+Ett Gotlandsbesök är nog inte komplett utan att ha sett raukar. Och självklart finns det massor av de vid raukområdet "Folhammar". Så se till att ta en kort promenad från stranden eller byn för att uppleva naturens krafter på nära håll.
 
-För dig som planerar en weekend eller en hel vecka är det just kombinationen som gör Ljugarn intressant: restauranger, aktiviteter, lång strand och gotländsk natur på nära avstånd från varandra. Det gör orten lätt att återvända till, oavsett om du reser hit för vila, umgänge eller några mer innehållsrika semesterdagar.
+För dig som planerar en weekend eller en hel vecka är det just kombinationen som gör Ljugarn intressant: restauranger, aktiviteter, lång strand och gotländsk natur på nära avstånd från varandra.
