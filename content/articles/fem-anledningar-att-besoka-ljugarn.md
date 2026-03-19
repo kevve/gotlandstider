@@ -1,7 +1,8 @@
 ---
 title: Fem anledningar att besöka Ljugarn
 slug: fem-anledningar-att-besoka-ljugarn
-excerpt: Ljugarn passar dig som vill kombinera strand, restauranger, aktiviteter och raukar under några dagar på östra Gotland.
+excerpt: Ljugarn passar dig som vill kombinera strand, restauranger, aktiviteter
+  och raukar under några dagar på östra Gotland.
 publishedAt: 2026-03-19
 updatedAt: 2026-03-19
 heroImage: /content/hero-coastline.webp
@@ -30,7 +31,7 @@ Vem älskar inte mat- och dessertvåfflor? Menyn uppdateras ofta och brukar hål
 
 ## 4. Stranden som har allt
 
-Ljugarns strand är flera kilometer lång och passar alla olika sorters dagar. Sandstrand, stenstrand, eller något där emellan? Allt det har du inom gångavstånd. Helt perfekt för dig som vissa dagar gillar lugnare partier, och andra dagar vill ha mer håll-igång kring Stranfcaféet.
+Ljugarns strand är flera kilometer lång och passar alla olika sorters dagar. Sandstrand, stenstrand, eller något där emellan? Allt det har du inom gångavstånd. Helt perfekt för dig som vissa dagar gillar lugnare partier, och andra dagar vill ha mer håll-igång kring Strandcaféet.
 
 ## 5. Underbara raukar du inte får missa
 
