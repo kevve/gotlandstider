@@ -27,8 +27,6 @@ homepage:
   subtitle: Gotland • Inredning
 ---
 
-Vi har kört kors och tvärs över ön för att hitta loppisar som känns värda en omväg. För oss handlar de bästa stoppen inte bara om fynden utan också om miljön, människorna och känslan av att hitta något oväntat.
+Vi har kört kors och tvärs över ön för att hitta loppisar som är värda en omväg. De bästa stoppen handlar inte bara om fynden utan också om miljön, människorna och möjligheten att hitta något oväntat.
 
-Det här är en video för alla som gillar blandningen av vardagsinspiration och små gotländska utflykter. Henrik visar dessutom några av årets favoriter, vilket gör att artikeln fungerar lika bra som snabb inspiration inför helgen som sommarplanering på längre sikt.
-
-Vår tumregel är enkel: välj några loppisar du verkligen vill hinna med, men lämna också plats för spontana avstickare. Ofta är det där de bästa fynden dyker upp.
+Receptet är enkelt: välj några loppisar du verkligen vill hinna med, men lämna plats för spontana avstickare. Ofta är det där de bästa fynden dyker upp.
