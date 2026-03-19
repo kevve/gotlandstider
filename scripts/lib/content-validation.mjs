@@ -377,7 +377,69 @@ function normalizeArticleFrontMatter(frontMatter) {
     }
   }
 
+  pruneEmptyObjects(normalizedFrontMatter, [
+    ["video", "legacySources"],
+    ["video"],
+    ["homepage", "heading"],
+    ["homepage"],
+  ]);
+
   return normalizedFrontMatter;
+}
+
+function pruneEmptyObjects(root, paths) {
+  for (const segments of paths) {
+    removeObjectIfEmpty(root, segments);
+  }
+}
+
+function removeObjectIfEmpty(root, segments) {
+  if (!isPlainObject(root) || segments.length === 0) {
+    return;
+  }
+
+  let parent = root;
+
+  for (let index = 0; index < segments.length - 1; index += 1) {
+    const next = parent[segments[index]];
+
+    if (!isPlainObject(next)) {
+      return;
+    }
+
+    parent = next;
+  }
+
+  const finalKey = segments.at(-1);
+  const value = parent[finalKey];
+
+  if (isPlainObject(value) && isEffectivelyEmptyObject(value)) {
+    delete parent[finalKey];
+  }
+}
+
+function isEffectivelyEmptyObject(value) {
+  return Object.values(value).every((entry) => isEffectivelyEmptyValue(entry));
+}
+
+function isEffectivelyEmptyValue(value) {
+  if (value === null) {
+    return true;
+  }
+
+  if (typeof value === "string") {
+    return value.trim() === "";
+  }
+
+  if (Array.isArray(value)) {
+    return value.length === 0;
+  }
+
+  if (isPlainObject(value)) {
+    return isEffectivelyEmptyObject(value);
+  }
+
+  return false;
 }
 
 async function readContentFiles(directoryPath, extension) {

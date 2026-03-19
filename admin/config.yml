@@ -83,18 +83,22 @@ collections:
           - label: Leverantor
             name: provider
             widget: string
+            required: false
           - label: Embed-URL
             name: embedUrl
             widget: string
+            required: false
           - label: Thumbnail
             name: thumbnail
             widget: image
             media_folder: /content
             public_folder: /content
             choose_url: false
+            required: false
           - label: Sociala lankar
             name: socialLinks
             widget: object
+            required: false
             collapsed: true
             fields:
               - label: Instagram
