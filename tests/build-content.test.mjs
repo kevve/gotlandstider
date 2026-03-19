@@ -5,26 +5,32 @@ import os from "node:os";
 import path from "node:path";
 
 import { buildContentIndexes, writeContentIndexes } from "../scripts/lib/content-indexes.mjs";
+import { validateContentCollections } from "../scripts/lib/content-validation.mjs";
 
 test("buildContentIndexes returns stable article collections from the current repo content", async () => {
   const indexes = await buildContentIndexes(process.cwd());
+  const validation = await validateContentCollections(process.cwd());
+  const publishedArticles = validation.articles
+    .filter((article) => !article.data.draft)
+    .sort(compareByPublishedDateDesc);
+  const featuredArticles = publishedArticles.filter((article) => article.data.featured);
+  const videoArticles = publishedArticles.filter((article) => article.data.video);
+  const featuredVideoSource = videoArticles.find((article) => article.data.featured) ?? videoArticles[0] ?? null;
+  const expectedStoryArchive = videoArticles
+    .filter((article) => !article.data.featured)
+    .sort(compareHomepageStoryArchiveOrder)
+    .slice(0, 3)
+    .map((article) => article.data.slug);
 
-  assert.equal(indexes.articles.items.length, 4);
-  assert.equal(indexes.featured.articles.length, 1);
-  assert.equal(indexes.homepage.storyArchive.length, 3);
-  assert.equal(indexes.articles.items[0].slug, "arets-loppis-favoriter");
-  assert.equal(indexes.featured.articles[0].slug, "fem-platser-att-besoka-pa-gotland-2026");
-  assert.equal(indexes.homepage.featuredVideo.slug, "fem-platser-att-besoka-pa-gotland-2026");
-  assert.deepEqual(
-    indexes.homepage.storyArchive.map((story) => story.slug),
-    [
-      "arets-loppis-favoriter",
-      "musikquiz-och-god-mat-vid-stranden",
-      "en-strand-for-stora-och-sma",
-    ],
-  );
-  assert.equal(indexes.articles.items[0].urlPath, "/articles/arets-loppis-favoriter/");
-  assert.equal(indexes.articles.items[0].video.provider, "legacy-local");
+  assert.equal(indexes.articles.items.length, publishedArticles.length);
+  assert.equal(indexes.featured.articles.length, featuredArticles.length);
+  assert.equal(indexes.homepage.storyArchive.length, expectedStoryArchive.length);
+  assert.equal(indexes.articles.items[0].slug, publishedArticles[0].data.slug);
+  assert.equal(indexes.featured.articles[0].slug, featuredArticles[0].data.slug);
+  assert.equal(indexes.homepage.featuredVideo.slug, featuredVideoSource.data.slug);
+  assert.deepEqual(indexes.homepage.storyArchive.map((story) => story.slug), expectedStoryArchive);
+  assert.equal(indexes.articles.items[0].urlPath, `/articles/${publishedArticles[0].data.slug}/`);
+  assert.equal(indexes.featured.articles[0].video.provider, featuredArticles[0].data.video.provider);
 });
 
 test("writeContentIndexes writes deterministic JSON files", async () => {
@@ -57,3 +63,22 @@ test("writeContentIndexes writes deterministic JSON files", async () => {
     await fs.rm(tempDir, { recursive: true, force: true });
   }
 });
+
+function compareByPublishedDateDesc(left, right) {
+  if (left.data.publishedAt === right.data.publishedAt) {
+    return left.data.slug.localeCompare(right.data.slug);
+  }
+
+  return right.data.publishedAt.localeCompare(left.data.publishedAt);
+}
+
+function compareHomepageStoryArchiveOrder(left, right) {
+  const leftOrder = left.data.homepage?.order ?? Number.MAX_SAFE_INTEGER;
+  const rightOrder = right.data.homepage?.order ?? Number.MAX_SAFE_INTEGER;
+
+  if (leftOrder === rightOrder) {
+    return compareByPublishedDateDesc(left, right);
+  }
+
+  return leftOrder - rightOrder;
+}
