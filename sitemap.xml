@@ -5,7 +5,7 @@
 
    <url>
       <loc>https://www.gotlandstider.se/</loc>
-      <lastmod>2026-01-03</lastmod>
+      <lastmod>2026-03-19</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
       <image:image>
@@ -19,9 +19,15 @@
    </url>
    <url>
       <loc>https://www.gotlandstider.se/articles/</loc>
-      <lastmod>2026-01-03</lastmod>
+      <lastmod>2026-03-19</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/articles/fem-anledningar-att-besoka-ljugarn/</loc>
+      <lastmod>2026-03-19</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://www.gotlandstider.se/articles/arets-loppis-favoriter/</loc>

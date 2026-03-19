@@ -56,13 +56,14 @@ export function formatValidationErrors(errors) {
 
 export function parseArticleFile(filePath, raw) {
   const { frontMatter, body } = parseFrontMatter(filePath, raw);
+  const normalizedFrontMatter = normalizeArticleFrontMatter(frontMatter);
 
   return {
     filePath,
     filename: path.basename(filePath),
     stem: path.basename(filePath, path.extname(filePath)),
     body,
-    data: frontMatter,
+    data: normalizedFrontMatter,
   };
 }
 
@@ -363,6 +364,20 @@ function parseFrontMatter(filePath, raw) {
   }
 
   return { frontMatter, body };
+}
+
+function normalizeArticleFrontMatter(frontMatter) {
+  const normalizedFrontMatter = structuredClone(frontMatter);
+
+  if (isPlainObject(normalizedFrontMatter.video?.socialLinks)) {
+    for (const [key, value] of Object.entries(normalizedFrontMatter.video.socialLinks)) {
+      if (typeof value === "string" && value.trim() === "") {
+        normalizedFrontMatter.video.socialLinks[key] = null;
+      }
+    }
+  }
+
+  return normalizedFrontMatter;
 }
 
 async function readContentFiles(directoryPath, extension) {

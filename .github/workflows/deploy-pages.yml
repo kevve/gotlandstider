@@ -49,6 +49,7 @@ jobs:
           mkdir -p "$site_dir"
 
           for path in \
+            admin \
             articles \
             content \
             fonts \

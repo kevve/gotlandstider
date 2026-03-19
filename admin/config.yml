@@ -1,0 +1,179 @@
+backend:
+  name: github
+  repo: kevve/gotlandstider
+  branch: main
+  base_url: https://cms-auth.gotlandstider.se
+  auth_endpoint: /auth
+  site_domain: www.gotlandstider.se
+  squash_merges: true
+
+publish_mode: editorial_workflow
+media_folder: content
+public_folder: /content
+
+editor:
+  preview: false
+
+collections:
+  - name: articles
+    label: Artiklar
+    label_singular: Artikel
+    folder: content/articles
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: slug
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - label: Titel
+        name: title
+        widget: string
+      - label: Slug
+        name: slug
+        widget: string
+        hint: Anvand endast sma bokstaver, siffror och bindestreck.
+      - label: Utdrag
+        name: excerpt
+        widget: text
+      - label: Publicerad
+        name: publishedAt
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+      - label: Uppdaterad
+        name: updatedAt
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+      - label: Huvudbild
+        name: heroImage
+        widget: image
+        media_folder: /content
+        public_folder: /content
+        choose_url: false
+      - label: Taggar
+        name: tags
+        widget: list
+        allow_add: true
+        collapsed: false
+        field:
+          label: Tagg
+          name: tag
+          widget: string
+      - label: Utvald
+        name: featured
+        widget: boolean
+        default: false
+        required: false
+      - label: Utkast
+        name: draft
+        widget: boolean
+        default: true
+        required: false
+      - label: Video
+        name: video
+        widget: object
+        required: false
+        collapsed: true
+        hint: Fyll bara i detta for video-baserade artiklar.
+        fields:
+          - label: Leverantor
+            name: provider
+            widget: string
+          - label: Embed-URL
+            name: embedUrl
+            widget: string
+          - label: Thumbnail
+            name: thumbnail
+            widget: image
+            media_folder: /content
+            public_folder: /content
+            choose_url: false
+          - label: Sociala lankar
+            name: socialLinks
+            widget: object
+            collapsed: true
+            fields:
+              - label: Instagram
+                name: instagram
+                widget: string
+                required: false
+              - label: TikTok
+                name: tiktok
+                widget: string
+                required: false
+          - label: Legacy sources
+            name: legacySources
+            widget: object
+            required: false
+            collapsed: true
+            hint: Endast for de redan grandfathered legacy-local-videorna.
+            fields:
+              - label: WebM
+                name: webm
+                widget: string
+                required: false
+              - label: MP4
+                name: mp4
+                widget: string
+                required: false
+      - label: Homepage
+        name: homepage
+        widget: object
+        required: false
+        collapsed: true
+        hint: Anvand bara detta nar artikeln ska synas i startsidans storiesektion.
+        fields:
+          - label: Badge
+            name: badge
+            widget: string
+            required: false
+          - label: Subtitle
+            name: subtitle
+            widget: string
+            required: false
+          - label: Order
+            name: order
+            widget: number
+            value_type: int
+            required: false
+            min: 1
+          - label: Description
+            name: description
+            widget: text
+            required: false
+          - label: Heading
+            name: heading
+            widget: object
+            required: false
+            collapsed: true
+            fields:
+              - label: Prefix
+                name: prefix
+                widget: string
+                required: false
+              - label: Accent
+                name: accent
+                widget: string
+                required: false
+          - label: Highlights
+            name: highlights
+            widget: list
+            required: false
+            collapsed: true
+            fields:
+              - label: Label
+                name: label
+                widget: string
+              - label: Titel
+                name: title
+                widget: string
+              - label: Beskrivning
+                name: description
+                widget: text
+      - label: Brodtext
+        name: body
+        widget: markdown

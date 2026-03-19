@@ -1,6 +1,24 @@
 {
   "items": [
     {
+      "title": "Fem anledningar att besöka Ljugarn",
+      "slug": "fem-anledningar-att-besoka-ljugarn",
+      "excerpt": "Ljugarn passar dig som vill kombinera strand, restauranger, aktiviteter och raukar under några dagar på östra Gotland.",
+      "publishedAt": "2026-03-19",
+      "updatedAt": "2026-03-19",
+      "heroImage": "/content/hero-coastline.webp",
+      "tags": [
+        "Ljugarn",
+        "Guide",
+        "Östra Gotland",
+        "Mat & Dryck"
+      ],
+      "featured": false,
+      "draft": false,
+      "urlPath": "/articles/fem-anledningar-att-besoka-ljugarn/",
+      "sourceFile": "content/articles/fem-anledningar-att-besoka-ljugarn.md"
+    },
+    {
       "title": "Årets loppis-favoriter",
       "slug": "arets-loppis-favoriter",
       "excerpt": "Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visar även Henrik upp årets fynd.",
