@@ -11,10 +11,13 @@ import {
 
 test("validateContentCollections passes for the current repo content", async () => {
   const result = await validateContentCollections(process.cwd());
+  const articleFiles = (await fs.readdir(path.join(process.cwd(), "content", "articles"))).filter(
+    (filename) => filename.endsWith(".md"),
+  );
 
   assert.equal(result.valid, true);
   assert.equal(result.errors.length, 0);
-  assert.equal(result.articles.length, 5);
+  assert.equal(result.articles.length, articleFiles.length);
 });
 
 test("parseArticleFile reads nested markdown front matter", () => {
