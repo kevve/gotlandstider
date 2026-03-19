@@ -30,7 +30,7 @@ Vem älskar inte mat- och dessertvåfflor? Menyn uppdateras ofta och brukar hål
 
 ## 4. Stranden som har allt
 
-Ljugarns strand är flera kilometer lång och passar alla olika sorters dagar. Sandstrand, stenstrand, eler nåt där emellan? Allt det har du inom gångavstånd. Helt perfekt för dig som vissa dagar gillar lugnare partier, och andra dagar vill ha mer håll-igång kring Stranfcaféet.
+Ljugarns strand är flera kilometer lång och passar alla olika sorters dagar. Sandstrand, stenstrand, eller något där emellan? Allt det har du inom gångavstånd. Helt perfekt för dig som vissa dagar gillar lugnare partier, och andra dagar vill ha mer håll-igång kring Stranfcaféet.
 
 ## 5. Underbara raukar du inte får missa
 
