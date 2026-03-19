@@ -6,12 +6,14 @@ import path from "node:path";
 
 import { buildArticlePages, buildPages, writeArticlePages, writePages } from "../scripts/build-pages.mjs";
 import { renderArticleArchivePage, renderArticleDetailPage } from "../scripts/lib/article-rendering.mjs";
+import { validateContentCollections } from "../scripts/lib/content-validation.mjs";
 
 test("buildArticlePages returns archive and detail pages for published articles", async () => {
   const result = await buildArticlePages(process.cwd());
+  const publishedArticleCount = await countPublishedArticles(process.cwd());
 
-  assert.equal(result.articles.length, 4);
-  assert.equal(result.pages.length, 5);
+  assert.equal(result.articles.length, publishedArticleCount);
+  assert.equal(result.pages.length, publishedArticleCount + 1);
 
   const archivePage = result.pages.find((page) => page.outputPath.endsWith(path.join("articles", "index.html")));
   const detailPage = result.pages.find((page) =>
@@ -88,9 +90,10 @@ test("writeArticlePages writes deterministic article pages", async () => {
 
 test("buildPages returns article routes only", async () => {
   const result = await buildPages(process.cwd());
+  const publishedArticleCount = await countPublishedArticles(process.cwd());
 
-  assert.equal(result.articles.length, 4);
-  assert.equal(result.pages.length, 5);
+  assert.equal(result.articles.length, publishedArticleCount);
+  assert.equal(result.pages.length, publishedArticleCount + 1);
 });
 
 test("writePages writes deterministic article pages", async () => {
@@ -366,4 +369,9 @@ async function removeTempDir(tempDir) {
       await new Promise((resolve) => setTimeout(resolve, 25));
     }
   }
+}
+
+async function countPublishedArticles(rootDir) {
+  const validation = await validateContentCollections(rootDir);
+  return validation.articles.filter((article) => !article.data.draft).length;
 }
