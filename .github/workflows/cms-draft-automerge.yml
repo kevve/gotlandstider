@@ -86,7 +86,7 @@ jobs:
             };
 
             const checkRunGatePassed = async (headSha) => {
-              const checkRuns = await github.paginate(
+              const rawCheckRuns = await github.paginate(
                 github.rest.checks.listForRef,
                 {
                   owner,
@@ -94,8 +94,18 @@ jobs:
                   ref: headSha,
                   per_page: 100,
                 },
-                (response) => response.data.check_runs,
+                (response) => response?.data?.check_runs || [],
               );
+
+              const checkRuns = rawCheckRuns.filter(
+                (run) => run && typeof run.name === "string",
+              );
+
+              if (checkRuns.length !== rawCheckRuns.length) {
+                core.warning(
+                  `Ignored ${rawCheckRuns.length - checkRuns.length} malformed check run entries on ${headSha}.`,
+                );
+              }
 
               const matchingRuns = checkRuns
                 .filter((run) => run.name === requiredCheckName)
