@@ -1,91 +1,44 @@
-# Decap CMS setup
+# Decap CMS workflow
 
-This repo serves Decap CMS from `/admin/` and authenticates GitHub logins through a Cloudflare Worker hosted at `https://cms-auth.gotlandstider.se`.
+This repository uses Decap editorial workflow states via pull request labels instead of storing a separate workflow status in article front matter.
 
-## Branch workflow
+## State contract
 
-Create and work from a clean branch so the Decap setup stays isolated from in-progress content work.
+Decap state is represented by pull request labels on `cms/articles/*` branches:
 
-Recommended command:
+- `decap-cms/draft`
+- other Decap editorial labels for non-draft states
 
-```bash
-git worktree add /tmp/gotlandstider-decap -b codex/decap-cms origin/main
-```
+Content publish visibility is still controlled only by article front matter:
 
-## Repo-side changes
+- `draft: true` keeps the article non-public
+- `draft: false` allows public generation
 
-- `admin/index.html` loads the Decap CMS app from the CDN.
-- `admin/config.yml` points Decap at `kevve/gotlandstider` on `main` and uses `publish_mode: editorial_workflow`.
-- `.github/workflows/deploy-pages.yml` now publishes `/admin/` to GitHub Pages.
-- `.github/workflows/sync-generated-site.yml` rebuilds and commits tracked generated outputs after source changes land on `main`.
-- `scripts/lib/content-validation.mjs` normalizes blank optional Decap social links to `null` before validation.
+## Draft auto-merge behavior
 
-## GitHub OAuth app
+Draft PRs are auto-merged by [`.github/workflows/cms-draft-automerge.yml`](/Users/kevin/Repos/Gotlandstider/gotlandstider/.github/workflows/cms-draft-automerge.yml) when all checks pass.
 
-Create a GitHub OAuth App under the GitHub account that owns the repo.
+A PR is eligible only when all conditions are true:
 
-Use:
+1. base branch is `main`
+2. head branch starts with `cms/articles/`
+3. PR has label `decap-cms/draft`
+4. all changed markdown files in `content/articles/` still contain `draft: true`
+5. changed files are limited to `content/articles/*.md` and `content/` asset files
+6. CI check run `validate-and-build` is successful on the PR head commit
 
-- Homepage URL: `https://cms-auth.gotlandstider.se`
-- Authorization callback URL: `https://cms-auth.gotlandstider.se/callback`
+If eligible, the workflow:
 
-Save the client ID and client secret for the Cloudflare Worker secrets.
+1. squash merges the PR
+2. deletes the `cms/articles/*` source branch
 
-## Cloudflare worker
+Non-draft Decap states stay manual by design.
 
-The worker source is vendored in `workers/cms-auth/` and is based on the Decap Cloudflare proxy flow used by `sterlingwes/decap-proxy`.
+## Main branch safety
 
-### Worker config
+Before relying on auto-merge, configure branch protection on `main` with:
 
-`workers/cms-auth/wrangler.toml` is preconfigured for:
+1. pull requests required
+2. required status check `validate-and-build`
 
-- worker name: `gotlandstider-cms-auth`
-- custom domain: `cms-auth.gotlandstider.se`
-- zone: `gotlandstider.se`
-- `workers_dev = false`
-
-### Required secrets
-
-Set these secrets in the worker before deploy:
-
-```bash
-cd workers/cms-auth
-npx wrangler secret put GITHUB_OAUTH_ID
-npx wrangler secret put GITHUB_OAUTH_SECRET
-```
-
-Because `kevve/gotlandstider` is public, `GITHUB_REPO_PRIVATE` can stay at `0`.
-
-### Deploy
-
-```bash
-cd workers/cms-auth
-npm install
-npx wrangler deploy
-```
-
-After deploy, verify:
-
-- `https://cms-auth.gotlandstider.se/` responds with the worker health page
-- `https://www.gotlandstider.se/admin/` loads the CMS
-
-## GitHub settings check
-
-Decap creates `cms/...` branches and PRs against `main`.
-
-Before relying on CMS publishing, confirm:
-
-- your editor GitHub account has write access to `kevve/gotlandstider`
-- branch protection does not prevent the CMS publish action from merging, or you are prepared to merge the CMS PRs manually in GitHub
-
-## Smoke test
-
-1. Open `https://www.gotlandstider.se/admin/`.
-2. Click the GitHub login button and complete OAuth through `cms-auth.gotlandstider.se`.
-3. Create a draft article with:
-   - `draft: true`
-   - a hero image uploaded into `/content/`
-4. Save the draft and confirm Decap opens a `cms/articles/...` pull request against `main`.
-5. Merge or publish the PR.
-6. Confirm the sync workflow commits updated tracked outputs if `generated/`, `articles/`, `index.html`, `output.css`, or `sitemap.xml` changed.
-7. Confirm the GitHub Pages deploy completes and the resulting article renders correctly.
+This keeps non-draft and non-CMS changes on the normal reviewed merge path.

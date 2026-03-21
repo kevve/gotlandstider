@@ -16,9 +16,10 @@ This repo now supports a simple Git-as-CMS workflow where new content starts as 
 npm run check:site
 ```
 
-6. Open a pull request.
-7. Merge the draft PR when you want the content saved in the repo but not yet public.
+6. Save the draft in Decap CMS so it opens a `cms/articles/*` pull request.
+7. If the PR is still a draft (`decap-cms/draft`) and passes CI, it auto-merges into `main`.
 8. Publish later in a small follow-up PR by changing only `draft: true` to `draft: false`.
+9. For non-draft Decap states, merge manually.
 
 ## Draft article template
 
@@ -78,6 +79,9 @@ Add a `homepage` block only when the article should appear in the homepage story
 - New videos should use article front matter plus an external embed URL and a local thumbnail image.
 - Video-backed articles should include `video.socialLinks`, using `null` for channels that are not used.
 - New videos should not include `video.legacySources`.
+- Decap editorial state is tracked on PR labels, not in article front matter.
+
+See [Decap CMS workflow](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/decap-cms.md) for the auto-merge guardrails and branch protection setup.
 
 ## Useful commands
 
