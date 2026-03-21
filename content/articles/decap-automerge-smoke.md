@@ -11,3 +11,5 @@ featured: false
 draft: true
 ---
 Detta är en testartikel för att verifiera draft-flödet i Decap CMS.
+
+Uppdaterad for CI-trigger.
