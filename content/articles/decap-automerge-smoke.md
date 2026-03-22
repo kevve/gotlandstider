@@ -3,7 +3,7 @@ title: Decap automerge smoke
 slug: decap-automerge-smoke
 excerpt: Smoke test article to validate Decap draft auto-merge workflow guardrails.
 publishedAt: 2026-03-21
-updatedAt: 2026-03-21
+updatedAt: 2026-03-22
 heroImage: /content/hero-coastline.webp
 tags:
   - Test
