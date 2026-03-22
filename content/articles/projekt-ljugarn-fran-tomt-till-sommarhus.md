@@ -3,7 +3,7 @@ title: Projekt Ljugarn - från tomt till sommarhus
 slug: projekt-ljugarn-fran-tomt-till-sommarhus
 excerpt: En exempelartikel för husresan i Ljugarn, med plats för uppdateringar om tomt, ritningar och byggbeslut.
 publishedAt: 2026-01-05
-updatedAt: 2026-03-22
+updatedAt: "2026-03-22"
 heroImage: /content/house-ritahus.webp
 tags:
   - Ljugarn
