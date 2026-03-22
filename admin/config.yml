@@ -68,11 +68,12 @@ collections:
         widget: boolean
         default: false
         required: false
-      - label: Utkast
+      - label: Utkast pa webbplatsen
         name: draft
         widget: boolean
         default: true
         required: false
+        hint: Styr publik synlighet pa webbplatsen. Separat fran Decap Workflow-status.
       - label: Video
         name: video
         widget: object
