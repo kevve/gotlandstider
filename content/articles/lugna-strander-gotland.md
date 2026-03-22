@@ -12,9 +12,9 @@ tags:
   - Fårö
   - Östra Gotland
 featured: false
-draft: true
+draft: false
 ---
-Vissa stranddagar vill du bara att allt ska kännas enkelt. Inte för stökigt, inte för mycket folk, bara hav, lite vind och gott om plats. Då finns det några ställen på Gotland som är extra värda att besöka.
+Vissa stranddagar vill du bara att allt ska kännas enkelt. Inte för stökigt, inte för mycket folk. Bara hav, lite vind och gott om plats! Då finns det några ställen på Gotland som är extra värda att besöka.
 
 ## Ardre Strand
 
@@ -24,9 +24,9 @@ Samtidigt är det klokt att komma förberedd. Ta med picknick och parasoll, efte
 
 ## Ekeviken på Fårö
 
-Längre norrut, nära Ekevikens camping på Fårö, ligger Ekeviken. Här får du en strand som ofta upplevs som rofylld, men ändå med närhet till fler aktiviteter om du vill variera dagen.
+Längre norrut, precis vid Ekevikens camping på Fårö, ligger Ekeviken. Här får du en strand som vi tycker är rofylld, men ändå har en närhet till fler aktiviteter om du vill variera dagen.
 
-Det gör Ekeviken till ett fint alternativ för dig som vill ha lugnet kvar men inte känna att du är mitt ute i ingen stans. Är du ändå i området kan det också vara värt att ta en sväng förbi Ankan City i skogen.
+Det gör Ekeviken till ett fint alternativ för dig som vill ha lugnet kvar men inte känna att du är mitt ute i ingenstans. Är du ändå i området kan det också vara värt att ta en sväng förbi Ankan City i skogen.
 
 ## Lausviken
 
