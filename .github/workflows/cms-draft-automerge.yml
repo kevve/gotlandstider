@@ -34,6 +34,7 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const allowedDraftLabel = "decap-cms/draft";
+            const requiredAutoMergeLabel = "decap-cms/automerge";
             const branchPrefix = "cms/articles/";
             const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -157,6 +158,11 @@ jobs:
               const labels = pr.labels.map((label) => label.name);
               if (!labels.includes(allowedDraftLabel)) {
                 core.info(`PR #${pull_number} is not labeled ${allowedDraftLabel}.`);
+                continue;
+              }
+
+              if (!labels.includes(requiredAutoMergeLabel)) {
+                core.info(`PR #${pull_number} is not labeled ${requiredAutoMergeLabel}.`);
                 continue;
               }
 

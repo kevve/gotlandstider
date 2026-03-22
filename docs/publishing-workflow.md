@@ -17,9 +17,10 @@ npm run check:site
 ```
 
 6. Save the draft in Decap CMS so it opens a `cms/articles/*` pull request.
-7. If the PR is still a draft (`decap-cms/draft`) and passes CI, it auto-merges into `main`.
+7. If you want instant-save behavior, add `decap-cms/automerge` to a draft PR (`decap-cms/draft`) and let CI pass.
 8. Publish later in a small follow-up PR by changing only `draft: true` to `draft: false`.
-9. For non-draft Decap states, merge manually.
+9. Keep workflow drafts open by default (no `decap-cms/automerge`) and move them through In Review/Ready as needed.
+10. For non-draft Decap states, merge manually.
 
 ## Draft article template
 
@@ -80,8 +81,9 @@ Add a `homepage` block only when the article should appear in the homepage story
 - Video-backed articles should include `video.socialLinks`, using `null` for channels that are not used.
 - New videos should not include `video.legacySources`.
 - Decap editorial state is tracked on PR labels, not in article front matter.
+- Decap "Published" in Contents means merged on `main`; public visibility is still controlled by `draft`.
 
-See [Decap CMS workflow](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/decap-cms.md) for the auto-merge guardrails and branch protection setup.
+See [Decap CMS workflow](./decap-cms.md) for the auto-merge guardrails and branch protection setup.
 
 ## Useful commands
 
