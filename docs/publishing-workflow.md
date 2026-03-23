@@ -1,28 +1,34 @@
-# Draft-first publishing workflow
+# Decap editorial publishing workflow
 
-This repo now supports a simple Git-as-CMS workflow where new content starts as a draft in the repo and only becomes public when `draft` is changed to `false`.
+This repository uses Decap CMS editorial workflow as the primary publishing lifecycle:
+
+- Draft
+- In Review
+- Ready
+- Publish
+
+Entries stay off `main` until you click **Publish** in Decap CMS.
 
 ## Recommended flow
 
-1. Add a new source file in `content/articles/`.
-2. Start with:
-   - `draft: true`
-   - `featured: false`
-3. Only add homepage-specific metadata when the content is meant to appear on the homepage.
-4. For new videos, add a `video` block to the article and use an external embed provider instead of `legacy-local`.
-5. Run:
+1. Create or edit an article in Decap CMS.
+2. Move the entry through Draft, In Review, and Ready as needed.
+3. Run local checks when needed:
 
 ```bash
 npm run check:site
 ```
 
-6. Save the draft in Decap CMS so it opens a `cms/articles/*` pull request.
-7. If you want instant-save behavior, add `decap-cms/automerge` to a draft PR (`decap-cms/draft`) and let CI pass.
-8. Publish later in a small follow-up PR by changing only `draft: true` to `draft: false`.
-9. Keep workflow drafts open by default (no `decap-cms/automerge`) and move them through In Review/Ready as needed.
-10. For non-draft Decap states, merge manually.
+4. Click **Publish** in Decap CMS to merge the PR into `main`.
+5. GitHub Pages deploy runs from `main` and publishes the generated site.
 
-## Draft article template
+## Frontmatter defaults
+
+- `draft` is optional.
+- If `draft` is omitted, it is treated as `false`.
+- Use `draft: true` only when you intentionally want a merged article to stay hidden from public output.
+
+## Article template
 
 Copy this into a new file under `content/articles/`:
 
@@ -37,13 +43,12 @@ heroImage: /content/example.webp
 tags:
   - Gotland
 featured: false
-draft: true
 ---
 
 Ingress eller brödtext här.
 ```
 
-## Draft video-backed article template
+## Video-backed article template
 
 Copy this into a new file under `content/articles/`:
 
@@ -58,7 +63,6 @@ heroImage: /content/example.webp
 tags:
   - Gotland
 featured: false
-draft: true
 video:
   provider: youtube
   embedUrl: https://www.youtube.com/embed/VIDEO_ID
@@ -75,15 +79,24 @@ Add a `homepage` block only when the article should appear in the homepage story
 
 ## Publishing rules
 
-- `draft: true` keeps the content out of public JSON, public routes, sitemap, and homepage structured data.
-- `draft: false` makes the content eligible for public generated output.
+- `draft: true` keeps content out of public JSON, public routes, sitemap, and homepage structured data.
+- `draft: false` (or omitted `draft`) makes content eligible for public generated output.
 - New videos should use article front matter plus an external embed URL and a local thumbnail image.
 - Video-backed articles should include `video.socialLinks`, using `null` for channels that are not used.
 - New videos should not include `video.legacySources`.
-- Decap editorial state is tracked on PR labels, not in article front matter.
-- Decap "Published" in Contents means merged on `main`; public visibility is still controlled by `draft`.
 
-See [Decap CMS workflow](./decap-cms.md) for the auto-merge guardrails and branch protection setup.
+## One-time cleanup for existing `draft: true` entries on `main`
+
+If older entries are already merged with `draft: true`, decide each one:
+
+- keep hidden for now (`draft: true`), or
+- publish publicly by changing to `draft: false`.
+
+To list current candidates:
+
+```bash
+rg -n "^draft:\s*true$" content/articles/*.md
+```
 
 ## Useful commands
 

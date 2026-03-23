@@ -22,13 +22,13 @@ The target state is a Git-as-CMS workflow with:
 - static archive/detail pages generated under `/articles/`
 - GitHub Actions used for validation, build, and deployment
 
-For all content, `draft: true` is the non-public default state. Only `draft: false` content is allowed into public generated output.
+For all content, Decap CMS editorial workflow status controls whether changes are unpublished (`Draft`, `In Review`, `Ready`) or merged (`Publish`).
+The frontmatter flag `draft` is an optional visibility override and defaults to `false`.
 
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
 See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
-See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the draft-to-publish author workflow and copy-paste content templates.
-See [docs/decap-cms.md](docs/decap-cms.md) for the CMS setup, Cloudflare worker deployment, and manual smoke-test checklist.
+See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the Decap editorial publishing workflow and copy-paste content templates.
 
 ## Local development
 
@@ -67,18 +67,14 @@ npm run check:site
 GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Users/kevin/Repos/Gotlandstider/gotlandstider/.github/workflows/deploy-pages.yml). On pushes to `main`, it:
 
 - installs dependencies with `npm ci`
-- validates content
 - rebuilds the full public site with `npm run build:site`
 - stages the public site into a GitHub Pages artifact
 - deploys that artifact with GitHub Actions
 
-The CMS admin panel is published from `/admin/`, and the Cloudflare OAuth worker source lives under [`workers/cms-auth/`](workers/cms-auth/).
-
-Generated repo artifacts are kept in sync by [`.github/workflows/sync-generated-site.yml`](.github/workflows/sync-generated-site.yml). That workflow rebuilds and commits tracked outputs such as `/articles/`, `/generated/`, `index.html`, `output.css`, and `sitemap.xml` after source changes land on `main`.
-
 The staged Pages artifact includes the production files and directories the site currently needs:
 
 - `index.html`
+- `admin/`
 - `articles/`
 - `generated/`
 - `content/` asset files only
@@ -119,4 +115,5 @@ Manual repo setup for the first deploy:
 
 - `CNAME` must remain in place for GitHub Pages and the custom domain.
 - Existing URLs, assets, and homepage behavior should stay stable until later migration PRs explicitly change them.
-- The recommended publishing workflow is draft-first: add content with `draft: true`, run `npm run check:site`, merge safely, and publish later by flipping `draft` to `false`.
+- The recommended publishing workflow uses Decap editorial workflow states and manual Publish in Decap.
+- Set `draft: true` only when you intentionally want a merged article to stay hidden from public output.

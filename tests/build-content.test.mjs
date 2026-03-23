@@ -33,6 +33,43 @@ test("buildContentIndexes returns stable article collections from the current re
   assert.equal(indexes.featured.articles[0].video.provider, featuredArticles[0].data.video.provider);
 });
 
+test("buildContentIndexes treats articles without draft as published", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-build-content-"));
+
+  try {
+    await fs.cp(path.join(process.cwd(), "content"), path.join(tempDir, "content"), {
+      recursive: true,
+    });
+
+    await fs.writeFile(
+      path.join(tempDir, "content", "articles", "artikel-utan-draft.md"),
+      `---
+title: Artikel utan draft
+slug: artikel-utan-draft
+excerpt: Kort text
+publishedAt: 2026-03-22
+updatedAt: 2026-03-22
+heroImage: /content/hero-coastline.webp
+tags:
+  - Guide
+featured: false
+---
+
+Innehåll.
+`,
+      "utf8",
+    );
+
+    const indexes = await buildContentIndexes(tempDir);
+    const article = indexes.articles.items.find((entry) => entry.slug === "artikel-utan-draft");
+
+    assert.ok(article);
+    assert.equal(article.draft, false);
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("writeContentIndexes writes deterministic JSON files", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-build-content-"));
 
