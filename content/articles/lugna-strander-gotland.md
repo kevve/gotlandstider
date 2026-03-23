@@ -12,7 +12,7 @@ tags:
   - Fårö
   - Östra Gotland
 featured: false
-draft: true
+draft: false
 ---
 Vissa stranddagar vill du bara att allt ska kännas enkelt. Inte för stökigt, inte för mycket folk, bara hav, lite vind och gott om plats. Då finns det några ställen på Gotland som är extra värda att besöka.
 
