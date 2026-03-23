@@ -3,7 +3,7 @@
 This folder is the source-of-truth workspace for the Git-as-CMS migration.
 These files are validated, transformed, and published into generated JSON and static pages.
 
-See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the recommended Decap editorial publishing flow and copy-paste templates.
+See [docs/publishing-workflow.md](../docs/publishing-workflow.md) for the recommended Decap editorial publishing flow and copy-paste templates.
 
 ## Folder layout
 
