@@ -61,12 +61,12 @@ Brödtext.
   assert.equal(article.body, "Brödtext.");
 });
 
-test("parseArticleFile normalizes blank Decap social links to null", () => {
+test("parseArticleFile defaults missing draft to false", () => {
   const article = parseArticleFile(
-    "content/articles/example.md",
+    "content/articles/example-without-draft.md",
     `---
-title: Exempelartikel
-slug: exempelartikel
+title: Exempelartikel utan draft
+slug: exempelartikel-utan-draft
 excerpt: Kort text
 publishedAt: 2026-03-15
 updatedAt: 2026-03-15
@@ -74,52 +74,49 @@ heroImage: /content/example.webp
 tags:
   - Gotland
 featured: false
-draft: true
-video:
-  provider: youtube
-  embedUrl: https://www.youtube.com/embed/example123
-  thumbnail: /content/example.webp
-  socialLinks:
-    instagram: ""
-    tiktok: "   "
 ---
 
 Brödtext.
 `,
   );
 
-  assert.equal(article.data.video.socialLinks.instagram, null);
-  assert.equal(article.data.video.socialLinks.tiktok, null);
+  assert.equal(article.data.draft, false);
 });
 
-test("parseArticleFile removes empty optional Decap objects", () => {
-  const article = parseArticleFile(
-    "content/articles/example.md",
-    `---
-title: Exempelartikel
-slug: exempelartikel
+test("validateContentCollections allows missing draft and defaults it to false", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
+
+  try {
+    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
+    await Promise.all([
+      fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
+      fs.writeFile(
+        path.join(tempDir, "content", "articles", "article.md"),
+        `---
+title: Artikel utan draft
+slug: artikel-utan-draft
 excerpt: Kort text
 publishedAt: 2026-03-15
 updatedAt: 2026-03-15
 heroImage: /content/example.webp
 tags:
-  - Gotland
+  - Guide
 featured: false
-draft: true
-video:
-  socialLinks:
-    instagram: ""
-    tiktok: ""
-homepage:
-  heading: {}
 ---
 
-Brödtext.
+Innehåll.
 `,
-  );
+      ),
+    ]);
 
-  assert.equal("video" in article.data, false);
-  assert.equal("homepage" in article.data, false);
+    const result = await validateContentCollections(tempDir);
+
+    assert.equal(result.valid, true);
+    assert.equal(result.errors.length, 0);
+    assert.equal(result.articles[0].data.draft, false);
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
 });
 
 test("validateContentCollections reports invalid dates and duplicate article slugs", async () => {
@@ -251,49 +248,6 @@ video:
   socialLinks:
     instagram: null
     tiktok: null
----
-
-Innehåll.
-`,
-      ),
-    ]);
-
-    const result = await validateContentCollections(tempDir);
-
-    assert.equal(result.valid, true);
-    assert.equal(result.errors.length, 0);
-  } finally {
-    await fs.rm(tempDir, { recursive: true, force: true });
-  }
-});
-
-test("validateContentCollections accepts blank Decap social link fields after normalization", async () => {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
-
-  try {
-    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
-    await Promise.all([
-      fs.writeFile(path.join(tempDir, "content", "example.webp"), "image"),
-      fs.writeFile(
-        path.join(tempDir, "content", "articles", "article.md"),
-        `---
-title: Artikel med video
-slug: artikel-med-video
-excerpt: Kort text
-publishedAt: 2026-03-15
-updatedAt: 2026-03-15
-heroImage: /content/example.webp
-tags:
-  - Guide
-featured: false
-draft: false
-video:
-  provider: youtube
-  embedUrl: https://www.youtube.com/embed/abc123
-  thumbnail: /content/example.webp
-  socialLinks:
-    instagram: ""
-    tiktok: ""
 ---
 
 Innehåll.

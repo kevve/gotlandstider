@@ -128,6 +128,49 @@ test("writePages writes deterministic article pages", async () => {
   }
 });
 
+test("buildPages treats articles without draft as published", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-build-pages-"));
+
+  try {
+    await Promise.all([
+      fs.cp(path.join(process.cwd(), "content"), path.join(tempDir, "content"), { recursive: true }),
+      fs.cp(path.join(process.cwd(), "templates"), path.join(tempDir, "templates"), { recursive: true }),
+    ]);
+
+    await fs.writeFile(
+      path.join(tempDir, "content", "articles", "artikel-utan-draft.md"),
+      `---
+title: Artikel utan draft
+slug: artikel-utan-draft
+excerpt: Kort text
+publishedAt: 2026-03-22
+updatedAt: 2026-03-22
+heroImage: /content/hero-coastline.webp
+tags:
+  - Guide
+featured: false
+---
+
+Innehåll.
+`,
+      "utf8",
+    );
+
+    const result = await buildPages(tempDir);
+    const missingDraftArticle = result.articles.find((article) => article.slug === "artikel-utan-draft");
+
+    assert.ok(missingDraftArticle);
+    assert.equal(missingDraftArticle.draft, false);
+    assert.ok(
+      result.pages.some((page) =>
+        page.outputPath.endsWith(path.join("articles", "artikel-utan-draft", "index.html")),
+      ),
+    );
+  } finally {
+    await removeTempDir(tempDir);
+  }
+});
+
 test("renderArticleDetailPage supports external embeds for video-backed articles", () => {
   const html = renderArticleDetailPage({
     template: `

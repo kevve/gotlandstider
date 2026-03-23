@@ -3,7 +3,7 @@
 This folder is the source-of-truth workspace for the Git-as-CMS migration.
 These files are validated, transformed, and published into generated JSON and static pages.
 
-See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the recommended draft-first publishing flow and copy-paste templates.
+See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the recommended Decap editorial publishing flow and copy-paste templates.
 
 ## Folder layout
 
@@ -23,10 +23,10 @@ Required front matter keys for the current migration plan:
 - `heroImage`
 - `tags`
 - `featured`
-- `draft`
 
 Optional nested keys:
 
+- `draft` as an explicit visibility override (`false` by default when omitted)
 - `video` for embedded or legacy-local video presentation
 - `homepage` for featured homepage story metadata on video-backed articles
 
@@ -44,7 +44,6 @@ tags:
   - Gotland
   - Guide
 featured: false
-draft: true
 ---
 
 Markdown-innehåll här.
@@ -63,7 +62,6 @@ heroImage: /content/example.webp
 tags:
   - Gotland
 featured: false
-draft: true
 video:
   provider: youtube
   embedUrl: https://www.youtube.com/embed/VIDEO_ID
@@ -81,8 +79,9 @@ Markdown-innehåll här.
 
 Article draft rules:
 
-- `draft: true` keeps the article in repo-only/source-only mode
-- `draft: false` allows the article to appear in generated public output
+- `draft` is optional and defaults to `false`
+- `draft: true` keeps the article out of generated public output even after merge
+- `draft: false` (or omitted `draft`) allows the article to appear in generated public output
 - New articles should start with `featured: false` unless they are intentionally being promoted
 
 Video metadata rules:

@@ -13,7 +13,6 @@ const ARTICLE_REQUIRED_FIELDS = [
   "heroImage",
   "tags",
   "featured",
-  "draft",
 ];
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
@@ -56,7 +55,10 @@ export function formatValidationErrors(errors) {
 
 export function parseArticleFile(filePath, raw) {
   const { frontMatter, body } = parseFrontMatter(filePath, raw);
-  const normalizedFrontMatter = normalizeArticleFrontMatter(frontMatter);
+  const normalizedFrontMatter = {
+    ...frontMatter,
+    draft: "draft" in frontMatter ? frontMatter.draft : false,
+  };
 
   return {
     filePath,
@@ -364,82 +366,6 @@ function parseFrontMatter(filePath, raw) {
   }
 
   return { frontMatter, body };
-}
-
-function normalizeArticleFrontMatter(frontMatter) {
-  const normalizedFrontMatter = structuredClone(frontMatter);
-
-  if (isPlainObject(normalizedFrontMatter.video?.socialLinks)) {
-    for (const [key, value] of Object.entries(normalizedFrontMatter.video.socialLinks)) {
-      if (typeof value === "string" && value.trim() === "") {
-        normalizedFrontMatter.video.socialLinks[key] = null;
-      }
-    }
-  }
-
-  pruneEmptyObjects(normalizedFrontMatter, [
-    ["video", "legacySources"],
-    ["video"],
-    ["homepage", "heading"],
-    ["homepage"],
-  ]);
-
-  return normalizedFrontMatter;
-}
-
-function pruneEmptyObjects(root, paths) {
-  for (const segments of paths) {
-    removeObjectIfEmpty(root, segments);
-  }
-}
-
-function removeObjectIfEmpty(root, segments) {
-  if (!isPlainObject(root) || segments.length === 0) {
-    return;
-  }
-
-  let parent = root;
-
-  for (let index = 0; index < segments.length - 1; index += 1) {
-    const next = parent[segments[index]];
-
-    if (!isPlainObject(next)) {
-      return;
-    }
-
-    parent = next;
-  }
-
-  const finalKey = segments.at(-1);
-  const value = parent[finalKey];
-
-  if (isPlainObject(value) && isEffectivelyEmptyObject(value)) {
-    delete parent[finalKey];
-  }
-}
-
-function isEffectivelyEmptyObject(value) {
-  return Object.values(value).every((entry) => isEffectivelyEmptyValue(entry));
-}
-
-function isEffectivelyEmptyValue(value) {
-  if (value === null) {
-    return true;
-  }
-
-  if (typeof value === "string") {
-    return value.trim() === "";
-  }
-
-  if (Array.isArray(value)) {
-    return value.length === 0;
-  }
-
-  if (isPlainObject(value)) {
-    return isEffectivelyEmptyObject(value);
-  }
-
-  return false;
 }
 
 async function readContentFiles(directoryPath, extension) {
