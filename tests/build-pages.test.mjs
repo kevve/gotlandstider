@@ -49,7 +49,17 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(detailPage.html, /line-clamp-2 font-serif text-base leading-snug/);
   assert.match(detailPage.html, /href="\/articles\/en-strand-for-stora-och-sma\/"/);
   assert.match(detailPage.html, /href="\/articles\/fem-platser-att-besoka-pa-gotland-2026\/"/);
-  assert.match(detailPage.html, /href="\/articles\/musikquiz-och-god-mat-vid-stranden\/"/);
+  const articleSlugs = result.articles.map((article) => article.slug);
+  const expectedRelatedSlugs = articleSlugs
+    .filter((slug) => slug !== "arets-loppis-favoriter")
+    .slice(0, 4);
+  assert.ok(expectedRelatedSlugs.length > 0);
+
+  for (const slug of expectedRelatedSlugs) {
+    assert.match(detailPage.html, new RegExp(`href="/articles/${slug}/"`));
+  }
+
+  assert.doesNotMatch(detailPage.html, /href="\/articles\/arets-loppis-favoriter\/"/);
   assert.match(
     detailPage.html,
     /class="flex flex-wrap gap-3"[\s\S]*hidden lg:block[\s\S]*class="space-y-10 lg:col-start-2"/,
