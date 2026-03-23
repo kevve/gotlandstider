@@ -27,8 +27,9 @@ The frontmatter flag `draft` is an optional visibility override and defaults to 
 
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
-See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
-See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the Decap editorial publishing workflow and copy-paste content templates.
+See [docs/publishing-architecture.md](docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
+See [docs/publishing-workflow.md](docs/publishing-workflow.md) for the Decap editorial publishing workflow and copy-paste content templates.
+See [docs/decap-cms.md](docs/decap-cms.md) for the Decap lifecycle model and branch protection guidance.
 
 ## Local development
 
@@ -64,7 +65,7 @@ npm run check:site
 
 ## Deployment
 
-GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Users/kevin/Repos/Gotlandstider/gotlandstider/.github/workflows/deploy-pages.yml). On pushes to `main`, it:
+GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). On pushes to `main`, it:
 
 - installs dependencies with `npm ci`
 - rebuilds the full public site with `npm run build:site`
@@ -104,12 +105,12 @@ Manual repo setup for the first deploy:
 2. Set the build and deployment source to GitHub Actions if it is still publishing from a branch.
 3. Merge the deploy workflow PR and confirm the first Actions deploy completes successfully.
 
-## Planned workspace folders
+## Publishing workspace folders
 
-- `content/articles/`: future article source files
-- `generated/content/`: future generated indexes consumed by the site
-- `scripts/`: future validation/build scripts
-- `templates/`: future static page templates
+- `content/articles/`: article source files
+- `generated/content/`: generated indexes consumed by the site
+- `scripts/`: validation and build scripts
+- `templates/`: static page templates
 
 ## Notes
 
