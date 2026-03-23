@@ -14,7 +14,7 @@ tags:
 featured: false
 draft: false
 ---
-Vissa dagar på stranden vill du bara att allt ska kännas enkelt. Inte för stökigt, inte för mycket folk. Bara hav, lite vind och gott om plats! Då finns det några ställen på Gotland som är extra värda att besöka.
+Vissa stranddagar vill du bara att allt ska kännas enkelt. Inte för stökigt, inte för mycket folk. Bara hav, lite vind och gott om plats! Då finns det några ställen på Gotland som är extra värda att besöka.
 
 ## Ardre Strand
 
