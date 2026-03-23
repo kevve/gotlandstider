@@ -4,7 +4,7 @@ slug: lugna-strander-gotland
 excerpt: Ardre Strand, Ekeviken och Lausviken är tre fina val när du vill ha en
   lugnare dag vid havet på Gotland.
 publishedAt: 2026-03-21
-updatedAt: 2026-03-22
+updatedAt: 2026-03-23
 heroImage: /content/hero-coastline.webp
 tags:
   - Stränder
