@@ -33,6 +33,8 @@ npm run check:site
 
 Use this flow when the Content Publisher skill is creating article drafts from `ready_for_upload/`:
 
+The `publisher:*` commands below stay anchored in this repo for operators, but they execute the canonical helper implementations from the sibling `gotlandstider-ai` checkout.
+
 1. Prepare a clean worktree:
 
 ```bash

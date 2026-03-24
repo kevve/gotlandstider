@@ -64,6 +64,10 @@ Run the full validation, test, and static build pipeline locally:
 npm run check:site
 ```
 
+The `publisher:*` commands in this repo are stable wrappers around the canonical helper scripts in the sibling `gotlandstider-ai` checkout.
+If you run them from a detached worktree or another custom layout, set `GOTLANDSTIDER_AI_ROOT` to the canonical `gotlandstider-ai` checkout first.
+The installed Codex skills `content-writer` and `content-publisher` should be managed as symlinks, not edited in place under `~/.codex/skills/`.
+
 Prepare a clean worktree for manual Content Publisher runs:
 
 ```bash
@@ -141,3 +145,4 @@ Manual repo setup for the first deploy:
 - Automated intake PRs must carry the `decap-cms/draft` label to appear in Decap Workflow; the `publisher:open-pr` helper applies and verifies that label.
 - Set `draft: true` only when you intentionally want a merged article to stay hidden from public output.
 - Intake automation should run from a dedicated clean worktree or clone so publisher scope checks can stay limited to a single article source file.
+- Edit shared Codex skills and publisher helper implementations in the sibling `gotlandstider-ai` repo; `~/.codex/skills/` should only contain installed symlinks.
