@@ -24,12 +24,13 @@ The target state is a Git-as-CMS workflow with:
 
 For all content, Decap CMS editorial workflow status controls whether changes are unpublished (`Draft`, `In Review`, `Ready`) or merged (`Publish`).
 The frontmatter flag `draft` is an optional visibility override and defaults to `false`.
+GitHub draft PRs are separate from both of those concepts and are not used as the CMS publishing state.
 
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
-See [docs/publishing-architecture.md](docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
-See [docs/publishing-workflow.md](docs/publishing-workflow.md) for the Decap editorial publishing workflow and copy-paste content templates.
-See [docs/decap-cms.md](docs/decap-cms.md) for the Decap lifecycle model and branch protection guidance.
+See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
+See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the Decap editorial publishing workflow and copy-paste content templates.
+See [docs/decap-cms.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/decap-cms.md) for the exact relationship between Decap drafts, `draft: true`, and GitHub PRs.
 
 ## Local development
 
@@ -63,11 +64,30 @@ Run the full validation, test, and static build pipeline locally:
 npm run check:site
 ```
 
+Prepare a clean worktree for manual Content Publisher runs:
+
+```bash
+npm run publisher:prepare -- --path ../gotlandstider-content-publisher
+```
+
+Preflight a generated article branch without committing generated output:
+
+```bash
+npm run publisher:preflight -- --expected content/articles/<slug>.md
+```
+
+Open or reuse the Decap editorial-workflow PR and enforce the required label:
+
+```bash
+npm run publisher:open-pr -- --branch cms/articles/<slug> --title "Create Decap draft article: <title>" --body "Decap draft article generated from the intake folder transcript via $content-writer."
+```
+
 ## Deployment
 
-GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). On pushes to `main`, it:
+GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Users/kevin/Repos/Gotlandstider/gotlandstider/.github/workflows/deploy-pages.yml). On pushes to `main`, it:
 
 - installs dependencies with `npm ci`
+- validates content
 - rebuilds the full public site with `npm run build:site`
 - stages the public site into a GitHub Pages artifact
 - deploys that artifact with GitHub Actions
@@ -93,6 +113,7 @@ Source content files remain in the repo, but the deploy artifact excludes:
 - `content/articles/`
 
 This keeps Markdown article sources private even though the rest of `/content/` is still used for public assets.
+It does not affect Decap CMS because the CMS reads and writes the GitHub repository directly rather than the Pages artifact.
 
 Public SEO scope is intentionally limited for now:
 
@@ -105,16 +126,18 @@ Manual repo setup for the first deploy:
 2. Set the build and deployment source to GitHub Actions if it is still publishing from a branch.
 3. Merge the deploy workflow PR and confirm the first Actions deploy completes successfully.
 
-## Publishing workspace folders
+## Planned workspace folders
 
-- `content/articles/`: article source files
-- `generated/content/`: generated indexes consumed by the site
-- `scripts/`: validation and build scripts
-- `templates/`: static page templates
+- `content/articles/`: future article source files
+- `generated/content/`: future generated indexes consumed by the site
+- `scripts/`: future validation/build scripts
+- `templates/`: future static page templates
 
 ## Notes
 
 - `CNAME` must remain in place for GitHub Pages and the custom domain.
 - Existing URLs, assets, and homepage behavior should stay stable until later migration PRs explicitly change them.
 - The recommended publishing workflow uses Decap editorial workflow states and manual Publish in Decap.
+- Automated intake PRs must carry the `decap-cms/draft` label to appear in Decap Workflow; the `publisher:open-pr` helper applies and verifies that label.
 - Set `draft: true` only when you intentionally want a merged article to stay hidden from public output.
+- Intake automation should run from a dedicated clean worktree or clone so publisher scope checks can stay limited to a single article source file.

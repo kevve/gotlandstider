@@ -3,7 +3,7 @@
 This folder is the source-of-truth workspace for the Git-as-CMS migration.
 These files are validated, transformed, and published into generated JSON and static pages.
 
-See [docs/publishing-workflow.md](../docs/publishing-workflow.md) for the recommended Decap editorial publishing flow and copy-paste templates.
+See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the recommended Decap editorial publishing flow and copy-paste templates.
 
 ## Folder layout
 
@@ -82,6 +82,8 @@ Article draft rules:
 - `draft` is optional and defaults to `false`
 - `draft: true` keeps the article out of generated public output even after merge
 - `draft: false` (or omitted `draft`) allows the article to appear in generated public output
+- Decap editorial workflow status is separate from `draft`; unpublished Decap entries stay off `main` even when the file itself uses `draft: false`
+- Automated intake drafts must open their PRs through `npm run publisher:open-pr`, which applies the required `decap-cms/draft` label for Decap Workflow visibility
 - New articles should start with `featured: false` unless they are intentionally being promoted
 
 Video metadata rules:
