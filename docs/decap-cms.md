@@ -13,6 +13,15 @@ Decap manages the lifecycle directly in the CMS UI:
 
 When you click **Publish**, Decap merges the entry PR into `main`.
 
+When `publish_mode: editorial_workflow` is enabled, saving a Decap draft creates or updates an unpublished branch and PR for that entry. In this repo, automated intake drafts should use the same model with branch names shaped like `cms/articles/<slug>`.
+Automated intake PRs must also carry the `decap-cms/draft` label. A matching branch name on its own is not enough for Decap to treat the PR as a workflow entry.
+
+## Three draft concepts
+
+- `Decap draft`: an unpublished editorial-workflow branch and PR.
+- `draft: true`: a merged article that stays hidden from public output.
+- `GitHub draft PR`: a GitHub review setting only, not a Decap workflow state.
+
 ## Visibility model
 
 Public visibility is controlled by article frontmatter:
@@ -29,6 +38,8 @@ The publishing pipeline is intentionally minimal:
 1. PR CI runs `npm run check:site`.
 2. Pushes to `main` run Pages build + deploy.
 3. No custom Decap auto-merge workflow is used.
+4. Content Publisher should run from a dedicated clean worktree or clone and restore generated outputs before PR creation so the diff stays limited to one article source file.
+5. Content Publisher should open the PR through `npm run publisher:open-pr` so the required `decap-cms/draft` label is applied and verified immediately after PR creation.
 
 ## Branch protection
 
@@ -38,6 +49,11 @@ Use branch protection on `main` with:
 2. required status check `validate-and-build`
 
 This keeps Decap and non-Decap changes on the same reviewed merge path.
+
+## Pages artifact note
+
+`content/articles/` is excluded from the Pages artifact on purpose.
+That does not affect Decap CMS because Decap works against the hosted Git repository, not the deployed Pages bundle.
 
 ## One-time cleanup for existing `draft: true` entries on `main`
 

@@ -82,6 +82,8 @@ Article draft rules:
 - `draft` is optional and defaults to `false`
 - `draft: true` keeps the article out of generated public output even after merge
 - `draft: false` (or omitted `draft`) allows the article to appear in generated public output
+- Decap editorial workflow status is separate from `draft`; unpublished Decap entries stay off `main` even when the file itself uses `draft: false`
+- Automated intake drafts must open their PRs through `npm run publisher:open-pr`, which applies the required `decap-cms/draft` label for Decap Workflow visibility
 - New articles should start with `featured: false` unless they are intentionally being promoted
 
 Video metadata rules:
