@@ -47,8 +47,6 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(detailPage.html, /lg:grid-cols-2/);
   assert.match(detailPage.html, /flex h-full flex-col/);
   assert.match(detailPage.html, /line-clamp-2 font-serif text-base leading-snug/);
-  assert.match(detailPage.html, /href="\/articles\/en-strand-for-stora-och-sma\/"/);
-  assert.match(detailPage.html, /href="\/articles\/fem-platser-att-besoka-pa-gotland-2026\/"/);
   const articleSlugs = result.articles.map((article) => article.slug);
   const expectedRelatedSlugs = articleSlugs
     .filter((slug) => slug !== "arets-loppis-favoriter")
