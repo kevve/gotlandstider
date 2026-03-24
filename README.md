@@ -28,9 +28,9 @@ GitHub draft PRs are separate from both of those concepts and are not used as th
 
 The migration is intentionally split into small, reviewable pull requests so each step is safe to test and easy to roll back.
 
-See [docs/publishing-architecture.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
-See [docs/publishing-workflow.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/publishing-workflow.md) for the Decap editorial publishing workflow and copy-paste content templates.
-See [docs/decap-cms.md](/Users/kevin/Repos/Gotlandstider/gotlandstider/docs/decap-cms.md) for the exact relationship between Decap drafts, `draft: true`, and GitHub PRs.
+See [docs/publishing-architecture.md](docs/publishing-architecture.md) for the implementation approach and folder responsibilities.
+See [docs/publishing-workflow.md](docs/publishing-workflow.md) for the Decap editorial publishing workflow and copy-paste content templates.
+See [docs/decap-cms.md](docs/decap-cms.md) for the exact relationship between Decap drafts, `draft: true`, and GitHub PRs.
 
 ## Local development
 
@@ -84,7 +84,7 @@ npm run publisher:open-pr -- --branch cms/articles/<slug> --title "Create Decap 
 
 ## Deployment
 
-GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](/Users/kevin/Repos/Gotlandstider/gotlandstider/.github/workflows/deploy-pages.yml). On pushes to `main`, it:
+GitHub Pages deployment is handled by [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). On pushes to `main`, it:
 
 - installs dependencies with `npm ci`
 - validates content

@@ -44,17 +44,7 @@ export async function runContentPublisherPreflight({
 
   await runCommand("npm", ["run", "check:site"], { cwd: rootDir });
   await resetGeneratedOutputs(rootDir);
-  await runCommand(
-    "python3",
-    [
-      "/Users/kevin/Repos/Gotlandstider/gotlandstider-ai/scripts/check-pr-scope.py",
-      "--expected",
-      normalizedExpected,
-      "--repo",
-      rootDir,
-    ],
-    { cwd: rootDir },
-  );
+  await verifyPrScope(rootDir, normalizedExpected);
 
   return {
     expected: normalizedExpected,
@@ -81,6 +71,26 @@ async function getChangedTrackedFiles(rootDir) {
     .filter(Boolean)
     .map(normalizeRepoPath)
     .sort();
+}
+
+async function verifyPrScope(rootDir, expected) {
+  const changedTrackedFiles = await getChangedTrackedFiles(rootDir);
+  const unexpectedTrackedFiles = changedTrackedFiles.filter((entry) => entry !== expected);
+
+  if (changedTrackedFiles.length === 0) {
+    throw new Error("No tracked file changes detected.");
+  }
+
+  if (unexpectedTrackedFiles.length > 0 || changedTrackedFiles.length !== 1) {
+    throw new Error(
+      [
+        "PR scope check failed.",
+        `Expected only: ${expected}`,
+        "Found tracked changes:",
+        ...changedTrackedFiles.map((entry) => `- ${entry}`),
+      ].join("\n"),
+    );
+  }
 }
 
 function normalizeRepoPath(value) {
