@@ -66,6 +66,7 @@ npm run check:site
 
 The `publisher:*` commands in this repo are stable wrappers around the canonical helper scripts in the sibling `gotlandstider-ai` checkout.
 If you run them from a detached worktree or another custom layout, set `GOTLANDSTIDER_AI_ROOT` to the canonical `gotlandstider-ai` checkout first.
+`npm run test:publisher` uses the same centralized test suite locally and skips cleanly in environments where that checkout is not present, such as the standalone site-repo CI job.
 The installed Codex skills `content-writer` and `content-publisher` should be managed as symlinks, not edited in place under `~/.codex/skills/`.
 
 Prepare a clean worktree for manual Content Publisher runs:
