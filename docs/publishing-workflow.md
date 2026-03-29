@@ -147,6 +147,7 @@ Add a `homepage` block only when the article should appear in the homepage story
 - New videos should use article front matter plus an external embed URL and a local thumbnail image.
 - Video-backed articles should include `video.socialLinks`, using `null` for channels that are not used.
 - Content Publisher may copy one intake JPG/JPEG into `/content/<slug>-youtube-cover.<ext>` and point `video.thumbnail` at that local asset.
+- If YouTube rejects the custom-thumbnail API call but the video upload itself succeeds, Content Publisher may still use the copied local JPG/JPEG as the article thumbnail.
 - If the YouTube upload does not return a usable embed URL, Content Publisher may still open a plain article draft PR without a `video` block and leave the intake folder unarchived for a later rerun.
 - New videos should not include `video.legacySources`.
 
