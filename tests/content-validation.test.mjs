@@ -264,6 +264,50 @@ Innehåll.
   }
 });
 
+test("validateContentCollections allows copied jpg thumbnails for new YouTube articles", async () => {
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
+
+  try {
+    await fs.mkdir(path.join(tempDir, "content", "articles"), { recursive: true });
+    await Promise.all([
+      fs.writeFile(path.join(tempDir, "content", "hero-coastline.webp"), "image"),
+      fs.writeFile(path.join(tempDir, "content", "video-cover.jpg"), "image"),
+      fs.writeFile(
+        path.join(tempDir, "content", "articles", "article.md"),
+        `---
+title: Artikel med jpg-video
+slug: artikel-med-jpg-video
+excerpt: Kort text
+publishedAt: 2026-03-29
+updatedAt: 2026-03-29
+heroImage: /content/hero-coastline.webp
+tags:
+  - Guide
+featured: false
+draft: false
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/abc123
+  thumbnail: /content/video-cover.jpg
+  socialLinks:
+    instagram: null
+    tiktok: null
+---
+
+Innehåll.
+`,
+      ),
+    ]);
+
+    const result = await validateContentCollections(tempDir);
+
+    assert.equal(result.valid, true);
+    assert.equal(result.errors.length, 0);
+  } finally {
+    await fs.rm(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("validateContentCollections rejects non-legacy video articles with legacySources", async () => {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "gotlandstider-content-validation-"));
 

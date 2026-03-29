@@ -42,14 +42,24 @@ npm run publisher:prepare -- --path ../gotlandstider-content-publisher
 ```
 
 2. Run Content Publisher from that clean worktree, not from your everyday checkout.
-3. Have Publisher assemble exactly one article source file under `content/articles/` with `draft: false`.
+3. Have Publisher:
+   - generate the editorial bundle through `$content-writer`
+   - upload the intake video through `$youtube-uploader`
+   - assemble `content/articles/<slug>.md` with `draft: false`
+   - optionally copy one intake JPG/JPEG cover into `content/<slug>-youtube-cover.<ext>` when the YouTube-backed article should use that local thumbnail
 4. Run the publisher preflight in the clean worktree:
 
 ```bash
 npm run publisher:preflight -- --expected content/articles/<slug>.md
 ```
 
-5. Create or update branch `cms/articles/<slug>`, commit the article file, and push it.
+If a cover image was copied into the repo, include it as a second expected tracked file:
+
+```bash
+npm run publisher:preflight -- --expected content/articles/<slug>.md --expected content/<slug>-youtube-cover.<ext>
+```
+
+5. Create or update branch `cms/articles/<slug>`, commit the article file and optional copied cover asset, and push them.
 6. Open or reuse the Decap PR with the helper:
 
 ```bash
@@ -58,10 +68,21 @@ npm run publisher:open-pr -- --branch cms/articles/<slug> --title "Create Decap 
 
 7. The helper adds and verifies the required `decap-cms/draft` label. Branch naming alone is not enough for Decap Workflow visibility.
 8. Confirm the PR appears in Decap CMS as an unpublished entry.
-9. Click **Publish** in Decap CMS when the entry is ready to merge.
+9. If the YouTube upload returned a partial result, keep the intake folder in place and treat the PR as a plain article draft that can be updated later.
+10. Click **Publish** in Decap CMS when the entry is ready to merge.
 
-The publisher preflight intentionally restores generated files after `npm run check:site` so the PR stays limited to the single article source file while CI still validates the full site build.
+The publisher preflight intentionally restores generated files after `npm run check:site` so the PR stays limited to the article source file and, when needed, one copied cover asset while CI still validates the full site build.
 The PR helper fails fast if the PR is not open against `main` or if the Decap workflow label is still missing, which keeps the intake folder from being archived too early.
+
+## YouTube upload credentials
+
+The uploader uses YouTube Data API OAuth credentials from the execution environment:
+
+- `YOUTUBE_CLIENT_ID`
+- `YOUTUBE_CLIENT_SECRET`
+- `YOUTUBE_REFRESH_TOKEN`
+
+Content Publisher should request `unlisted` uploads by default and record the actual returned privacy status in the operator summary.
 
 ## Frontmatter defaults
 
@@ -107,9 +128,9 @@ featured: false
 video:
   provider: youtube
   embedUrl: https://www.youtube.com/embed/VIDEO_ID
-  thumbnail: /content/example.webp
+  thumbnail: /content/example.jpg
   socialLinks:
-    instagram: https://www.instagram.com/gotlandstider/
+    instagram: null
     tiktok: null
 ---
 
@@ -125,6 +146,9 @@ Add a `homepage` block only when the article should appear in the homepage story
 - New Content Publisher entries should start as Decap drafts with `draft: false` so Decap Publish makes them public on merge.
 - New videos should use article front matter plus an external embed URL and a local thumbnail image.
 - Video-backed articles should include `video.socialLinks`, using `null` for channels that are not used.
+- Content Publisher may copy one intake JPG/JPEG into `/content/<slug>-youtube-cover.<ext>` and point `video.thumbnail` at that local asset.
+- If YouTube rejects the custom-thumbnail API call but the video upload itself succeeds, Content Publisher may still use the copied local JPG/JPEG as the article thumbnail.
+- If the YouTube upload does not return a usable embed URL, Content Publisher may still open a plain article draft PR without a `video` block and leave the intake folder unarchived for a later rerun.
 - New videos should not include `video.legacySources`.
 
 ## Decap and Pages artifact scope
