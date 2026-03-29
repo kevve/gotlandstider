@@ -235,6 +235,43 @@ test("renderArticleDetailPage supports external embeds for video-backed articles
   assert.doesNotMatch(html, /Publicerad/);
 });
 
+test("renderArticleDetailPage supports YouTube articles with jpg thumbnails and no social links", () => {
+  const html = renderArticleDetailPage({
+    template: `
+      <html>
+        <head><title>{{pageTitle}}</title></head>
+        <body>{{tagRow}}{{mediaBlock}}{{socialLinks}}{{desktopBodySection}}{{desktopRelatedSection}}{{mobileBodySection}}{{mobileRelatedSection}}</body>
+      </html>
+    `,
+    article: {
+      title: "Extern video utan sociala länkar",
+      excerpt: "Beskrivning",
+      publishedAt: "2026-03-29",
+      updatedAt: "2026-03-29",
+      heroImage: "/content/hero-coastline.webp",
+      tags: ["Guide"],
+      video: {
+        provider: "youtube",
+        embedUrl: "https://www.youtube.com/embed/example456",
+        thumbnail: "/content/example-cover.jpg",
+        socialLinks: {
+          instagram: null,
+          tiktok: null,
+        },
+      },
+      urlPath: "/articles/extern-video-utan-sociala-lankar/",
+      relatedArticles: [],
+      body: "Brödtext.",
+    },
+  });
+
+  assert.match(html, /iframe/);
+  assert.match(html, /youtube\.com\/embed\/example456/);
+  assert.doesNotMatch(html, /Instagram/);
+  assert.doesNotMatch(html, /TikTok/);
+  assert.match(html, /Guide/);
+});
+
 test("renderArticleArchivePage omits empty archive tag separators for short tag lists", () => {
   const html = renderArticleArchivePage({
     template: "<html><body>{{articleCards}}</body></html>",

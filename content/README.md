@@ -65,9 +65,9 @@ featured: false
 video:
   provider: youtube
   embedUrl: https://www.youtube.com/embed/VIDEO_ID
-  thumbnail: /content/example.webp
+  thumbnail: /content/example.jpg
   socialLinks:
-    instagram: https://www.instagram.com/gotlandstider/
+    instagram: null
     tiktok: null
 homepage:
   badge: Tips
@@ -85,6 +85,7 @@ Article draft rules:
 - Decap editorial workflow status is separate from `draft`; unpublished Decap entries stay off `main` even when the file itself uses `draft: false`
 - Automated intake drafts must open their PRs through `npm run publisher:open-pr`, which applies the required `decap-cms/draft` label for Decap Workflow visibility
 - New articles should start with `featured: false` unless they are intentionally being promoted
+- Content Publisher may create a plain Decap draft article without a `video` block when the YouTube upload step returns a partial result; in that case the intake folder should stay in place for a later rerun
 
 Video metadata rules:
 
@@ -95,6 +96,8 @@ Rules for new video entries:
 - include a valid `video.embedUrl`
 - use a local `video.thumbnail` image under `/content/`
 - include `video.socialLinks` as an object with `https` URLs or `null`
+- for Content Publisher YouTube-backed drafts, `video.socialLinks` should default to `instagram: null` and `tiktok: null`
+- Content Publisher may point `video.thumbnail` at a copied intake JPG/JPEG asset such as `/content/<slug>-youtube-cover.jpg`
 - do not add `video.legacySources`
 - do not use `video.provider: legacy-local` for new entries
 
