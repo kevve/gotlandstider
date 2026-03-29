@@ -5,7 +5,7 @@
 
    <url>
       <loc>https://www.gotlandstider.se/</loc>
-      <lastmod>2026-03-19</lastmod>
+      <lastmod>2026-03-21</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
       <image:image>
@@ -19,9 +19,24 @@
    </url>
    <url>
       <loc>https://www.gotlandstider.se/articles/</loc>
-      <lastmod>2026-03-19</lastmod>
+      <lastmod>2026-03-21</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/articles/lugna-strander-gotland/</loc>
+      <lastmod>2026-03-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+      <video:video>
+         <video:thumbnail_loc>https://www.gotlandstider.se/content/lugna-strander-final-cover.jpg</video:thumbnail_loc>
+         <video:title>Lugna stränder på Gotland</video:title>
+         <video:description>Ardre Strand, Ekeviken och Lausviken är tre fina val när du vill ha en lugnare dag vid havet på Gotland.</video:description>
+         <video:player_loc allow_embed="yes">https://youtube.com/embed/y2ODT6BNhhw</video:player_loc>
+         <video:publication_date>2026-03-21T00:00:00+00:00</video:publication_date>
+         <video:family_friendly>yes</video:family_friendly>
+         <video:live>no</video:live>
+      </video:video>
    </url>
    <url>
       <loc>https://www.gotlandstider.se/articles/fem-anledningar-att-besoka-ljugarn/</loc>
