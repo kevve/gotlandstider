@@ -12,6 +12,13 @@ tags:
   - Mat & Dryck
 featured: false
 draft: false
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/83C-wTU5i1k
+  thumbnail: /content/tre-hypade-stallen-du-maste-besoka-youtube-cover.jpg
+  socialLinks:
+    instagram: null
+    tiktok: null
 ---
 
 Det finns gott om ställen på Gotland som får mycket uppmärksamhet varje sommar. Några känns mest som namn man hör ofta. Andra är värda resan på riktigt. Här är tre stopp som kombinerar miljö, stämning och innehåll på ett sätt som gör att du gärna stannar längre än planerat.
