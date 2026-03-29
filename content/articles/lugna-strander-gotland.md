@@ -14,7 +14,7 @@ featured: false
 draft: false
 video:
   provider: youtube
-  embedUrl: https://youtube.com/shorts/y2ODT6BNhhw?feature=share
+  embedUrl: https://youtube.com/embed/y2ODT6BNhhw
   thumbnail: /content/lugna-stränder-final-cover.jpg
   socialLinks:
     instagram: https://www.instagram.com/reel/DWJq9DRCLeS/
