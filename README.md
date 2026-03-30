@@ -67,12 +67,12 @@ npm run check:site
 The `publisher:*` commands in this repo are stable wrappers around the canonical helper scripts in the sibling `gotlandstider-ai` checkout.
 If you run them from a detached worktree or another custom layout, set `GOTLANDSTIDER_AI_ROOT` to the canonical `gotlandstider-ai` checkout first.
 `npm run test:publisher` uses the same centralized test suite locally and skips cleanly in environments where that checkout is not present, such as the standalone site-repo CI job.
-The installed Codex skills `content-writer` and `content-publisher` should be managed as symlinks, not edited in place under `~/.codex/skills/`.
+The installed Codex skills `content-writer` and `content-publisher` should be managed as symlinks, not edited in place under `$CODEX_HOME/skills/`.
 
 Prepare a clean worktree for manual Content Publisher runs:
 
 ```bash
-npm run publisher:prepare -- --path ../gotlandstider-content-publisher
+npm run publisher:prepare -- --path <publisher-worktree-path>
 ```
 
 Preflight a generated article branch without committing generated output:
@@ -146,4 +146,4 @@ Manual repo setup for the first deploy:
 - Automated intake PRs must carry the `decap-cms/draft` label to appear in Decap Workflow; the `publisher:open-pr` helper applies and verifies that label.
 - Set `draft: true` only when you intentionally want a merged article to stay hidden from public output.
 - Intake automation should run from a dedicated clean worktree or clone so publisher scope checks can stay limited to a single article source file.
-- Edit shared Codex skills and publisher helper implementations in the sibling `gotlandstider-ai` repo; `~/.codex/skills/` should only contain installed symlinks.
+- Edit shared Codex skills and publisher helper implementations in the sibling `gotlandstider-ai` repo; the installed Codex skills directory should only contain installed symlinks.

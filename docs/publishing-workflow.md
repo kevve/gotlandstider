@@ -38,12 +38,17 @@ The `publisher:*` commands below stay anchored in this repo for operators, but t
 1. Prepare a clean worktree:
 
 ```bash
-npm run publisher:prepare -- --path ../gotlandstider-content-publisher
+npm run publisher:prepare -- --path <publisher-worktree-path>
 ```
 
-2. Run Content Publisher from that clean worktree, not from your everyday checkout.
-3. Have Publisher:
-   - generate the editorial bundle through `$content-writer`
+2. Run Content Writer in standalone bundle mode when you want to prepare the reusable intake artifact first. A standalone Writer run should:
+   - create `ready_for_upload/<folder>/<slug>-content-bundle.md`
+   - leave the intake folder in place
+   - stop instead of overwriting an existing `*-content-bundle.md`
+3. Run Content Publisher from that clean worktree, not from your everyday checkout. Have Publisher:
+   - reuse and validate `ready_for_upload/<folder>/<slug>-content-bundle.md` when it already exists
+   - stop and ask for a Writer rerun if an existing bundle file is invalid
+   - call `$content-writer` only when the bundle file is missing
    - upload the intake video through `$youtube-uploader`
    - assemble `content/articles/<slug>.md` with `draft: false`
    - optionally copy one intake JPG/JPEG cover into `content/<slug>-youtube-cover.<ext>` when the YouTube-backed article should use that local thumbnail
@@ -68,11 +73,12 @@ npm run publisher:open-pr -- --branch cms/articles/<slug> --title "Create Decap 
 
 7. The helper adds and verifies the required `decap-cms/draft` label. Branch naming alone is not enough for Decap Workflow visibility.
 8. Confirm the PR appears in Decap CMS as an unpublished entry.
-9. If the YouTube upload returned a partial result, keep the intake folder in place and treat the PR as a plain article draft that can be updated later.
-10. Click **Publish** in Decap CMS when the entry is ready to merge.
+9. Archive the processed intake folder only after green CI, successful Decap visibility confirmation, a non-partial uploader result, and a final check that `ready_for_upload/<folder>/<slug>-content-bundle.md` is still present. The archived `_processed/.../<folder>/` copy should keep that bundle file.
+10. If the YouTube upload returned a partial result, keep the intake folder in place and treat the PR as a plain article draft that can be updated later.
+11. Click **Publish** in Decap CMS when the entry is ready to merge.
 
 The publisher preflight intentionally restores generated files after `npm run check:site` so the PR stays limited to the article source file and, when needed, one copied cover asset while CI still validates the full site build.
-The PR helper fails fast if the PR is not open against `main` or if the Decap workflow label is still missing, which keeps the intake folder from being archived too early.
+The PR helper fails fast if the PR is not open against `main` or if the Decap workflow label is still missing, which keeps the intake folder from being archived too early. The intake bundle file is an operator artifact and should remain with the source folder rather than being added to the article PR.
 
 ## YouTube upload credentials
 

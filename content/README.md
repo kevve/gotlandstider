@@ -86,6 +86,8 @@ Article draft rules:
 - Automated intake drafts must open their PRs through `npm run publisher:open-pr`, which applies the required `decap-cms/draft` label for Decap Workflow visibility
 - New articles should start with `featured: false` unless they are intentionally being promoted
 - Content Publisher may create a plain Decap draft article without a `video` block when the YouTube upload step returns a partial result; in that case the intake folder should stay in place for a later rerun
+- The intake workflow may keep a sibling `ready_for_upload/<folder>/<slug>-content-bundle.md` file with the source folder and carry it into `_processed/` after a successful archive
+- That `*-content-bundle.md` file is an intake artifact, not a site content source file, and it should not be part of the article PR diff
 
 Video metadata rules:
 
