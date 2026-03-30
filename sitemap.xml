@@ -5,7 +5,7 @@
 
    <url>
       <loc>https://www.gotlandstider.se/</loc>
-      <lastmod>2026-03-21</lastmod>
+      <lastmod>2026-03-29</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
       <image:image>
@@ -19,9 +19,24 @@
    </url>
    <url>
       <loc>https://www.gotlandstider.se/articles/</loc>
-      <lastmod>2026-03-21</lastmod>
+      <lastmod>2026-03-29</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://www.gotlandstider.se/articles/tre-hypade-stallen-du-maste-besoka/</loc>
+      <lastmod>2026-03-29</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+      <video:video>
+         <video:thumbnail_loc>https://www.gotlandstider.se/content/tre-hypade-stallen-du-maste-besoka-youtube-cover.jpg</video:thumbnail_loc>
+         <video:title>Tre hypade ställen du måste besöka</video:title>
+         <video:description>Tre somriga stopp på Gotland som faktiskt lever upp till förväntningarna: Surflogiet, Kallis och Bruna Dörren.</video:description>
+         <video:player_loc allow_embed="yes">https://www.youtube.com/embed/83C-wTU5i1k</video:player_loc>
+         <video:publication_date>2026-03-29T00:00:00+00:00</video:publication_date>
+         <video:family_friendly>yes</video:family_friendly>
+         <video:live>no</video:live>
+      </video:video>
    </url>
    <url>
       <loc>https://www.gotlandstider.se/articles/lugna-strander-gotland/</loc>

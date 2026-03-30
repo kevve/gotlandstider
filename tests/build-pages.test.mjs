@@ -28,11 +28,15 @@ test("buildArticlePages returns archive and detail pages for published articles"
   assert.match(archivePage.html, /line-clamp-2/);
   assert.match(archivePage.html, /Loppis/);
   assert.match(archivePage.html, /Gotland • Inredning/);
+  assert.match(archivePage.html, /Läs&nbsp;mer/);
   assert.match(archivePage.html, /<footer id="contact"/);
   assert.match(archivePage.html, /src="\/navscripts\.js"/);
   assert.match(archivePage.html, /href="\/#stories" class="hover:text-gotland-rust transition-colors">Upplevelser</);
   assert.match(archivePage.html, /href="\/#house" class="hover:text-gotland-rust transition-colors">Sommarhuset</);
   assert.match(archivePage.html, /href="\/articles\/" class="font-semibold text-gotland-rust transition-colors"/);
+  assert.doesNotMatch(archivePage.html, /29 mars 2026/);
+  assert.doesNotMatch(archivePage.html, /21 mars 2026/);
+  assert.doesNotMatch(archivePage.html, /Titta vidare|Läs vidare/);
   assert.match(detailPage.html, /story-loppisar-gotland\.mp4/);
   assert.match(detailPage.html, /aspect-\[9\/16\]/);
   assert.match(detailPage.html, /Loppis/);
@@ -272,7 +276,7 @@ test("renderArticleDetailPage supports YouTube articles with jpg thumbnails and 
   assert.match(html, /Guide/);
 });
 
-test("renderArticleArchivePage omits empty archive tag separators for short tag lists", () => {
+test("renderArticleArchivePage omits dates, uses a shared CTA, and avoids empty tag separators", () => {
   const html = renderArticleArchivePage({
     template: "<html><body>{{articleCards}}</body></html>",
     articles: [
@@ -290,6 +294,15 @@ test("renderArticleArchivePage omits empty archive tag separators for short tag 
         publishedAt: "2026-03-16",
         heroImage: "/content/hero-coastline.webp",
         tags: ["Plats", "Badge"],
+        video: {
+          provider: "youtube",
+          embedUrl: "https://www.youtube.com/embed/example123",
+          thumbnail: "/content/example-cover.jpg",
+          socialLinks: {
+            instagram: null,
+            tiktok: null,
+          },
+        },
         urlPath: "/articles/tvataggar/",
       },
     ],
@@ -298,6 +311,10 @@ test("renderArticleArchivePage omits empty archive tag separators for short tag 
   assert.match(html, />Ensamtagg</);
   assert.match(html, />Badge</);
   assert.match(html, />Plats</);
+  assert.match(html, /Läs&nbsp;mer/);
+  assert.equal((html.match(/Läs&nbsp;mer/g) ?? []).length, 2);
+  assert.doesNotMatch(html, /15 mars 2026|16 mars 2026/);
+  assert.doesNotMatch(html, /Titta vidare|Läs vidare/);
   assert.doesNotMatch(html, /Ensamtagg •/);
   assert.doesNotMatch(html, /Plats •/);
 });

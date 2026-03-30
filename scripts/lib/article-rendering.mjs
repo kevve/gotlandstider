@@ -45,10 +45,9 @@ export function renderArticleArchivePage({ template, articles, shell = {} }) {
                 )}</h2>
                 <p class="line-clamp-2 text-sm leading-relaxed text-gray-600">${escapeHtml(article.excerpt)}</p>
               </div>
-              <div class="flex items-center justify-between gap-3 pt-2">
-                <p class="text-xs font-medium text-gotland-deep/80">${formatDate(article.publishedAt)}</p>
+              <div class="flex items-center justify-end pt-2">
                 <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-gotland-deep transition-colors group-hover:text-gotland-rust">
-                  ${article.video ? "Titta vidare" : "Läs vidare"}
+                  Läs&nbsp;mer
                   <span aria-hidden="true">→</span>
                 </span>
               </div>
@@ -410,15 +409,6 @@ function renderDetailTagRow(tagDisplay, tagMetadata) {
   return `<span class="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${getArchiveBadgeClass(
     tagDisplay.badge,
   )}">${escapeHtml(tagDisplay.badge)}</span>${tagMetadata ? `<span class="text-xs font-medium uppercase tracking-wide text-gotland-moss">${escapeHtml(tagMetadata)}</span>` : ""}`;
-}
-
-function formatDate(value) {
-  return new Intl.DateTimeFormat("sv-SE", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${value}T00:00:00Z`));
 }
 
 function escapeHtml(value) {
