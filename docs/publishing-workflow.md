@@ -51,6 +51,7 @@ npm run publisher:prepare -- --path <publisher-worktree-path>
    - call `$content-writer` only when the bundle file is missing
    - upload the intake video through `$youtube-uploader`
    - assemble `content/articles/<slug>.md` with `draft: false`
+   - use the built-in GitHub plugin for branch, PR, and label work during automation runs instead of `gh`
    - optionally copy one intake JPG/JPEG cover into `content/<slug>-youtube-cover.<ext>` when the YouTube-backed article should use that local thumbnail
 4. Run the publisher preflight in the clean worktree:
 
@@ -64,21 +65,22 @@ If a cover image was copied into the repo, include it as a second expected track
 npm run publisher:preflight -- --expected content/articles/<slug>.md --expected content/<slug>-youtube-cover.<ext>
 ```
 
-5. Create or update branch `cms/articles/<slug>`, commit the article file and optional copied cover asset, and push them.
-6. Open or reuse the Decap PR with the helper:
+5. Create or update branch `cms/articles/<slug>`, commit the article file and optional copied cover asset, and mirror that final source state to GitHub.
+6. For manual operator runs, you may still open or reuse the Decap PR with the helper:
 
 ```bash
 npm run publisher:open-pr -- --branch cms/articles/<slug> --title "Create Decap draft article: <title>" --body "Decap draft article generated from the intake folder transcript via $content-writer."
 ```
 
-7. The helper adds and verifies the required `decap-cms/draft` label. Branch naming alone is not enough for Decap Workflow visibility.
-8. Confirm the PR appears in Decap CMS as an unpublished entry.
-9. Archive the processed intake folder only after green CI, successful Decap visibility confirmation, a non-partial uploader result, and a final check that `ready_for_upload/<folder>/<slug>-content-bundle.md` is still present. The archived `_processed/.../<folder>/` copy should keep that bundle file.
-10. If the YouTube upload returned a partial result, keep the intake folder in place and treat the PR as a plain article draft that can be updated later.
-11. Click **Publish** in Decap CMS when the entry is ready to merge.
+7. For automation runs, use the built-in GitHub plugin to open or reuse the PR against `main` and apply `decap-cms/draft`, `codex`, and `codex-automation`.
+8. Confirm the PR appears in Decap CMS as an unpublished entry when direct verification is available. If not, report that the branch and labels are shaped correctly for Decap Workflow and leave the intake folder in place.
+9. Treat successful local `publisher:preflight` as the hard automation gate. Report remote CI separately when it is not directly verifiable instead of blocking the run on `gh`.
+10. Archive the processed intake folder only after successful local preflight, positive remote CI confirmation, successful Decap visibility confirmation, a non-partial uploader result, and a final check that `ready_for_upload/<folder>/<slug>-content-bundle.md` is still present. The archived `_processed/.../<folder>/` copy should keep that bundle file.
+11. If the YouTube upload returned a partial result, or remote CI or Decap visibility remains unresolved, keep the intake folder in place and treat the PR as a plain article draft that can be updated later.
+12. Click **Publish** in Decap CMS when the entry is ready to merge.
 
 The publisher preflight intentionally restores generated files after `npm run check:site` so the PR stays limited to the article source file and, when needed, one copied cover asset while CI still validates the full site build.
-The PR helper fails fast if the PR is not open against `main` or if the Decap workflow label is still missing, which keeps the intake folder from being archived too early. The intake bundle file is an operator artifact and should remain with the source folder rather than being added to the article PR.
+The manual PR helper fails fast if the PR is not open against `main` or if the Decap workflow label is still missing, which keeps the intake folder from being archived too early. The intake bundle file is an operator artifact and should remain with the source folder rather than being added to the article PR.
 
 ## YouTube upload credentials
 

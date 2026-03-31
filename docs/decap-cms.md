@@ -42,7 +42,8 @@ The publishing pipeline is intentionally minimal:
 5. Content Publisher should validate an existing intake bundle before article assembly, reuse it when valid, and stop for a Writer rerun when an existing bundle is invalid.
 6. Content Publisher should run from a dedicated clean worktree or clone and restore generated outputs before PR creation so the diff stays limited to one article source file plus, when present, one copied cover asset under `content/`.
 7. Content Publisher should upload the YouTube video before article assembly when a video-backed draft is possible, and it may fall back to a plain article draft when the uploader returns a partial result.
-8. Content Publisher should open the PR through `npm run publisher:open-pr` so the required `decap-cms/draft` label is applied and verified immediately after PR creation.
+8. Automation runs should use the built-in GitHub plugin to create or reuse the branch and PR, and they should apply `decap-cms/draft`, `codex`, and `codex-automation` labels there. The local `publisher:open-pr` helper remains a manual fallback for operator-driven CLI runs.
+9. Automation should treat successful local `publisher:preflight` as the hard gate and report remote CI separately when plugin-visible status data is incomplete.
 
 If a partial draft PR is rerun later, it should reuse the same `cms/articles/<slug>` branch and update the existing Decap workflow entry instead of opening a second PR for the same slug.
 
@@ -54,6 +55,7 @@ Use branch protection on `main` with:
 2. required status check `validate-and-build`
 
 This keeps Decap and non-Decap changes on the same reviewed merge path.
+Automation should not claim a PR is green unless the runtime can positively verify remote CI.
 
 ## Pages artifact note
 

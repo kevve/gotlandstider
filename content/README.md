@@ -83,9 +83,10 @@ Article draft rules:
 - `draft: true` keeps the article out of generated public output even after merge
 - `draft: false` (or omitted `draft`) allows the article to appear in generated public output
 - Decap editorial workflow status is separate from `draft`; unpublished Decap entries stay off `main` even when the file itself uses `draft: false`
-- Automated intake drafts must open their PRs through `npm run publisher:open-pr`, which applies the required `decap-cms/draft` label for Decap Workflow visibility
+- Automated intake drafts must apply the required `decap-cms/draft` label for Decap Workflow visibility. Automation uses the built-in GitHub plugin for branch, PR, and label work, while `npm run publisher:open-pr` remains a manual CLI fallback
 - New articles should start with `featured: false` unless they are intentionally being promoted
 - Content Publisher may create a plain Decap draft article without a `video` block when the YouTube upload step returns a partial result; in that case the intake folder should stay in place for a later rerun
+- Content Publisher should treat successful local `publisher:preflight` as the hard gate and report remote CI separately when it cannot positively verify that state in the runtime
 - The intake workflow may keep a sibling `ready_for_upload/<folder>/<slug>-content-bundle.md` file with the source folder and carry it into `_processed/` after a successful archive
 - That `*-content-bundle.md` file is an intake artifact, not a site content source file, and it should not be part of the article PR diff
 
