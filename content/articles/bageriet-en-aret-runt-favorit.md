@@ -11,6 +11,13 @@ tags:
   - Året runt
 featured: false
 draft: false
+video:
+  provider: youtube
+  embedUrl: https://www.youtube.com/embed/8L8enh1mPfo
+  thumbnail: /content/bageriet-en-aret-runt-favorit-youtube-cover.jpg
+  socialLinks:
+    instagram: null
+    tiktok: null
 ---
 
 Det finns ställen som känns självklara redan när du kliver in. Bageriet i Visby är ett sådant stopp. Här finns en avslappnad känsla som gör att du gärna stannar kvar lite längre.
