@@ -85,7 +85,8 @@ Article draft rules:
 - Decap editorial workflow status is separate from `draft`; unpublished Decap entries stay off `main` even when the file itself uses `draft: false`
 - Automated intake drafts must apply the required `decap-cms/draft` label for Decap Workflow visibility. Automation uses the built-in GitHub plugin for branch, PR, and label work, while `npm run publisher:open-pr` remains a manual CLI fallback
 - New articles should start with `featured: false` unless they are intentionally being promoted
-- Content Publisher may create a plain Decap draft article without a `video` block when the YouTube upload step returns a partial result; in that case the intake folder should stay in place for a later rerun
+- Content Publisher automation should use `/Users/kevin/Repos/Gotlandstider/gotlandstider-ai` as its only Codex workspace and mutate article files only inside a dedicated clean site worktree or clone for this repo
+- Content Publisher may create a plain Decap draft article without a `video` block when the YouTube upload step ends with `status: "partial"` or `status: "blocked"`; in either case the intake folder should stay in place for a later rerun
 - Content Publisher should treat successful local `publisher:preflight` as the hard gate and report remote CI separately when it cannot positively verify that state in the runtime
 - The intake workflow may keep a sibling `ready_for_upload/<folder>/<slug>-content-bundle.md` file with the source folder and carry it into `_processed/` after a successful archive
 - That `*-content-bundle.md` file is an intake artifact, not a site content source file, and it should not be part of the article PR diff
