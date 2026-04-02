@@ -69,6 +69,7 @@ If you run them from a detached worktree or another custom layout, set `GOTLANDS
 `npm run test:publisher` uses the same centralized test suite locally and skips cleanly in environments where that checkout is not present, such as the standalone site-repo CI job.
 The installed Codex skills `content-writer` and `content-publisher` should be managed as symlinks, not edited in place under `$CODEX_HOME/skills/`.
 Automation runs should use the built-in GitHub plugin for branch, PR, and label work, while `publisher:open-pr` remains a manual CLI fallback.
+Automation should use `/Users/kevin/Repos/Gotlandstider/gotlandstider-ai` as its only Codex workspace and create the clean site worktree explicitly from `/Users/kevin/Repos/Gotlandstider/gotlandstider`.
 For automation, successful local `publisher:preflight` is the hard gate and remote CI may be reported separately when it is not directly verifiable.
 
 Prepare a clean worktree for manual Content Publisher runs:
@@ -147,6 +148,7 @@ Manual repo setup for the first deploy:
 - The recommended publishing workflow uses Decap editorial workflow states and manual Publish in Decap.
 - Automated intake PRs must carry the `decap-cms/draft` label to appear in Decap Workflow. Automation uses the built-in GitHub plugin to apply and verify that label, while the `publisher:open-pr` helper remains available for manual CLI runs.
 - Set `draft: true` only when you intentionally want a merged article to stay hidden from public output.
-- Intake automation should run from a dedicated clean worktree or clone so publisher scope checks can stay limited to a single article source file.
+- Intake automation should run from `/Users/kevin/Repos/Gotlandstider/gotlandstider-ai` as a single Codex workspace and create a dedicated clean site worktree or clone for `/Users/kevin/Repos/Gotlandstider/gotlandstider` so publisher scope checks can stay limited to a single article source file.
+- Intake automation may still create a plain draft article when the uploader finishes with `status: "partial"` or `status: "blocked"`; both outcomes leave the intake folder in place for a later rerun.
 - Intake automation should report remote CI separately when it cannot positively verify that status in the runtime.
 - Edit shared Codex skills and publisher helper implementations in the sibling `gotlandstider-ai` repo; the installed Codex skills directory should only contain installed symlinks.
