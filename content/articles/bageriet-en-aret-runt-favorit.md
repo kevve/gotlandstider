@@ -2,8 +2,8 @@
 title: Bageriet en året-runt-favorit
 slug: bageriet-en-aret-runt-favorit
 excerpt: Bageriet i Visby är ett varmt och levande brunchstopp som gör det lätt att äta gott även utanför sommaren.
-publishedAt: 2026-03-30
-updatedAt: 2026-03-30
+publishedAt: 2026-04-02
+updatedAt: 2026-04-02
 heroImage: /content/hero-coastline.webp
 tags:
   - Visby
