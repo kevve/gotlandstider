@@ -1,7 +1,9 @@
 ---
 title: Gotlands Kanske Bästa Bageri
 slug: gotlands-kanske-basta-bageri
-excerpt: Själsö Bageri ligger bara några minuter norr om Visby, men känns som ett eget litet stopp att planera dagen kring. Här får du havet nära, lugnare tempo och bakverk som ger dig en tydlig anledning att ta omvägen.
+excerpt: Bara 5-10 minuter norr om Visby hittar du Gotlands kanske bästa bageri.
+  Här kan du avnjuta massor av bakverk i närheten av både Östersjön och ett
+  vackert fiskeläge. Väl värt en omväg oavsett vart du ska ön.
 publishedAt: 2026-04-13
 updatedAt: 2026-04-13
 heroImage: /content/hero-coastline.webp
@@ -15,16 +17,15 @@ draft: false
 video:
   provider: youtube
   embedUrl: https://www.youtube.com/embed/f2rg5R3CSv8
-  thumbnail: /content/hero-coastline.webp
+  thumbnail: /content/gotlands-kanske-basta-bageri-cover.jpg
   socialLinks:
-    instagram: null
-    tiktok: null
+    instagram: https://www.instagram.com/reel/DW3_J3riKah/
+    tiktok: https://www.tiktok.com/@gotlandstider/video/7626401803298426134
 ---
+Själsö Bageri är ett stopp värt att planera in som en självklar del av vistelsen på Gotland. Det är inte långt från Visby, men det gäller ändå att passa på oavsett om du ska söder, öster, eller norrut.
 
-Själsö Bageri är ett sådant stopp som lätt får en egen plats i dagens plan. Från Visby tar det bara några minuter norrut, men känslan är en annan när havet öppnar upp sig och tempot sjunker direkt.
+Slå dig ner och njut av utsikten över vattnet, låt pausen bli lite längre än tänkt och landa i en fikastund som är väl värd omvägen. Här är det lätt att dröja sig kvar tack vare den vackra utsikten över havet men också om du är sugen på en omgång boule innan du åker vidare.
 
-Det fina här är kombinationen av läge och enkelhet. Du kan slå dig ner med utsikt över vattnet, låta pausen bli lite längre än tänkt och få en fikastund som känns värd omvägen. Här är det också lätt att stanna kvar längre, antingen med utsikt över havet eller en omgång boule innan du kör vidare.
+Bakverken är i och för sig den största anledning att stanna. Det är bakat med mycket kärlek, och sådär alldeles lagom smörigt. Passa på att testa flera bakverk eftersom vi alla har olika favoriter. Vi gillade speciellt saffransbullen eftersom man fick en rejäl smakexplosion.
 
-Bakverken ger ytterligare en anledning att stanna. Det som provades var smörigt på rätt sätt och saffranen kom fram tydligt redan i första tuggan. När smaken är så klar behövs det inte mycket mer för att stoppet ska kännas genomtänkt.
-
-Om du vill ha ett bageri nära Visby där miljön faktiskt spelar roll lika mycket som det du beställer, är Själsö Bageri ett tips att lägga på minnet. Här finns både havet, lugnet och en fika som känns väl vald.
+Om du vill ha ett bageri nära Visby där miljön spelar lika mycket roll som det du beställer är Själsö Bageri ett tips att lägga på minnet.
