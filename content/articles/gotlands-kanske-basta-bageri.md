@@ -3,7 +3,7 @@ title: Gotlands Kanske Bästa Bageri
 slug: gotlands-kanske-basta-bageri
 excerpt: Bara 5-10 minuter norr om Visby hittar du Gotlands kanske bästa bageri.
   Här kan du avnjuta massor av bakverk i närheten av både Östersjön och ett
-  vackert fiskeläge. Väl värt en omväg oavsett vart du ska ön.
+  vackert fiskeläge. Väl värt en omväg oavsett vart på ön du än ska.
 publishedAt: 2026-04-13
 updatedAt: 2026-04-13
 heroImage: /content/hero-coastline.webp
