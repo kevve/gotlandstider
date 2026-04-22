@@ -2,9 +2,9 @@
 title: En natt i Visby
 slug: en-natt-i-visby
 excerpt: En natt i Visby under lågsäsong är det bästa sättet att börja en
-  vistelse på Gotlands med. Du hinner strosa i stan, gå genom Botaniska
-  trädgården och äta middag i lugn och ro. Något som är svårare att hitta när
-  sommaren och högsäsongen drar i gång.
+  vistelse på Gotland. Du hinner strosa i stan, gå genom Botaniska trädgården
+  och äta middag i lugn och ro. Vilket är något klurigare att göra när sommaren
+  och högsäsongen drar i gång.
 publishedAt: 2026-04-22
 updatedAt: 2026-04-22
 heroImage: /content/hero-coastline.webp
