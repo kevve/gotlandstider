@@ -3,8 +3,7 @@ title: Bästa stränderna för ett äventyr
 slug: basta-stranderna-for-ett-aventyr
 excerpt: Tre badplatser på Gotland som passar extra bra när du vill ha mer än
   bara lata dagar på stranden. Här får du allt från djupblått kalkbrottsvatten,
-  Smöjen med sin råa miljö, till nordöstra Fårö där bara vägen dit är en stor
-  del av upplevelsen.
+  rå miljö, till nordöstra Fårö där till och med vägen dit är ett äventyr.
 publishedAt: 2026-04-22
 updatedAt: 2026-04-22
 heroImage: /content/hero-coastline.webp
