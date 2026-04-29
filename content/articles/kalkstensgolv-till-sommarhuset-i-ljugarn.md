@@ -1,5 +1,5 @@
 ---
-title: Kalkstensgolv till sommarhuset i Ljugarn
+title: Kalkstensgolv till sommarhuset
 slug: kalkstensgolv-till-sommarhuset-i-ljugarn
 excerpt: Ett materialval för sommarhuset i Ljugarn där Norrvange kalksten från
   norra Gotland står mellan antikborstad struktur och normalslipad lugn.
