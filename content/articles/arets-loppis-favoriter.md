@@ -1,7 +1,8 @@
 ---
 title: Årets loppis-favoriter
 slug: arets-loppis-favoriter
-excerpt: Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visar även Henrik upp årets fynd.
+excerpt: Vi har åkt Gotland runt för att hitta de bästa loppisarna. Här visar
+  även Henrik upp årets fynd.
 publishedAt: 2026-01-03
 updatedAt: 2026-01-03
 heroImage: /content/story-loppisar-gotland.webp
@@ -22,7 +23,7 @@ video:
     webm: /content/story-loppisar-gotland.webm
     mp4: /content/story-loppisar-gotland.mp4
 homepage:
-  order: 1
+  order: 4
   badge: Loppis
   subtitle: Gotland • Inredning
 ---
