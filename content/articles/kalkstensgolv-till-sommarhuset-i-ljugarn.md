@@ -8,9 +8,8 @@ updatedAt: 2026-04-29
 heroImage: /content/hero-coastline.webp
 tags:
   - Sommarhus
+  - Hus & Hem
   - Ljugarn
-  - Inredning
-  - Kalksten
 featured: false
 draft: false
 video:
