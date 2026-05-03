@@ -1,7 +1,10 @@
 ---
 title: En ny matklassiker i Visby
 slug: en-ny-matklassiker-i-visby
-excerpt: Bakfickan Bistro i Visby är en ny restaurang intill Bakfickan med kött i fokus, lugn stämning och ett läge som kräver bordsbokning inför sommaren.
+excerpt: Restaurang Bakfickan på Stora Torget har fått en systerkrog, i form av
+  Bakfickan Bistro. Här får du en härlig och familjär bistro-känsla med
+  mestadels kött på menyn. Så har du svängarna förbi Visby se till att inte
+  missa det här stället.
 publishedAt: 2026-05-03
 updatedAt: 2026-05-03
 heroImage: /content/hero-coastline.webp
@@ -16,13 +19,13 @@ video:
   embedUrl: https://www.youtube.com/embed/1HKyQlxN2wc
   thumbnail: /content/en-ny-matklassiker-i-visby-youtube-cover.jpg
   socialLinks:
-    instagram: null
-    tiktok: null
+    ? instagram
+    ? tiktok
 ---
-Visby har redan gott om starka restaurangadresser. Det som gör våren extra intressant är när det dyker upp nya ställen som ger ännu ett skäl att boka middag i innerstan.
+Visby har redan gott om starka restauranger. Det som gör våren extra intressant är när det dyker upp nya ställen som ger dig ännu ett skäl att boka en middag i innerstan.
 
-Bakfickan Bistro ligger precis bredvid Bakfickan, men har en egen riktning. Där Bakfickan främst förknippas med fisk lutar den här restaurangen mer åt kött, med en mindre lokal och en varm känsla runt borden.
+Bakfickan Bistro ligger precis bredvid Bakfickan, men har en egen inriktning. Där Bakfickan främst förknippas med fisk lutar deras Bistro mer åt kött, med en mindre lokal och mysig stämning.
 
-Det är en restaurang för dig som vill sitta kvar länge. Personalen sätter tonen, rummet känns lugnt och helheten passar bättre för en ordentlig kväll än för ett snabbt stopp.
+Det är en restaurang för dig som vill sitta kvar länge. Personalen är fantastisk, rummet känns lugnt och helheten passar både en helkväll som ett snabbt stopp.
 
-Inför sommaren är det här ett namn att lägga på minnet. Planerar du Visby under högsäsong är bordsbokning klokt, särskilt om du vill ha en middag som får ta tid.
+Inför sommaren är det här ett namn att lägga på minnet. Planerar du att komma till Visby under högsäsong är nog en bordsbokning klokt, särskilt om du vill ha en middag som får ta sin tid.
